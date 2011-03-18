@@ -1,0 +1,528 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Frameset//EN""http://www.w3.org/TR/REC-html40/frameset.dtd">
+<html>
+<head>
+<title>
+ Overview
+</title>
+<link rel ="stylesheet" type="text/css" href="stylesheet.css" title="Style">
+<script>
+function asd() {
+	
+		parent.document.title="CollapsableTreeList.js Overview";
+	
+}
+</script>
+</head>
+<body bgcolor="white" onload="asd();">
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> 	<font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top">
+<em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<center>
+	
+	   <h2>CollapsableTreeList.js</h2>
+	
+</center>
+
+	
+
+
+<h4>Summary</h4>
+<p>
+	
+		No overview generated for 'CollapsableTreeList.js'<BR/><BR/>
+	
+</p>
+
+<hr>
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<!-- ========== END METHOD SUMMARY =========== -->
+
+
+        <pre class="sourceview">behaviour.gui.tree.CollapsableTreeList = new Class.create();
+
+<span class="comment">// extends TreeList</span>
+Object.extend(behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>, behaviour.gui.tree.TreeList.<span class="reserved">prototype</span>);
+
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>._entities;
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>._currentlySelectedID;
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>._listConstructionData;
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>._folderOpenStatus;
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>._entityIdToNode;
+
+<span class="comment">/**
+ * Supports the following options:
+ * 
+ * options: {
+ * 		entities: Array,							An array of objects to build the tree from
+ * 		saveOpenStateURL: String,		The URL to post folder open state data to
+ * 		entityKey: String						The unique property on each entity.  Defaults to "id"
+ * }
+ */</span>
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>.initialize = <span class="reserved">function</span>(options) {
+	var parentConstructor = behaviour.gui.tree.TreeList.<span class="reserved">prototype</span>.initialize;
+	parentConstructor.apply(<span class="reserved">this</span>, arguments);
+	
+	<span class="reserved">this</span>.addClass(<span class="literal">"CollapsableTreeList"</span>);
+	
+	<span class="reserved">this</span>._entities = <span class="reserved">this</span>.options.entities;
+	<span class="reserved">this</span>._listConstructionData = new Array();
+	<span class="reserved">this</span>._folderOpenStatus = new Array();
+	
+	<span class="reserved">if</span>(!<span class="reserved">this</span>.options.entityKey) {
+		<span class="reserved">this</span>.options.entityKey = <span class="literal">"id"</span>;
+	}
+	
+	<span class="reserved">this</span>._entityIdToNode = {};
+}
+
+<span class="comment">/**
+ * Expects an object with the following properties:
+ * 
+ * constructionData: {
+ * 		text: function(entity),								// this should return the text to be displayed for the entry
+ * 		onClick: function(entity),						// a function that is called when the item is clicked
+ * 		[collapsible: boolean,]								// can this level be collapsed?
+ * 		[startCollapsed: function(entity),]			// if collapsible is true, this should return true if the level is to start collapsed
+ * 		[propertyName: string]							// if specified, this is the property on the parent object that contains the elements for this tree level
+ * }
+ */</span>
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>.addLevel = <span class="reserved">function</span>(constructionData) {
+	<span class="reserved">this</span>._listConstructionData.push(constructionData);
+}
+
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>.render = <span class="reserved">function</span>() {
+	<span class="reserved">this</span>.empty();
+	<span class="reserved">this</span>._entityIdToNode = {};
+	
+	<span class="reserved">if</span>(<span class="reserved">this</span>._entities.numElements() &gt; 0) {
+		var listElement = document.createElement(<span class="literal">"li"</span>);
+		<span class="reserved">this</span>._buildLevel(<span class="reserved">this</span>, <span class="reserved">this</span>._entities.getElements(), 0);
+		<span class="comment">//this.appendChild(listElement);</span>
+	}
+}
+
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>.acceptFocus = <span class="reserved">function</span>() {
+	<span class="reserved">this</span>.addClass(<span class="literal">"hasFocus"</span>);
+}
+
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>.loseFocus = <span class="reserved">function</span>() {
+	<span class="reserved">this</span>.removeClass(<span class="literal">"hasFocus"</span>);
+}
+
+<span class="comment">/**
+ * <span class="attrib">@private</span>
+ * 
+ * Recusively walks the tree building a gui representation
+ */</span>
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>._buildLevel = <span class="reserved">function</span>(listHolder, entities, levelIndex) {
+	<span class="comment">// loop through each entity</span>
+	entities.each(<span class="reserved">function</span>(entity){
+		var listTitle = document.createElement(<span class="literal">"li"</span>);
+		listTitle.entity = entity;
+		listTitle.onclickcallback = <span class="reserved">this</span>._listConstructionData[levelIndex].onClick;
+		DOMUtil.addClass(listTitle, <span class="literal">"CollapseExpandListTitle"</span>);
+		var startCollapsed = false;
+		
+		<span class="reserved">this</span>._entityIdToNode[entity[<span class="reserved">this</span>.options.entityKey]] = listTitle;
+		
+		<span class="reserved">if</span>(entity[<span class="reserved">this</span>.options.entityKey] == <span class="reserved">this</span>._currentlySelectedID) {
+			DOMUtil.addClass(listTitle, <span class="literal">"down"</span>);
+		}
+		
+		<span class="reserved">if</span>(<span class="reserved">this</span>._listConstructionData[levelIndex].collapsible) { <span class="comment">// add collapse/expand button</span>
+			<span class="reserved">if</span>(typeof(<span class="reserved">this</span>._folderOpenStatus[entity[<span class="reserved">this</span>.options.entityKey]]) != <span class="literal">"undefined"</span>) {
+				startCollapsed = <span class="reserved">this</span>._folderOpenStatus[entity[<span class="reserved">this</span>.options.entityKey]];
+			} <span class="reserved">else</span> {
+				startCollapsed = <span class="reserved">this</span>._listConstructionData[levelIndex].startCollapsed(entity);
+			}
+			
+			listTitle.collapsible = true;
+			listTitle.collapsed = startCollapsed;
+			
+			<span class="reserved">this</span>._folderOpenStatus[entity[<span class="reserved">this</span>.options.entityKey]] = startCollapsed;
+			
+			listTitle.appendChild(DOMUtil.createTextElement(<span class="literal">"a"</span>, Language.get(<span class="literal">"generic"</span>, <span class="literal">"collapseexpand"</span>), {
+				href: <span class="literal">"."</span>,
+				onclick: <span class="reserved">this</span>._folderClicked.bindAsEventListener(<span class="reserved">this</span>),
+				title: Language.get(<span class="literal">"generic"</span>, <span class="literal">"collapseexpand"</span>),
+				className: <span class="literal">"CollapseExpand  CollapseExpand"</span> + (startCollapsed ? <span class="literal">"Collapsed"</span> : <span class="literal">"Expanded"</span>),
+				collapsed: startCollapsed,
+				entity: entity
+			}));
+		}
+		
+		listTitle.appendChild(DOMUtil.createTextElement(<span class="literal">"a"</span>, <span class="reserved">this</span>._listConstructionData[levelIndex].text(entity), {
+				href: <span class="literal">"."</span>,
+				onclick: <span class="reserved">this</span>._elementClicked.bindAsEventListener(<span class="reserved">this</span>, <span class="reserved">this</span>._listConstructionData[levelIndex].onClick),
+				entity: entity
+			}));
+		
+		var list = document.createElement(<span class="literal">"ul"</span>);
+		list.entity = entity;
+		list.appendChild(listTitle);
+		
+		<span class="comment">// check for child elements</span>
+		<span class="reserved">if</span>(<span class="reserved">this</span>._listConstructionData[levelIndex+1] &amp;&amp; <span class="reserved">this</span>._listConstructionData[levelIndex+1].propertyName &amp;&amp; entity[<span class="reserved">this</span>._listConstructionData[levelIndex+1].propertyName]) {
+			var listElement = DOMUtil.createElement(<span class="literal">"li"</span>, {className: <span class="literal">"CollapsableTreeListContainerList"</span>});
+			
+			<span class="reserved">if</span>(entity[<span class="reserved">this</span>._listConstructionData[levelIndex+1].propertyName] instanceof Function) {
+				<span class="reserved">this</span>._buildLevel(listElement, entity[<span class="reserved">this</span>._listConstructionData[levelIndex+1].propertyName](), levelIndex+1);
+			} <span class="reserved">else</span> {
+				<span class="reserved">this</span>._buildLevel(listElement, entity[<span class="reserved">this</span>._listConstructionData[levelIndex+1].propertyName], levelIndex+1);
+			}
+						
+			list.appendChild(listElement);
+		}
+		
+		<span class="reserved">if</span>(startCollapsed) {
+			list.getElementsByClassName(<span class="literal">"CollapsableTreeListContainerList"</span>)[0].style.display = <span class="literal">"none"</span>;
+		}
+		
+		listHolder.appendChild(list);
+	}.bind(<span class="reserved">this</span>));
+}
+
+<span class="comment">/**
+ * <span class="attrib">@private</span>
+ * 
+ * Gets the element which contains the entity who's children we want to show or hide
+ */</span>
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>._folderClicked = <span class="reserved">function</span>(event) {
+	var element = BehaviourUtil.clearFocus(event);
+	<span class="reserved">this</span>._toggleFolder(element, Element.getElementsByClassName(element.parentNode.parentNode, <span class="literal">"CollapsableTreeListContainerList"</span>)[0]);
+	<span class="reserved">return</span> false;
+}
+
+<span class="comment">/**
+ * <span class="attrib">@private</span>
+ * 
+ * Shows/hides a tree level.  The tree is structured thus:
+ * 
+ * &lt;code&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;title 1&lt;/li&gt;
+ *   &lt;li class="CollapsableTreeListContainerList"&gt;
+ *     &lt;ul&gt;
+ *       &lt;li&gt;element 1&lt;/li&gt;
+ *       &lt;li&gt;element 2&lt;/li&gt;
+ *     &lt;/ul&gt;
+ *   &lt;/li&gt;
+ * &lt;/ul&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;title 2&lt;/li&gt;
+ *   &lt;li class="CollapsableTreeListContainerList"&gt;
+ *     &lt;ul&gt;
+ *       &lt;li&gt;element a&lt;/li&gt;
+ *       &lt;li&gt;element b&lt;/li&gt;
+ *     &lt;/ul&gt;
+ *   &lt;/li&gt;
+ * &lt;/ul&gt;
+ * &lt;/code&gt;
+ * 
+ * The passed element is the ul element that contains an li with the class CollapsableTreeListContainerList
+ * 
+ */</span>
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>._toggleFolder = <span class="reserved">function</span>(element, listToCollapse) {
+	try {
+		var entity = element.entity;
+		
+		Log.info(<span class="literal">"collapsing "</span> + element.tagName);
+		
+		<span class="comment">// reverse collapsed state</span>
+		element.collapsed = !element.collapsed;
+		element.parentNode.parentNode.collapsible = true;
+		element.parentNode.parentNode.collapsed = element.collapsed;
+		
+		<span class="comment">// store locally to make it persist beyond the next render</span>
+		<span class="reserved">this</span>._folderOpenStatus[entity[<span class="reserved">this</span>.options.entityKey]] = element.collapsed;
+		
+		<span class="comment">//set css classes</span>
+		DOMUtil.removeClass(element, (element.collapsed ? <span class="literal">"CollapseExpandExpanded"</span> : <span class="literal">"CollapseExpandCollapsed"</span>));
+		DOMUtil.addClass(element, (element.collapsed ? <span class="literal">"CollapseExpandCollapsed"</span> : <span class="literal">"CollapseExpandExpanded"</span>));
+		
+		<span class="comment">// show/hide element</span>
+		Effect[<span class="literal">"Blind"</span> + (element.collapsed ? <span class="literal">"Up"</span> : <span class="literal">"Down"</span>)](listToCollapse, {duration: 0.15});
+		
+		<span class="comment">// store collapsed state</span>
+		new behaviour.ajax.JSONRequest({url: <span class="reserved">this</span>.options.saveOpenStateURL, args: {entityID: element.entity.id, closed: element.collapsed}});		
+	} catch(e) {
+		Log.dumpObject(e);
+	}
+}
+
+<span class="comment">/**
+ * 
+ */</span>
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>._elementClicked = <span class="reserved">function</span>(event, callback) {
+	try {
+	var element = BehaviourUtil.clearFocus(event);
+	
+	<span class="reserved">this</span>.setItemDownWithId(element.entity[<span class="reserved">this</span>.options.entityKey]);
+	callback.call(<span class="reserved">this</span>, element.entity);
+	
+	<span class="reserved">if</span>(FocusWatcher) {
+		FocusWatcher.setKeypressCallbackObject(<span class="reserved">this</span>);
+	}
+	}catch(e) {
+		Log.dumpObject(e);
+	}
+	<span class="reserved">return</span> false;
+}
+
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>.setItemDownWithId = <span class="reserved">function</span>(id) {
+	<span class="reserved">this</span>.clearDown();
+	<span class="reserved">this</span>._currentlySelectedID = id;
+	<span class="comment">//this.render();</span>
+	
+	DOMUtil.addClass(<span class="reserved">this</span>._entityIdToNode[id], <span class="literal">"down"</span>);
+}
+
+<span class="comment">/**
+ * Removes selection
+ */</span>
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>.clearDown = <span class="reserved">function</span>() {
+	<span class="reserved">this</span>._currentlySelectedID = null;
+	<span class="comment">//this.render();</span>
+	<span class="reserved">this</span>.removeClass(<span class="literal">"down"</span>, true);
+}
+
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>.processKeypress = <span class="reserved">function</span>(event) {
+	<span class="comment">//Log.info("looking for " + this._currentlySelectedID);</span>
+	var nodes = <span class="reserved">this</span>._getNodes(<span class="reserved">this</span>._currentlySelectedID);
+	
+	<span class="comment">// process keypress</span>
+	<span class="reserved">if</span>(event.keyCode == Event.KEY_DOWN) { <span class="comment">// if we can go one further down the list, do it but skip the contents of closed folders</span>
+		<span class="reserved">if</span>(nodes.next) {
+			var nextNode = <span class="reserved">this</span>._getNextFolder(nodes, <span class="literal">"next"</span>);
+			
+			<span class="reserved">if</span>(nextNode) {
+				<span class="reserved">this</span>.setItemDownWithId(nextNode.entity[<span class="reserved">this</span>.options.entityKey]);
+				nextNode.onclickcallback.call(<span class="reserved">this</span>, nextNode.entity);
+			}
+		}
+	} <span class="reserved">else</span> <span class="reserved">if</span>(event.keyCode == Event.KEY_UP) {  <span class="comment">// if we can go one further up the list, do it but skip the contents of closed folders</span>
+		<span class="reserved">if</span>(nodes.prev) {
+			var prevNode = <span class="reserved">this</span>._getNextFolder(nodes, <span class="literal">"previous"</span>);
+			
+			<span class="reserved">if</span>(prevNode) {
+				<span class="reserved">this</span>.setItemDownWithId(prevNode.entity[<span class="reserved">this</span>.options.entityKey]);
+				prevNode.onclickcallback.call(<span class="reserved">this</span>, prevNode.entity);
+			}
+		}
+	} <span class="reserved">else</span> <span class="reserved">if</span>(event.keyCode == Event.KEY_RIGHT) { <span class="comment">// if the currently selected level is collapsible and collapsed, expand it</span>
+		var folderLink = nodes.current.getElementsByTagName(<span class="literal">"a"</span>)[0];
+		
+		<span class="reserved">if</span>(nodes.current.collapsible &amp;&amp; folderLink.collapsed) {
+			<span class="reserved">this</span>._toggleFolder(folderLink, Element.getElementsByClassName(nodes.current.parentNode, <span class="literal">"CollapsableTreeListContainerList"</span>)[0]);
+		}
+	} <span class="reserved">else</span> <span class="reserved">if</span>(event.keyCode == Event.KEY_LEFT) { <span class="comment">// if the currently selected level is collapsible and expanded, collapse it</span>
+		var folderLink = nodes.current.getElementsByTagName(<span class="literal">"a"</span>)[0];
+		
+		<span class="reserved">if</span>(nodes.current.collapsible &amp;&amp; !folderLink.collapsed) {
+			<span class="reserved">this</span>._toggleFolder(folderLink, Element.getElementsByClassName(nodes.current.parentNode, <span class="literal">"CollapsableTreeListContainerList"</span>)[0]);
+		}
+	}
+	
+	<span class="reserved">return</span> true;
+}
+
+<span class="comment">/**
+ * 
+ */</span>
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>._goodNode = <span class="reserved">function</span>(node) {
+	<span class="comment">//Log.warn("testing " + node.tagName);</span>
+	
+	<span class="reserved">while</span>(node.tagName == <span class="literal">"UL"</span> || node.tagName == <span class="literal">"LI"</span>) {
+		<span class="comment">//Log.warn("testing " + node.tagName);</span>
+		
+		<span class="reserved">if</span>(node.entity &amp;&amp; <span class="reserved">this</span>._folderOpenStatus[node.entity[<span class="reserved">this</span>.options.entityKey]]) {
+			<span class="reserved">if</span>(DOMUtil.hasClass(node, <span class="literal">"CollapseExpandListTitle"</span>)) { <span class="comment">// allow highlighting of collapsed treetops</span>
+				<span class="reserved">return</span> true;
+			}
+			
+			<span class="comment">//Log.warn("node hidden");</span>
+			<span class="reserved">return</span> false;
+		}
+		
+		node = node.parentNode;
+	}
+	
+	<span class="comment">//Log.warn("node visible");</span>
+	<span class="reserved">return</span> true;
+	
+	
+	
+	<span class="reserved">return</span> node.entity &amp;&amp; !<span class="reserved">this</span>._folderOpenStatus[node.entity[<span class="reserved">this</span>.options.entityKey]];
+}
+
+<span class="comment">/**
+ * Returns the next/previous folder that isn't collapsed
+ * 
+ * <span class="attrib">@param</span>	{Node}	startNode	One of the ul nodes that the list is made up of
+ * <span class="attrib">@param</span>	{Node}	nextNode	The next li node in the series - may or may not be a
+ * <span class="attrib">@param</span>	{String}	direction	previous or next.  Defaults to next
+ */</span>
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>._getNextFolder = <span class="reserved">function</span>(nodes, direction) {
+	direction = direction == <span class="literal">"previous"</span> ? direction : <span class="literal">"next"</span>;
+	
+	<span class="reserved">if</span>(direction == <span class="literal">"previous"</span>) {
+			<span class="reserved">for</span>(var i = nodes.index - 1; i &gt;= 0; i--) {
+				<span class="reserved">if</span>(<span class="reserved">this</span>._goodNode(nodes.nodes[i])) {
+					<span class="reserved">return</span> nodes.nodes[i];
+				}
+		}
+	} <span class="reserved">else</span> {
+			<span class="reserved">for</span>(var i = nodes.index +1; i &lt; nodes.nodes.length; i++) {
+				<span class="reserved">if</span>(<span class="reserved">this</span>._goodNode(nodes.nodes[i])) {
+					<span class="reserved">return</span> nodes.nodes[i];
+				}
+			}
+	}
+	
+	<span class="reserved">return</span> false;
+}
+
+behaviour.gui.tree.CollapsableTreeList.<span class="reserved">prototype</span>._getNodes = <span class="reserved">function</span>(id) {
+	var childNodes = [];
+	
+	$A(<span class="reserved">this</span>.rootNode.getElementsByTagName(<span class="literal">"li"</span>)).each(<span class="reserved">function</span>(node){
+		<span class="reserved">if</span>(node.entity) {
+			childNodes.push(node);
+		}
+	});
+	
+	var output = {
+		prev: false,
+		current: false,
+		next: false,
+		nodes: childNodes,
+		index: -1
+	};
+	
+	<span class="reserved">for</span>(var i = 0; i &lt; childNodes.length; i++) {
+		<span class="reserved">if</span>(childNodes[i].entity) {
+			<span class="reserved">if</span>(childNodes[i].entity[<span class="reserved">this</span>.options.entityKey] == id) {
+				output.index = i;
+				output.prev = childNodes[i-1];
+				output.current = childNodes[i];
+				output.next = childNodes[i+1];
+				break;
+			}
+		}
+	}
+	
+	<span class="reserved">return</span> output;
+}</pre>
+	<hr>
+
+
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> <font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top"><em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<font size="-1">
+
+</font>
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoc.sourceforge.net/" target="_parent">JSDoc</a> on Tue Jul 17 12:45:55 2007</div>
+</body>
+</html>

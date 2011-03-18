@@ -1,0 +1,179 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Frameset//EN""http://www.w3.org/TR/REC-html40/frameset.dtd">
+<html>
+<head>
+<title>
+ Overview
+</title>
+<link rel ="stylesheet" type="text/css" href="stylesheet.css" title="Style">
+<script>
+function asd() {
+	
+		parent.document.title="UpdateableAddress.js Overview";
+	
+}
+</script>
+</head>
+<body bgcolor="white" onload="asd();">
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> 	<font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top">
+<em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<center>
+	
+	   <h2>UpdateableAddress.js</h2>
+	
+</center>
+
+	
+
+
+<h4>Summary</h4>
+<p>
+	
+		No overview generated for 'UpdateableAddress.js'<BR/><BR/>
+	
+</p>
+
+<hr>
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<!-- ========== END METHOD SUMMARY =========== -->
+
+
+        <pre class="sourceview">behaviour.gui.updateables.UpdateableAddress = new Class.create();
+
+<span class="comment">// extends TitleBar</span>
+Object.extend(behaviour.gui.updateables.UpdateableAddress.<span class="reserved">prototype</span>, behaviour.gui.updateables.CompoundUpdateableField.<span class="reserved">prototype</span>);
+
+<span class="comment">// Constructor</span>
+behaviour.gui.updateables.UpdateableAddress.<span class="reserved">prototype</span>.initialize = <span class="reserved">function</span>(passedValue) {
+	var startValue = new Array(null, <span class="literal">""</span>, <span class="literal">""</span>, <span class="literal">""</span>, <span class="literal">""</span>, <span class="literal">""</span>, User[<span class="literal">"country"</span>]);
+	var inputFieldNames = new Array(<span class="literal">"addressCategory"</span>, <span class="literal">"house"</span>, <span class="literal">"street"</span>, <span class="literal">"area"</span>, <span class="literal">"region"</span>, <span class="literal">"postcode"</span>, <span class="literal">"country"</span>);
+	
+	var parentConstructor = behaviour.gui.updateables.CompoundUpdateableField.<span class="reserved">prototype</span>.initialize;
+	parentConstructor.call(<span class="reserved">this</span>, passedValue, startValue, inputFieldNames);
+	
+	DOMUtil.addClass(<span class="reserved">this</span>.rootNode, <span class="literal">"addressField"</span>);
+	
+	<span class="reserved">this</span>.inputFields = new Array(7);
+	<span class="reserved">this</span>.inputFields[0] = new behaviour.gui.updateables.UpdateableDropDown(<span class="reserved">this</span>.currentValue[0], Language.getArray(3, <span class="literal">"generic"</span>,  <span class="literal">"contact"</span>, <span class="literal">"category-"</span>));
+	<span class="reserved">this</span>.inputFields[1] = new behaviour.gui.updateables.UpdateableTextField(<span class="reserved">this</span>.currentValue[1]);
+	<span class="reserved">this</span>.inputFields[2] = new behaviour.gui.updateables.UpdateableTextField(<span class="reserved">this</span>.currentValue[2]);
+	<span class="reserved">this</span>.inputFields[3] = new behaviour.gui.updateables.UpdateableTextField(<span class="reserved">this</span>.currentValue[3]);
+	<span class="reserved">this</span>.inputFields[4] = new behaviour.gui.updateables.UpdateableTextField(<span class="reserved">this</span>.currentValue[4]);
+	<span class="reserved">this</span>.inputFields[5] = new behaviour.gui.updateables.UpdateableTextField(<span class="reserved">this</span>.currentValue[5]);
+	<span class="reserved">this</span>.inputFields[6] = new behaviour.gui.updateables.UpdateableDropDown(<span class="reserved">this</span>.currentValue[6], Language.getArray(240, <span class="literal">"generic"</span>,  <span class="literal">"countries"</span>, <span class="literal">"country-"</span>));
+		
+	<span class="reserved">this</span>.constructViewNode();
+}</pre>
+	<hr>
+
+
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> <font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top"><em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<font size="-1">
+
+</font>
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoc.sourceforge.net/" target="_parent">JSDoc</a> on Tue Jul 17 12:45:55 2007</div>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Frameset//EN""http://www.w3.org/TR/REC-html40/frameset.dtd">
+<html>
+<head>
+<title>
+ Overview
+</title>
+<link rel ="stylesheet" type="text/css" href="stylesheet.css" title="Style">
+<script>
+function asd() {
+	
+		parent.document.title="DataHolder.js Overview";
+	
+}
+</script>
+</head>
+<body bgcolor="white" onload="asd();">
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> 	<font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top">
+<em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<center>
+	
+	   <h2>DataHolder.js</h2>
+	
+</center>
+
+	
+
+
+<h4>Summary</h4>
+<p>
+	
+		No overview generated for 'DataHolder.js'<BR/><BR/>
+	
+</p>
+
+<hr>
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<!-- ========== END METHOD SUMMARY =========== -->
+
+
+        <pre class="sourceview">behaviour.lang.DataHolder = new Class.create();
+
+behaviour.lang.DataHolder.<span class="reserved">prototype</span>._objectArray;
+behaviour.lang.DataHolder.<span class="reserved">prototype</span>.arrayIndexes;
+behaviour.lang.DataHolder.<span class="reserved">prototype</span>.keyField;
+
+<span class="comment">// Constructor</span>
+behaviour.lang.DataHolder.<span class="reserved">prototype</span>.initialize = <span class="reserved">function</span>(options) {
+	<span class="reserved">this</span>._objectArray = new Array();
+	<span class="reserved">this</span>.arrayIndexes = new Object();
+	<span class="reserved">this</span>.keyField = options.keyField;
+	
+	<span class="reserved">if</span>(options.entities) {
+		<span class="reserved">this</span>.addElements(options.entities);
+	}
+}
+
+behaviour.lang.DataHolder.<span class="reserved">prototype</span>.numElements = <span class="reserved">function</span>() {
+	<span class="reserved">return</span> <span class="reserved">this</span>._objectArray.length;
+}
+
+behaviour.lang.DataHolder.<span class="reserved">prototype</span>.getElementAtIndex = <span class="reserved">function</span>(index) {
+	<span class="reserved">if</span>(<span class="reserved">this</span>._objectArray[index]) {
+		<span class="reserved">return</span> <span class="reserved">this</span>._objectArray[index];
+	}
+}
+
+behaviour.lang.DataHolder.<span class="reserved">prototype</span>.getElementsAtIndexes = <span class="reserved">function</span>(indexes) {
+	var output = new Array();
+	
+	<span class="reserved">for</span>(var i = 0; i &lt; indexes.length; i++) {
+		output[i] = <span class="reserved">this</span>.getElementAtIndex(indexes[i]);
+	}
+	
+	<span class="reserved">return</span> output;
+}
+
+behaviour.lang.DataHolder.<span class="reserved">prototype</span>.getElementWithKey = <span class="reserved">function</span>(key) {
+	<span class="comment">//Log.info("Looking for index-" + key + " - " + this.arrayIndexes["index-" + key]);	</span>
+	<span class="comment">/*
+	for(var i = 0; i &lt; this._objectArray.length; i++) {
+		if(this._objectArray[i][this.keyField] == key) {
+			return this._objectArray[i];
+		}
+	}
+	*/</span>
+	
+	<span class="comment">/*if(this._objectArray[this.arrayIndexes["index-" + key]].title) {
+		Log.info("Returning " +  this._objectArray[this.arrayIndexes["index-" + key]].title);
+	}*/</span>
+	
+	<span class="comment">//Log.info(this.keyField + " = " + key + " = " + this._objectArray[this.arrayIndexes["index-" + key]]);</span>
+	<span class="reserved">if</span>(key) {
+		<span class="comment">//Log.info("returning " + this.arrayIndexes["index-" + key] + " for key " + key);</span>
+		<span class="reserved">return</span> <span class="reserved">this</span>.arrayIndexes[<span class="literal">"index-"</span> + key];
+	}
+	<span class="reserved">return</span> null;
+}
+
+behaviour.lang.DataHolder.<span class="reserved">prototype</span>.getElementsWithKeys = <span class="reserved">function</span>(keys) {
+	var output = new Array();
+	
+	<span class="reserved">for</span>(var i = 0; i &lt; keys.length; i++) {
+		output[i] = <span class="reserved">this</span>.getElementWithKey(keys[i]);
+	}
+	
+	<span class="reserved">return</span> output;
+}
+
+behaviour.lang.DataHolder.<span class="reserved">prototype</span>.getElements = <span class="reserved">function</span>() {
+	<span class="reserved">return</span> <span class="reserved">this</span>._objectArray;
+}
+
+behaviour.lang.DataHolder.<span class="reserved">prototype</span>.addElements = <span class="reserved">function</span>(elements) {
+	elements.each(<span class="reserved">function</span>(element){<span class="reserved">this</span>.addElement(element)}.bind(<span class="reserved">this</span>));
+}
+
+behaviour.lang.DataHolder.<span class="reserved">prototype</span>.addElement = <span class="reserved">function</span>(element) {
+	var oldElement = false;<span class="comment">//this.getElementWithKey(element[this.keyField]);</span>
+	
+	<span class="reserved">if</span>(oldElement) {
+		<span class="comment">//Log.info("Found item in _objectArray already with " + this.keyField + " = " + element[this.keyField] + ", updating it");</span>
+		
+		<span class="reserved">for</span>(var key in element) {
+			oldElement[key] = element[key];
+		}
+	} <span class="reserved">else</span> {
+		<span class="comment">//Log.info("Adding new item with " + this.keyField + " = " + element[this.keyField]);</span>
+		
+		<span class="reserved">this</span>.arrayIndexes[<span class="literal">"index-"</span> + element[<span class="reserved">this</span>.keyField]] = element;
+		<span class="comment">//Log.info(this.arrayIndexes["index-" + element[this.keyField]] + " for key " + element[this.keyField]);</span>
+		<span class="reserved">this</span>._objectArray.push(element);
+	}
+}
+
+behaviour.lang.DataHolder.<span class="reserved">prototype</span>.removeElement = <span class="reserved">function</span>(element) {
+	<span class="reserved">for</span>(var i = 0; i &lt; <span class="reserved">this</span>._objectArray.length; i++) {
+		<span class="reserved">if</span>(<span class="reserved">this</span>._objectArray[i][<span class="reserved">this</span>.keyField] == element[<span class="reserved">this</span>.keyField]) {
+			<span class="reserved">this</span>._objectArray.splice(i, 1);
+			<span class="reserved">this</span>.arrayIndexes[<span class="literal">"index-"</span> + element[<span class="reserved">this</span>.keyField]] = null;
+			i--;
+		}
+	}
+}</pre>
+	<hr>
+
+
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> <font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top"><em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<font size="-1">
+
+</font>
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoc.sourceforge.net/" target="_parent">JSDoc</a> on Tue Jul 17 12:45:55 2007</div>
+</body>
+</html>

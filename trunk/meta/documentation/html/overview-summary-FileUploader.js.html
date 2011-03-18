@@ -1,0 +1,609 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Frameset//EN""http://www.w3.org/TR/REC-html40/frameset.dtd">
+<html>
+<head>
+<title>
+ Overview
+</title>
+<link rel ="stylesheet" type="text/css" href="stylesheet.css" title="Style">
+<script>
+function asd() {
+	
+		parent.document.title="FileUploader.js Overview";
+	
+}
+</script>
+</head>
+<body bgcolor="white" onload="asd();">
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> 	<font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top">
+<em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<center>
+	
+	   <h2>FileUploader.js</h2>
+	
+</center>
+
+	
+
+
+<h4>Summary</h4>
+<p>
+	
+		No overview generated for 'FileUploader.js'<BR/><BR/>
+	
+</p>
+
+<hr>
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<!-- ========== END METHOD SUMMARY =========== -->
+
+
+        <pre class="sourceview">behaviour.gui.FileUploader = new Class.create();
+
+<span class="comment">// extends GUIWidget</span>
+Object.extend(behaviour.gui.FileUploader.<span class="reserved">prototype</span>, behaviour.gui.GUIWidget.<span class="reserved">prototype</span>);
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.owner;
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.numFilesDisplay;
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.language;
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.filesToUploadDiv;
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.filesUploadedDiv;
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.sendFilesTo;
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.saveButton;
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.uploadButton;
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.addAnotherFile;
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.fileNames;
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.acceptedFileExtensions;
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.warningText;
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.thumbnailDisplayMaximised;
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.windowClosed
+
+<span class="comment">// holds data on files currently being uploaded</span>
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.uploadingFileData;
+
+<span class="comment">// data describing files that have been uploaded</span>
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.uploadedFiles;
+
+<span class="comment">/**
+ * Supports the following options:
+ * 
+ * options: {
+ * 		owner: Object,					// the object that will recieve the files
+ * 		multiple: boolean				// whether to accept multiple files
+ * 		sendFilesTo: String			// where to POST the files to
+ * 		language: {
+ * 
+ * 		}
+ * 		acceptedFileExtensions: Array
+ * }
+ */</span>
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.initialize = <span class="reserved">function</span>(options) {
+	var parentConstructor = behaviour.gui.GUIWidget.<span class="reserved">prototype</span>.initialize;
+	parentConstructor.apply(<span class="reserved">this</span>, arguments);
+	
+	<span class="reserved">this</span>.uploadedFiles = new Array();
+	<span class="reserved">this</span>.uploadingFileData = new Array();
+	<span class="reserved">this</span>.thumbnailDisplayMaximised = false;
+	<span class="reserved">this</span>.windowClosed = false;
+	
+	<span class="reserved">this</span>.setRootNode(document.createElement(<span class="literal">"div"</span>));
+	<span class="reserved">this</span>.addClass(<span class="literal">"FileUploader"</span>);
+	
+	
+	<span class="reserved">if</span>(<span class="reserved">this</span>.options.multiple) {
+		<span class="reserved">this</span>.addClass(<span class="literal">"multipleFileUploader"</span>);
+	} <span class="reserved">else</span> {
+		<span class="reserved">this</span>.addClass(<span class="literal">"singleFileUploader"</span>);
+	}
+}
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.render = <span class="reserved">function</span>() {
+	<span class="reserved">this</span>.empty();
+	
+	var header = DOMUtil.createElement(<span class="literal">"div"</span>, {className: <span class="literal">"header"</span>});
+		
+	var cancelButton = DOMUtil.createSubmitInputNode(Language.get(<span class="literal">"generic"</span>, <span class="literal">"cancel"</span>), {onclick: <span class="reserved">this</span>.cancelUpload.bindAsEventListener(<span class="reserved">this</span>)});
+	<span class="reserved">this</span>.saveButton = DOMUtil.createSubmitInputNode(Language.get(<span class="literal">"generic"</span>, <span class="literal">"save"</span>), {onclick: <span class="reserved">this</span>.saveUpload.bindAsEventListener(<span class="reserved">this</span>), disabled: true});
+	
+	var saveEdit = DOMUtil.createNullForm();
+	saveEdit.appendChild(cancelButton);
+	saveEdit.appendChild(<span class="reserved">this</span>.saveButton);
+	header.appendChild(saveEdit);
+	
+	var headerText = document.createElement(<span class="literal">"h2"</span>);
+	headerText.appendChild(document.createTextNode(<span class="reserved">this</span>.getLanguage(<span class="literal">"assetuploadtitle"</span>)));
+	header.appendChild(headerText);
+	
+	<span class="reserved">this</span>.appendChild(header);
+	
+	<span class="reserved">this</span>.filesToUploadDiv = document.createElement(<span class="literal">"div"</span>);
+	DOMUtil.addClass(<span class="reserved">this</span>.filesToUploadDiv, <span class="literal">"div_filesToUpload"</span>);
+	<span class="reserved">this</span>.appendChild(<span class="reserved">this</span>.filesToUploadDiv);
+	
+	var header = document.createElement(<span class="literal">"h3"</span>);
+	header.appendChild(document.createTextNode(<span class="reserved">this</span>.getLanguage(<span class="literal">"chooseasset"</span>)));
+	<span class="reserved">this</span>.filesToUploadDiv.appendChild(header);
+	
+	var para = document.createElement(<span class="literal">"p"</span>);
+	para.appendChild(document.createTextNode(Language.get(<span class="literal">"generic"</span>, <span class="literal">"assetfilesize"</span>) + <span class="literal">" "</span> + ServerConfig[<span class="literal">"uploadlimit"</span>]));
+	<span class="reserved">this</span>.filesToUploadDiv.appendChild(para);
+
+	var uploadButtonArea = document.createElement(<span class="literal">"div"</span>);
+	DOMUtil.addClass(uploadButtonArea, <span class="literal">"header"</span>);
+	DOMUtil.addClass(uploadButtonArea, <span class="literal">"secondHeader"</span>);
+	
+	<span class="reserved">this</span>.uploadButton = DOMUtil.createSubmitInputNode(Language.get(<span class="literal">"generic"</span>, <span class="literal">"upload"</span>));
+	<span class="reserved">this</span>.uploadButton.onclick = <span class="reserved">this</span>.uploadFiles.bindAsEventListener(<span class="reserved">this</span>);
+	
+	var uploadForm = DOMUtil.createNullForm();
+	uploadForm.appendChild(<span class="reserved">this</span>.uploadButton);
+	uploadButtonArea.appendChild(uploadForm);
+	
+	<span class="reserved">if</span>(<span class="reserved">this</span>.options.multiple) {
+		<span class="reserved">this</span>.numFilesDisplay = document.createElement(<span class="literal">"em"</span>);
+		<span class="reserved">this</span>.updateNumFilesDisplay();
+			
+		uploadForm.insertBefore(<span class="reserved">this</span>.numFilesDisplay, <span class="reserved">this</span>.uploadButton);
+		uploadForm.insertBefore(document.createTextNode(<span class="literal">" |"</span>), <span class="reserved">this</span>.uploadButton);
+		
+		var addButton = document.createElement(<span class="literal">"a"</span>);
+		addButton.appendChild(document.createTextNode(<span class="reserved">this</span>.getLanguage(<span class="literal">"addasset"</span>)));
+		addButton.title = <span class="reserved">this</span>.getLanguage(<span class="literal">"addasset"</span>);
+		addButton.href = <span class="literal">"."</span>;
+		addButton.onclick = <span class="reserved">this</span>.addFile.bindAsEventListener(<span class="reserved">this</span>);
+		DOMUtil.addClass(addButton, <span class="literal">"add_alt"</span>);
+		
+		<span class="reserved">this</span>.addAnother = document.createElement(<span class="literal">"p"</span>);
+		<span class="reserved">this</span>.addAnother.appendChild(addButton);
+		<span class="reserved">this</span>.addAnother.appendChild(document.createTextNode(<span class="reserved">this</span>.getLanguage(<span class="literal">"addasset"</span>)));
+		
+		uploadButtonArea.insertBefore(<span class="reserved">this</span>.addAnother, uploadForm);
+	}
+	
+	<span class="reserved">this</span>.appendChild(uploadButtonArea);
+	
+	<span class="reserved">this</span>.filesUploadedDiv = document.createElement(<span class="literal">"div"</span>);
+	DOMUtil.addClass(<span class="reserved">this</span>.filesUploadedDiv, <span class="literal">"div_filesUploaded"</span>);
+	<span class="reserved">this</span>.appendChild(<span class="reserved">this</span>.filesUploadedDiv);
+	
+	<span class="reserved">this</span>.addFile();
+}
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.addFile = <span class="reserved">function</span>(event) {
+	var element = BehaviourUtil.clearFocus(event);
+	
+	<span class="reserved">if</span>(!<span class="reserved">this</span>.options.multiple &amp;&amp; <span class="reserved">this</span>.uploadedFiles.length != 0) {
+		<span class="reserved">return</span>;
+	}
+	
+	<span class="reserved">this</span>.minimiseThumbnailArea();	
+	<span class="reserved">this</span>.uploadButton.disabled = false;
+	
+	var para = <span class="reserved">this</span>.filesToUploadDiv.getElementsByTagName(<span class="literal">"p"</span>)[0];
+	
+	var iframe = document.createElement(<span class="literal">"iframe"</span>);
+	iframe.src = <span class="literal">"/js/uploadFile.html"</span>;
+	<span class="reserved">this</span>.filesToUploadDiv.insertBefore(iframe, para);
+	
+	<span class="comment">// store data</span>
+	var fileUpload = new Object();
+	fileUpload.fileUploading = false;
+	fileUpload.iframePara = para;
+	fileUpload.iframe = iframe;
+	<span class="reserved">this</span>.uploadingFileData[<span class="reserved">this</span>.uploadingFileData.length] = fileUpload;
+	
+	<span class="reserved">return</span> false;
+}
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.getLanguage = <span class="reserved">function</span>(key) {
+	<span class="reserved">if</span>(<span class="reserved">this</span>.options.language &amp;&amp; <span class="reserved">this</span>.options.language[key]) {
+		<span class="reserved">return</span> <span class="reserved">this</span>.options.language[key];
+	} <span class="reserved">else</span> {
+		<span class="reserved">return</span> Language.get(<span class="literal">"generic"</span>, key);
+	}
+}
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.getFileName = <span class="reserved">function</span>(assetLocation) {
+	<span class="comment">// \ for windows, / for everything else</span>
+	var fileLocation = assetLocation.split(assetLocation.search(<span class="literal">"/"</span>) ? <span class="literal">"\\"</span> : <span class="literal">"/"</span>);
+				
+	var fileName = fileLocation[fileLocation.length - 1];
+	<span class="reserved">return</span> (fileName.length &gt; 19 ? fileName.substr(0, 8) + <span class="literal">"..."</span> + fileName.substr(fileName.length - 8, 8) : fileName);
+}
+
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.uploadFiles = <span class="reserved">function</span>(event) {
+	var element = BehaviourUtil.clearFocus(event);
+	var iFramesToRemove = new Array();
+	
+	<span class="reserved">for</span>(var i = 0; i &lt; <span class="reserved">this</span>.uploadingFileData.length; i++) {
+		<span class="reserved">if</span>(!<span class="reserved">this</span>.uploadingFileData[i].fileUploading) {
+			var form = DOMUtil.getIFrameDocument(<span class="reserved">this</span>.uploadingFileData[i].iframe).forms[0];
+		}
+		
+		<span class="reserved">if</span>(form &amp;&amp; form.assetFile) {
+			var assetLocation = form.assetFile.value;
+			var extensions = assetLocation.split(<span class="literal">"."</span>);
+			var extension = extensions[extensions.length - 1].toLowerCase();
+		}
+		
+		<span class="reserved">if</span>(assetLocation) {
+			<span class="comment">//if(this.options.acceptedFileExtensions.indexOf(extension) != -1)</span>
+			<span class="comment">//	{</span>
+				var para = document.createElement(<span class="literal">"p"</span>);
+				para.appendChild(document.createTextNode(<span class="reserved">this</span>.getLanguage(<span class="literal">"uploadingfile"</span>)));
+				
+				var div = document.createElement(<span class="literal">"div"</span>);
+				DOMUtil.addClass(div, <span class="literal">"fileUploadWaitBox"</span>);
+				DOMUtil.addClass(div, <span class="literal">"emptyfileUploadWaitBox"</span>);
+				div.appendChild(para);
+				<span class="reserved">this</span>.filesUploadedDiv.appendChild(div);
+				
+				<span class="comment">// store data</span>
+				<span class="reserved">this</span>.uploadingFileData[i].fileUploading = true;
+				<span class="reserved">this</span>.uploadingFileData[i].div = div;
+				<span class="reserved">this</span>.uploadingFileData[i].fileName = <span class="reserved">this</span>.getFileName(assetLocation);
+				
+				<span class="comment">//this.filesToUploadDiv.removeChild(this.uploadingFileData[i].iframeHeader);</span>
+
+				form.action += <span class="reserved">this</span>.options.sendFilesTo;
+				form.submit();
+			<span class="comment">//	}</span>
+			<span class="comment">//else</span>
+			<span class="comment">//	{</span>
+			<span class="comment">//	DOMUtil.addClass(this.uploadingFileData[i].iframe, "error");</span>
+			<span class="comment">//	}</span>
+		} <span class="reserved">else</span> {
+			iFramesToRemove[iFramesToRemove.length] = <span class="reserved">this</span>.uploadingFileData[i];
+		}
+	}
+	
+	<span class="reserved">if</span>(<span class="reserved">this</span>.uploadingFileData.length &gt; 0) {
+		<span class="comment">// remove invalid iFrames</span>
+		<span class="reserved">for</span>(var i = 0; i &lt; iFramesToRemove.length; i++) {
+			try {
+				<span class="reserved">this</span>.filesToUploadDiv.removeChild(iFramesToRemove[i].iframe);
+			} catch(e) {
+				Log.info(e);
+			}
+			
+			<span class="reserved">this</span>.uploadingFileData = <span class="reserved">this</span>.uploadingFileData.without(iFramesToRemove[i]);
+		}
+		
+		<span class="reserved">if</span>(!<span class="reserved">this</span>.addAnother) {
+			<span class="reserved">this</span>.uploadButton.disabled = true;
+		}
+		
+		var headers = <span class="reserved">this</span>.filesToUploadDiv.getElementsByTagName(<span class="literal">"h3"</span>);
+		
+		<span class="reserved">for</span>(var i = 0; i &lt; headers.length; i++) {
+			headers[i].style.display = <span class="literal">"none"</span>;
+		}
+		
+		<span class="reserved">for</span>(var i = 0; i &lt; <span class="reserved">this</span>.uploadingFileData.length; i++) {
+			<span class="reserved">this</span>.uploadingFileData[i].iframe.style.height = <span class="literal">"0px"</span>;
+		}
+		
+		<span class="reserved">this</span>.maximiseThumbnailArea();
+		
+		setTimeout(<span class="reserved">this</span>.getUploadedData.bind(<span class="reserved">this</span>), 2000);
+	}
+	
+	<span class="reserved">return</span> false;
+}
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.minimiseThumbnailArea = <span class="reserved">function</span>() {
+	<span class="reserved">if</span>(<span class="reserved">this</span>.thumbnailDisplayMaximised) {
+		<span class="reserved">this</span>.thumbnailDisplayMaximised = false;
+		Effect.BlindDown(<span class="reserved">this</span>.filesToUploadDiv, {duration: 0.5, afterUpdate: <span class="reserved">this</span>.resizeUploadedFilesArea.bind(<span class="reserved">this</span>)});
+	}
+}
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.maximiseThumbnailArea = <span class="reserved">function</span>() {
+	<span class="reserved">if</span>(!<span class="reserved">this</span>.thumbnailDisplayMaximised) {
+		<span class="reserved">this</span>.thumbnailDisplayMaximised = true;
+		Effect.BlindUp(<span class="reserved">this</span>.filesToUploadDiv, {duration: 0.5, afterUpdate: <span class="reserved">this</span>.resizeUploadedFilesArea.bind(<span class="reserved">this</span>)});
+	}
+}
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.resizeUploadedFilesArea = <span class="reserved">function</span>()
+	{
+	var newHeight = (<span class="reserved">this</span>.options.multiple ? 362 : 302) - (<span class="reserved">this</span>.filesToUploadDiv.style.height.replace(<span class="literal">"px"</span>, <span class="literal">""</span>));
+	<span class="reserved">this</span>.filesUploadedDiv.style.height = newHeight + <span class="literal">"px"</span>;
+	}
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.updateNumFilesDisplay = <span class="reserved">function</span>()
+	{
+	<span class="reserved">if</span>(<span class="reserved">this</span>.numFilesDisplay)
+			{
+			DOMUtil.emptyNode(<span class="reserved">this</span>.numFilesDisplay);
+			<span class="reserved">this</span>.numFilesDisplay.appendChild(document.createTextNode(<span class="reserved">this</span>.uploadedFiles.length + <span class="literal">" "</span> + (<span class="reserved">this</span>.uploadedFiles.length == 1 ? <span class="reserved">this</span>.getLanguage(<span class="literal">"assetsingle"</span>) : <span class="reserved">this</span>.getLanguage(<span class="literal">"assetmultiple"</span>))));
+			}
+	}
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.getUploadedData = <span class="reserved">function</span>()
+	{
+	Log.info(<span class="literal">"getting uploaded data"</span>);
+	var finishedUploading = true;
+	
+	<span class="reserved">for</span>(var i = 0; i &lt; <span class="reserved">this</span>.uploadingFileData.length; i++)
+		{
+		<span class="reserved">if</span>(<span class="reserved">this</span>.uploadingFileData[i].fileUploading)
+			{
+			<span class="reserved">if</span>(<span class="reserved">this</span>.uploadingFileData[i].iframe.contentWindow &amp;&amp; <span class="reserved">this</span>.uploadingFileData[i].iframe.contentWindow.getData)
+				{
+				var iframeWindow = <span class="reserved">this</span>.uploadingFileData[i].iframe.contentWindow;
+				
+				<span class="reserved">if</span>(iframeWindow.fileError)
+					{
+					Log.info(<span class="literal">"error uploading file"</span>);
+					var output = iframeWindow.getData();
+					<span class="reserved">this</span>.fileUploadError(<span class="reserved">this</span>.uploadingFileData[i].fileName, <span class="reserved">this</span>.uploadingFileData[i].div);
+					}
+				<span class="reserved">else</span>
+					{
+					Log.info(<span class="literal">"getting data"</span>);
+					var output = iframeWindow.getData();
+					
+					<span class="comment">/*for(var key in output)
+						{
+						Log.warn(key + " = " + output[key] );
+						}*/</span>
+					
+					<span class="reserved">this</span>.fileUploaded(<span class="reserved">this</span>.uploadingFileData[i], output);
+					}
+				}
+			<span class="reserved">else</span>
+				{
+				finishedUploading = false;
+				}
+			}
+		}
+	
+	<span class="reserved">if</span>(!finishedUploading &amp;&amp; !<span class="reserved">this</span>.windowClosed)
+		{
+		setTimeout(<span class="reserved">this</span>.getUploadedData.bind(<span class="reserved">this</span>), 1000);
+		}
+	}
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.fileUploadError = <span class="reserved">function</span>(fileName, outputDiv)
+	{
+	DOMUtil.emptyNode(outputDiv);
+	DOMUtil.addClass(outputDiv, <span class="literal">"uploadError"</span>);
+	
+	var deleteLink = document.createElement(<span class="literal">"a"</span>);
+	deleteLink.appendChild(document.createTextNode(Language.get(<span class="literal">"generic"</span>, <span class="literal">"delete"</span>)));
+	deleteLink.title = Language.get(<span class="literal">"generic"</span>, <span class="literal">"delete"</span>);
+	deleteLink.onclick = <span class="reserved">this</span>.removeErrorFile.bindAsEventListener(<span class="reserved">this</span>);
+	DOMUtil.addClass(deleteLink, <span class="literal">"del_alt"</span>);
+	outputDiv.appendChild(deleteLink);
+	
+	var para = document.createElement(<span class="literal">"p"</span>);
+	para.appendChild(document.createTextNode(<span class="literal">"Error uploading "</span> + fileName));
+	outputDiv.appendChild(para);
+	}
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.removeErrorFile = <span class="reserved">function</span>(event)
+	{
+	var element = BehaviourUtil.clearFocus(event);
+	Effect.Fade(element.parentNode, {duration: 0.25});
+	
+	<span class="reserved">if</span>(<span class="reserved">this</span>.uploadedFiles.length == 0)
+		{
+		<span class="reserved">this</span>.addFile();
+		<span class="reserved">this</span>.minimiseThumbnailArea();
+		}
+	}
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.fileUploaded = <span class="reserved">function</span>(fileData, passedData)
+	{
+	<span class="comment">// remove old file name so that we can upload the same file twice</span>
+	var iFrameIndex = 0;
+
+	DOMUtil.emptyNode(fileData.div);
+	
+	<span class="reserved">this</span>.filesToUploadDiv.removeChild(fileData.iframe);
+	
+	var image = document.createElement(<span class="literal">"img"</span>);
+	image.src = passedData.thumbpath;
+	image.width = passedData.thumbwidth;
+	image.height = passedData.thumbheight;
+	image.style.display = <span class="literal">"none"</span>;
+	fileData.div.appendChild(image);
+	DOMUtil.removeClass(fileData.div, <span class="literal">"emptyfileUploadWaitBox"</span>);
+				
+	var deleteLink = document.createElement(<span class="literal">"a"</span>);
+	deleteLink.appendChild(document.createTextNode(Language.get(<span class="literal">"generic"</span>, <span class="literal">"delete"</span>)));
+	deleteLink.title = Language.get(<span class="literal">"generic"</span>, <span class="literal">"delete"</span>);
+	deleteLink.onclick = <span class="reserved">this</span>.removeUploadedFile.bindAsEventListener(<span class="reserved">this</span>);
+	deleteLink.id = <span class="literal">"deleteThumbnail-"</span> + passedData.filetransferid;
+	DOMUtil.addClass(deleteLink, <span class="literal">"del_alt"</span>);
+	fileData.div.appendChild(deleteLink);
+			
+	var para = document.createElement(<span class="literal">"p"</span>);
+	para.appendChild(document.createTextNode(passedData.filesize));
+	para.appendChild(document.createElement(<span class="literal">"br"</span>));
+	para.appendChild(document.createTextNode(fileData.fileName));
+	fileData.div.appendChild(para);
+			
+	<span class="reserved">if</span>(passedData.thumbheight &lt; 128)
+		{
+		var newMargin = Math.ceil((128 - passedData.thumbheight)/2) + <span class="literal">"px"</span>;
+		image.style.marginTop = newMargin;
+		image.style.marginBottom = newMargin;
+		}
+	
+	<span class="reserved">if</span>(passedData.thumbwidth &lt; 128)
+		{
+		image.style.marginLeft = Math.ceil((128 - passedData.thumbwidth)/2) + <span class="literal">"px"</span>;
+		}
+
+	<span class="reserved">this</span>.uploadedFiles[<span class="reserved">this</span>.uploadedFiles.length] = passedData;
+	
+	<span class="reserved">this</span>.updateNumFilesDisplay();
+	<span class="reserved">this</span>.saveButton.disabled = false;
+	
+	Effect.Appear(image, {duration: 0.25});
+	}
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.removeUploadedFile = <span class="reserved">function</span>(event)
+	{
+	var element = BehaviourUtil.clearFocus(event);
+	Effect.Fade(element.parentNode, {duration: 0.25});
+	
+	<span class="comment">// remove uploaded file data</span>
+	var keyToRemove = element.id.split(<span class="literal">"-"</span>)[1];
+	
+	<span class="reserved">for</span>(var i = 0; i &lt; <span class="reserved">this</span>.uploadedFiles.length; i++)
+		{
+		<span class="reserved">if</span>(<span class="reserved">this</span>.uploadedFiles[i].filetransferid == keyToRemove)
+			{
+			<span class="reserved">this</span>.uploadedFiles.splice(i, 1);
+			break;
+			}
+		}
+	
+	<span class="reserved">this</span>.updateNumFilesDisplay();
+	
+	<span class="reserved">if</span>(<span class="reserved">this</span>.uploadedFiles.length == 0)
+		{
+		<span class="reserved">this</span>.addFile();
+		<span class="reserved">this</span>.minimiseThumbnailArea();
+		}
+	
+	<span class="reserved">return</span> false;
+	}
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.cancelUpload = <span class="reserved">function</span>(event)
+	{
+	var element = BehaviourUtil.clearFocus(event);
+	
+	<span class="reserved">this</span>.windowClosed = true;
+	currentPage.clearModalLayer();
+	
+	<span class="reserved">return</span> false;
+	}
+
+behaviour.gui.FileUploader.<span class="reserved">prototype</span>.saveUpload = <span class="reserved">function</span>(event)
+	{
+	var element = BehaviourUtil.clearFocus(event);
+	
+	<span class="reserved">this</span>.options.owner.receiveFiles(<span class="reserved">this</span>.uploadedFiles);
+	
+	<span class="reserved">this</span>.windowClosed = true;
+	currentPage.clearModalLayer();
+	<span class="reserved">return</span> false;
+	}</pre>
+	<hr>
+
+
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> <font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top"><em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<font size="-1">
+
+</font>
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoc.sourceforge.net/" target="_parent">JSDoc</a> on Tue Jul 17 12:45:55 2007</div>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Frameset//EN""http://www.w3.org/TR/REC-html40/frameset.dtd">
+<html>
+<head>
+<title>
+ Overview
+</title>
+<link rel ="stylesheet" type="text/css" href="stylesheet.css" title="Style">
+<script>
+function asd() {
+	
+		parent.document.title="UpdateableTableView.js Overview";
+	
+}
+</script>
+</head>
+<body bgcolor="white" onload="asd();">
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> 	<font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top">
+<em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<center>
+	
+	   <h2>UpdateableTableView.js</h2>
+	
+</center>
+
+	
+
+
+<h4>Summary</h4>
+<p>
+	
+		No overview generated for 'UpdateableTableView.js'<BR/><BR/>
+	
+</p>
+
+<hr>
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<!-- ========== END METHOD SUMMARY =========== -->
+
+
+        <pre class="sourceview">behaviour.gui.updateables.UpdateableTableView = new Class.create();
+
+<span class="comment">/**
+ * <span class="attrib">@extends</span>	behaviour.gui.updateables.UpdateableFieldGroup
+ */</span>
+Object.extend(behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>, behaviour.gui.updateables.UpdateableFieldGroup.<span class="reserved">prototype</span>);
+
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.rowCount = 0;
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.icon;
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.hasIcon = false;
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.tableBody;
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.saveURL;
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.blankRows = 0;
+
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.expandingFields;
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.invisibleFields;
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.fieldTitles;
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.withStyledFirstRow;
+
+<span class="comment">/**
+ * <span class="attrib">@param</span>	{Object}								An options object
+ */</span>
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.initialize = <span class="reserved">function</span>(options) {
+	var parentConstructor = behaviour.gui.updateables.UpdateableFieldGroup.<span class="reserved">prototype</span>.initialize;
+	parentConstructor.apply(<span class="reserved">this</span>, arguments);
+
+	<span class="reserved">this</span>.setRootNode(document.createElement(<span class="literal">"table"</span>));
+		
+	<span class="reserved">this</span>.addClass(<span class="literal">"UpdateableTableView"</span>);
+	<span class="reserved">this</span>.tableBody = document.createElement(<span class="literal">"tbody"</span>);
+	<span class="reserved">this</span>.appendChild(<span class="reserved">this</span>.tableBody);
+	
+	<span class="reserved">this</span>.saveURL = <span class="reserved">this</span>.options.saveURL;
+	<span class="reserved">this</span>.invisibleFields = new Array();
+	<span class="reserved">this</span>.expandingFields = new Array();
+	<span class="reserved">this</span>.fieldTitles = new Array();
+	<span class="reserved">this</span>.withStyledFirstRow = <span class="reserved">this</span>.options.withStyledFirstRow;
+}
+
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.addInvisibleRow = <span class="reserved">function</span>(fieldName, fieldData) {
+	<span class="reserved">this</span>.addField(fieldName, fieldData);
+	
+	<span class="comment">//Log.info("Added invisible field, fields.length = " + this.fields.length);</span>
+	
+	<span class="reserved">this</span>.invisibleFields[<span class="reserved">this</span>.fields.length - 1] = true
+}
+
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.addRow = <span class="reserved">function</span>(fieldName, fieldData, fieldTitle) {
+	<span class="reserved">this</span>.addField(fieldName, fieldData);
+	<span class="reserved">this</span>.fieldTitles[<span class="reserved">this</span>.fields.length - 1] = fieldTitle;
+	<span class="reserved">this</span>.invisibleFields[<span class="reserved">this</span>.fields.length -1] = false;
+}
+
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.addExpandingRow = <span class="reserved">function</span>(fieldName, fieldData, fieldTitle) {
+	<span class="reserved">this</span>.addField(fieldName, fieldData);
+	<span class="reserved">this</span>.fieldTitles[<span class="reserved">this</span>.fields.length - 1] = fieldTitle;
+	<span class="reserved">this</span>.invisibleFields[<span class="reserved">this</span>.fields.length -1] = false;
+}
+
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.addIconRow = <span class="reserved">function</span>(fieldName, fieldData) {
+	Log.info(<span class="literal">"adding icon row"</span>);
+	<span class="reserved">this</span>.addField(fieldName, fieldData);
+	<span class="reserved">this</span>.icon = fieldData;
+	Log.info(<span class="literal">"added icon row"</span>);
+}
+
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.sendValues = <span class="reserved">function</span>(callback) {
+	var args = <span class="reserved">this</span>.getValuesAsString();
+	
+	var saveRequest = new behaviour.ajax.JSONRequest({url: <span class="reserved">this</span>.saveURL, oncomplete: callback});
+	saveRequest.sendRequest(<span class="literal">'post'</span>, args);
+}
+
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.render = <span class="reserved">function</span>() {
+	DOMUtil.emptyNode(<span class="reserved">this</span>.tableBody);
+	
+	var rowCount = 0;
+	var iconRowCount = -1;
+	
+	<span class="reserved">for</span>(var i = 0; i &lt; <span class="reserved">this</span>.fields.length; i++) {
+		<span class="comment">//Log.info("name = " + this.fieldNames[i] + " title = " + this.fieldTitles[i] + " invisible = " + this.invisibleFields[i]);</span>
+		
+		<span class="reserved">if</span>(<span class="reserved">this</span>.invisibleFields[i] || <span class="reserved">this</span>.fields[i] == <span class="reserved">this</span>.icon) {
+			continue;
+		}
+		
+		var row = document.createElement(<span class="literal">"tr"</span>);
+		
+		<span class="reserved">this</span>.stripe(rowCount, row);
+		
+		var header = document.createElement(<span class="literal">"th"</span>);
+		header.appendChild(document.createTextNode(<span class="reserved">this</span>.fieldTitles[i]));
+		row.appendChild(header);
+		
+		var cell = document.createElement(<span class="literal">"td"</span>);
+		
+		<span class="reserved">if</span>(<span class="reserved">this</span>.fields[i]) {
+			<span class="reserved">this</span>.fields[i].appendTo(cell);
+		}
+		
+		row.appendChild(cell);
+		
+		<span class="reserved">this</span>.tableBody.appendChild(row);
+		
+		<span class="comment">// test for icon</span>
+		<span class="reserved">if</span>(<span class="reserved">this</span>.icon) {
+			<span class="reserved">if</span>(iconRowCount == -1) {
+				var iconCell = document.createElement(<span class="literal">"td"</span>);
+				DOMUtil.addClass(iconCell, <span class="literal">"iconCell"</span>);
+				<span class="reserved">this</span>.icon.appendTo(iconCell);			
+				iconCell.rowSpan = <span class="literal">"6"</span>;
+				
+				iconCell.width = (<span class="reserved">this</span>.icon.width ? <span class="reserved">this</span>.icon.width : 120);
+				iconCell.style.width = (<span class="reserved">this</span>.icon.width ? <span class="reserved">this</span>.icon.width : 120) + <span class="literal">"px"</span>;
+				iconCell.vAlign = <span class="literal">"top"</span>;
+				row.appendChild(iconCell);
+				
+				iconRowCount = 0;
+			}
+			
+			<span class="reserved">if</span>(iconRowCount &gt;= 6) {
+				cell.colSpan = <span class="literal">"2"</span>;
+				<span class="comment">/*var extraCell = document.createElement("td");
+				extraCell.appendChild(document.createTextNode(""));
+				row.appendChild(extraCell);*/</span>
+			}
+			
+			iconRowCount++;
+		}
+		
+		rowCount++;
+	}
+	
+	<span class="reserved">if</span>(<span class="reserved">this</span>.icon) {
+		<span class="reserved">while</span>(iconRowCount &lt; 6) { <span class="comment">// pad table with extra rows so is valid</span>
+			var row = document.createElement(<span class="literal">"tr"</span>);
+			<span class="reserved">this</span>.stripe(rowCount, row);
+			row.appendChild(document.createElement(<span class="literal">"td"</span>));
+			row.appendChild(document.createElement(<span class="literal">"td"</span>));
+			<span class="reserved">this</span>.tableBody.appendChild(row);
+			rowCount++;
+			iconRowCount++;
+		}
+	}
+}
+
+behaviour.gui.updateables.UpdateableTableView.<span class="reserved">prototype</span>.stripe = <span class="reserved">function</span>(rowCount, row) {
+	<span class="reserved">if</span>(<span class="reserved">this</span>.withStyledFirstRow) {
+		<span class="reserved">if</span>(rowCount == 0) {
+			DOMUtil.addClass(row, <span class="literal">"first"</span>);
+		} <span class="reserved">else</span> <span class="reserved">if</span>(rowCount % 2 == 0) {
+			DOMUtil.addClass(row, <span class="literal">"even"</span>);
+		}
+	} <span class="reserved">else</span> <span class="reserved">if</span>(rowCount % 2 == 1) {
+		DOMUtil.addClass(row, <span class="literal">"even"</span>);
+	}
+}</pre>
+	<hr>
+
+
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> <font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top"><em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<font size="-1">
+
+</font>
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoc.sourceforge.net/" target="_parent">JSDoc</a> on Tue Jul 17 12:45:55 2007</div>
+</body>
+</html>

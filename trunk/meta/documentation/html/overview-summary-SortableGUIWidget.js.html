@@ -1,0 +1,265 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Frameset//EN""http://www.w3.org/TR/REC-html40/frameset.dtd">
+<html>
+<head>
+<title>
+ Overview
+</title>
+<link rel ="stylesheet" type="text/css" href="stylesheet.css" title="Style">
+<script>
+function asd() {
+	
+		parent.document.title="SortableGUIWidget.js Overview";
+	
+}
+</script>
+</head>
+<body bgcolor="white" onload="asd();">
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> 	<font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top">
+<em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<center>
+	
+	   <h2>SortableGUIWidget.js</h2>
+	
+</center>
+
+	
+
+
+<h4>Summary</h4>
+<p>
+	
+		No overview generated for 'SortableGUIWidget.js'<BR/><BR/>
+	
+</p>
+
+<hr>
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<!-- ========== END METHOD SUMMARY =========== -->
+
+
+        <pre class="sourceview">behaviour.gui.SortableGUIWidget = new Class.create();
+
+<span class="comment">// extends GUIWidget</span>
+Object.extend(behaviour.gui.SortableGUIWidget.<span class="reserved">prototype</span>, behaviour.gui.panel.Panel.<span class="reserved">prototype</span>);
+
+behaviour.gui.SortableGUIWidget.<span class="reserved">prototype</span>.currentSortKey;
+behaviour.gui.SortableGUIWidget.<span class="reserved">prototype</span>._sortWatchers;
+
+behaviour.gui.SortableGUIWidget.<span class="reserved">prototype</span>.initialize = <span class="reserved">function</span>() {
+	var parentMethod = behaviour.gui.panel.Panel.<span class="reserved">prototype</span>.initialize;
+	parentMethod.apply(<span class="reserved">this</span>, arguments);
+	
+	<span class="reserved">this</span>._sortWatchers = [];
+}
+
+behaviour.gui.SortableGUIWidget.<span class="reserved">prototype</span>.sortIt = <span class="reserved">function</span>(event) {
+	
+}
+
+behaviour.gui.SortableGUIWidget.<span class="reserved">prototype</span>.ascSortFunction = <span class="reserved">function</span> (a, b) {
+	var aValue = (a[<span class="reserved">this</span>.currentSortKey] instanceof Function ? a[<span class="reserved">this</span>.currentSortKey].call(<span class="reserved">this</span>, a) : a[<span class="reserved">this</span>.currentSortKey]);
+	var bValue = (b[<span class="reserved">this</span>.currentSortKey] instanceof Function ? b[<span class="reserved">this</span>.currentSortKey].call(<span class="reserved">this</span>, b) : b[<span class="reserved">this</span>.currentSortKey]);
+	
+	<span class="reserved">if</span>(typeof(aValue) != <span class="literal">"undefined"</span>) {
+		<span class="reserved">if</span>(aValue === true || aValue === false) {
+			<span class="reserved">return</span> <span class="reserved">this</span>.sortBool(aValue, bValue);
+		} <span class="reserved">else</span> <span class="reserved">if</span>(aValue instanceof Array) {
+			<span class="reserved">return</span> <span class="reserved">this</span>.sortArray(aValue, bValue)
+		} <span class="reserved">else</span> <span class="reserved">if</span>(aValue.toLowerCase) {
+			<span class="reserved">return</span> <span class="reserved">this</span>.sortString(aValue, bValue);
+		} <span class="reserved">else</span> {
+			<span class="reserved">return</span> aValue - bValue;
+		}
+	} <span class="reserved">else</span> {
+		var key = <span class="reserved">this</span>.currentSortKey.split(<span class="literal">"."</span>);
+		
+		<span class="reserved">if</span>(aValue === true || a[<span class="reserved">this</span>.currentSortKey] === false) {
+			<span class="reserved">return</span> <span class="reserved">this</span>.sortBool(a[<span class="reserved">this</span>.currentSortKey], b[<span class="reserved">this</span>.currentSortKey]);
+		} <span class="reserved">else</span> <span class="reserved">if</span>(a[key[0]][key[1]] instanceof Array) {
+			<span class="reserved">return</span> <span class="reserved">this</span>.sortArray(a[key[0]][key[1]], b[key[0]][key[1]])
+		} <span class="reserved">else</span> <span class="reserved">if</span>(a[key[0]][key[1]].toLowerCase) {
+			<span class="reserved">return</span> <span class="reserved">this</span>.sortString(a[key[0]][key[1]], b[key[0]][key[1]]);
+		} <span class="reserved">else</span> {
+			<span class="reserved">return</span> a[key[0]][key[1]] - b[key[0]][key[1]];
+		}
+	}
+}
+
+behaviour.gui.SortableGUIWidget.<span class="reserved">prototype</span>.descSortFunction = <span class="reserved">function</span> (a, b) {
+	var aValue = (a[<span class="reserved">this</span>.currentSortKey] instanceof Function ? a[<span class="reserved">this</span>.currentSortKey].call(<span class="reserved">this</span>, a) : a[<span class="reserved">this</span>.currentSortKey]);
+	var bValue = (b[<span class="reserved">this</span>.currentSortKey] instanceof Function ? b[<span class="reserved">this</span>.currentSortKey].call(<span class="reserved">this</span>, b) : b[<span class="reserved">this</span>.currentSortKey]);
+	
+	<span class="reserved">if</span>(typeof(aValue) != <span class="literal">"undefined"</span>) {
+		<span class="reserved">if</span>(bValue === true || aValue === false) {
+			<span class="reserved">return</span> <span class="reserved">this</span>.sortBool(bValue, aValue);
+		} <span class="reserved">else</span> <span class="reserved">if</span>(aValue instanceof Array) {
+			<span class="reserved">return</span> <span class="reserved">this</span>.sortArray(bValue, aValue)
+		} <span class="reserved">else</span> <span class="reserved">if</span>(aValue.toLowerCase) {
+			<span class="reserved">return</span> <span class="reserved">this</span>.sortString(bValue, aValue);
+		} <span class="reserved">else</span> {
+			<span class="reserved">return</span> bValue - aValue;
+		}
+	} <span class="reserved">else</span> {
+		var key = <span class="reserved">this</span>.currentSortKey.split(<span class="literal">"."</span>);
+		
+		<span class="reserved">if</span>(a[<span class="reserved">this</span>.currentSortKey]=== true || a[<span class="reserved">this</span>.currentSortKey] === false) {
+			<span class="reserved">return</span> <span class="reserved">this</span>.sortBool(b[<span class="reserved">this</span>.currentSortKey], a[<span class="reserved">this</span>.currentSortKey]);
+		} <span class="reserved">else</span> <span class="reserved">if</span>(a[key[0]][key[1]] instanceof Array) {
+			<span class="reserved">return</span> <span class="reserved">this</span>.sortArray(b[key[0]][key[1]], a[key[0]][key[1]])
+		} <span class="reserved">else</span> <span class="reserved">if</span>(a[key[0]][key[1]].toLowerCase) {
+			<span class="reserved">return</span> <span class="reserved">this</span>.sortString(b[key[0]][key[1]], a[key[0]][key[1]]);
+		} <span class="reserved">else</span> {
+			<span class="reserved">return</span> b[key[0]][key[1]] - a[key[0]][key[1]];
+		}
+	}
+}
+
+behaviour.gui.SortableGUIWidget.<span class="reserved">prototype</span>.sortString = <span class="reserved">function</span>(a, b, asc) {
+	<span class="reserved">if</span>(b.toLowerCase() &gt; a.toLowerCase()) {
+		<span class="reserved">return</span> (asc ? -1 : 1);
+	} <span class="reserved">else</span> <span class="reserved">if</span>(b.toLowerCase() &lt; a.toLowerCase()) {
+		<span class="reserved">return</span> (asc ? 1 : -1);
+	} <span class="reserved">else</span> {
+ 		<span class="reserved">return</span> 0;
+ 	}
+}
+
+behaviour.gui.SortableGUIWidget.<span class="reserved">prototype</span>.sortArray = <span class="reserved">function</span>(a, b) {
+	<span class="reserved">if</span>(b.length &gt; a.length) {
+		<span class="reserved">return</span> -1;
+	} <span class="reserved">else</span> <span class="reserved">if</span>(b.length &lt; a.length) {
+		<span class="reserved">return</span> 1;
+	} <span class="reserved">else</span> {
+ 		<span class="reserved">return</span> 0;
+ 	}
+}
+
+<span class="comment">/**
+ * Add a callback function that will be called after this table is sorted.  The callback function should accept one argument - this table object
+ * 
+ * <span class="attrib">@param</span>	Function		callback
+ * <span class="attrib">@return</span>	void
+ */</span>
+behaviour.gui.SortableGUIWidget.<span class="reserved">prototype</span>.addSortWatcher = <span class="reserved">function</span>(callback) {
+	<span class="reserved">this</span>._sortWatchers.push(callback);
+}
+
+behaviour.gui.SortableGUIWidget.<span class="reserved">prototype</span>._processSortWatchers = <span class="reserved">function</span>() {
+	<span class="reserved">this</span>._sortWatchers.each(<span class="reserved">function</span>(watcher){
+		watcher.call(<span class="reserved">this</span>, <span class="reserved">this</span>);
+	}.bind(<span class="reserved">this</span>));
+}</pre>
+	<hr>
+
+
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> <font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top"><em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<font size="-1">
+
+</font>
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoc.sourceforge.net/" target="_parent">JSDoc</a> on Tue Jul 17 12:45:55 2007</div>
+</body>
+</html>

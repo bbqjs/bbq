@@ -1,0 +1,336 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Frameset//EN""http://www.w3.org/TR/REC-html40/frameset.dtd">
+<html>
+<head>
+<title>
+ Overview
+</title>
+<link rel ="stylesheet" type="text/css" href="stylesheet.css" title="Style">
+<script>
+function asd() {
+	
+		parent.document.title="PickableCalendar.js Overview";
+	
+}
+</script>
+</head>
+<body bgcolor="white" onload="asd();">
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> 	<font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top">
+<em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<center>
+	
+	   <h2>PickableCalendar.js</h2>
+	
+</center>
+
+	
+
+
+<h4>Summary</h4>
+<p>
+	
+		No overview generated for 'PickableCalendar.js'<BR/><BR/>
+	
+</p>
+
+<hr>
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<!-- ========== END METHOD SUMMARY =========== -->
+
+
+        <pre class="sourceview">behaviour.gui.PickableCalendar = new Class.create();
+
+Object.extend(behaviour.gui.PickableCalendar.<span class="reserved">prototype</span>, behaviour.gui.GUIWidget.<span class="reserved">prototype</span>);
+
+behaviour.gui.PickableCalendar.<span class="reserved">prototype</span>.controller;
+behaviour.gui.PickableCalendar.<span class="reserved">prototype</span>.floatingWindow;
+behaviour.gui.PickableCalendar.<span class="reserved">prototype</span>.date;
+behaviour.gui.PickableCalendar.<span class="reserved">prototype</span>.datePicker;
+behaviour.gui.PickableCalendar.<span class="reserved">prototype</span>.title;
+behaviour.gui.PickableCalendar.<span class="reserved">prototype</span>.monthDays = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+behaviour.gui.PickableCalendar.<span class="reserved">prototype</span>.initialDate;
+
+<span class="comment">// Constructor</span>
+behaviour.gui.PickableCalendar.<span class="reserved">prototype</span>.initialize = <span class="reserved">function</span>(controller, dateController, title, startDate, startX, startY) {
+	<span class="reserved">this</span>.controller = controller;
+	<span class="reserved">this</span>.dateController = dateController;
+	<span class="reserved">this</span>.dateControllerCallback = <span class="reserved">this</span>.dateController.datePicked.bind(<span class="reserved">this</span>.dateController);
+	
+	<span class="reserved">if</span>(startDate instanceof Date) {
+		<span class="reserved">this</span>.date = startDate;
+	} <span class="reserved">else</span> {
+		<span class="reserved">this</span>.date = new Date(startDate);
+	}
+	
+	<span class="reserved">this</span>.setRootNode(document.createElement(<span class="literal">"div"</span>));
+	DOMUtil.addClass(<span class="reserved">this</span>.rootNode, <span class="literal">"pickableCalendar"</span>);
+	
+	<span class="reserved">this</span>.initialDate = new Date(<span class="reserved">this</span>.date.getTime());
+	<span class="reserved">this</span>.title = title;
+	<span class="reserved">this</span>.render();
+}
+
+behaviour.gui.PickableCalendar.<span class="reserved">prototype</span>.render = <span class="reserved">function</span>() {
+	<span class="comment">// check for leap years</span>
+	<span class="reserved">if</span>(<span class="reserved">this</span>.date.getMonth() == 1 &amp;&amp; (<span class="reserved">this</span>.date.getFullYear() % 4 == 0 || (<span class="reserved">this</span>.date.getFullYear() % 100 == 0 &amp;&amp; <span class="reserved">this</span>.date.getFullYear() % 400 == 0))) {
+		<span class="reserved">this</span>.monthDays[1] = 29;
+	} <span class="reserved">else</span> {
+		<span class="reserved">this</span>.monthDays[1] = 28;
+	}
+	
+	DOMUtil.emptyNode(<span class="reserved">this</span>.rootNode);
+	
+	var dateTable = document.createElement(<span class="literal">"table"</span>);
+	var dateTableBody = document.createElement(<span class="literal">"tbody"</span>);
+	dateTable.appendChild(dateTableBody);
+	
+	<span class="comment">// title</span>
+	var titleRow = DOMUtil.createTableHeaderRow(1);
+	titleRow.childNodes[0].appendChild(document.createTextNode(<span class="reserved">this</span>.title));
+	titleRow.childNodes[0].colSpan = 7;
+	DOMUtil.addClass(titleRow.childNodes[0], <span class="literal">"titlecell"</span>);
+	dateTableBody.appendChild(titleRow);
+
+	var topRow = DOMUtil.createTableHeaderRow(3);
+	
+	<span class="comment">// back</span>
+	var backMonthLink = DOMUtil.createTextElement(<span class="literal">"a"</span>, <span class="literal">"&lt;"</span>, {href: <span class="literal">"."</span>, onclick: <span class="reserved">this</span>.previousMonth.bindAsEventListener(<span class="reserved">this</span>), title: <span class="reserved">this</span>.controller.getLanguage(<span class="literal">"generic"</span>, <span class="literal">"previousmonth"</span>)});
+	DOMUtil.addClass(topRow.childNodes[0], <span class="literal">"prevnext"</span>);
+	topRow.childNodes[0].appendChild(backMonthLink);
+	
+	<span class="comment">// month</span>
+	topRow.childNodes[1].appendChild(document.createTextNode(<span class="reserved">this</span>.controller.getLanguage(<span class="literal">"generic"</span>, <span class="literal">"date"</span>, <span class="literal">"months-"</span> + <span class="reserved">this</span>.date.getMonth()) + <span class="literal">" "</span> + <span class="reserved">this</span>.date.getFullYear()));
+	topRow.childNodes[1].colSpan = 5;
+	
+	<span class="comment">// forwards</span>
+	var forwardMonthLink = DOMUtil.createTextElement(<span class="literal">"a"</span>, <span class="literal">"&gt;"</span>, {href: <span class="literal">"."</span>, onclick: <span class="reserved">this</span>.nextMonth.bindAsEventListener(<span class="reserved">this</span>), title: <span class="reserved">this</span>.controller.getLanguage(<span class="literal">"generic"</span>, <span class="literal">"nextmonth"</span>)});
+	DOMUtil.addClass(topRow.childNodes[2], <span class="literal">"prevnext"</span>);
+	topRow.childNodes[2].appendChild(forwardMonthLink);
+	
+	dateTableBody.appendChild(topRow);
+	
+	<span class="comment">// day headers</span>
+	var dayRow = DOMUtil.createTableHeaderRow(7);
+	
+	<span class="reserved">for</span>(var i = 0; i &lt; 7; i++) {
+		dayRow.childNodes[i].appendChild(document.createTextNode(<span class="reserved">this</span>.controller.getLanguage(<span class="literal">"generic"</span>, <span class="literal">"date"</span>, <span class="literal">"days-"</span> + i).substr(0, 1)));
+	}
+	
+	dateTableBody.appendChild(dayRow);
+	
+	<span class="comment">// pad out the first row</span>
+	var tempDate = new Date(<span class="reserved">this</span>.date.getTime());
+	tempDate.setDate(1);
+	
+	var padding = tempDate.getDay();
+	var row = document.createElement(<span class="literal">"tr"</span>);
+	
+	var n = 0;
+	
+	<span class="reserved">for</span>(; n &lt; padding; n++) {
+		var cell = document.createElement(<span class="literal">"td"</span>);
+		cell.appendChild(document.createTextNode(<span class="literal">" "</span>));
+		row.appendChild(cell);
+	}
+	
+	<span class="comment">// loop through the days of the month</span>
+	var j = 1;
+	
+	<span class="reserved">for</span>(var k = 1; k &lt;= <span class="reserved">this</span>.monthDays[<span class="reserved">this</span>.date.getMonth()]; k++) {
+		<span class="reserved">if</span>(n == 7) {
+			dateTableBody.appendChild(row);
+			row = document.createElement(<span class="literal">"tr"</span>);
+			
+			<span class="reserved">if</span>(j % 2 == 0) {
+				DOMUtil.addClass(row, <span class="literal">"even"</span>);
+			}
+			
+			n = 1;
+			j++;
+		} <span class="reserved">else</span> {
+			n++;
+		}
+		
+		var cellLink = document.createElement(<span class="literal">"a"</span>);
+		cellLink.appendChild(document.createTextNode(k));
+		cellLink.href = <span class="literal">"."</span>;
+		
+		cellLink.onclick = <span class="reserved">this</span>.datePicked.bindAsEventListener(<span class="reserved">this</span>);
+		
+		var cell = document.createElement(<span class="literal">"td"</span>);
+		cell.appendChild(cellLink);
+		
+		tempDate.setDate(k);
+		
+		DOMUtil.addClass(cell, <span class="literal">"day"</span>);
+		
+		<span class="reserved">if</span>(<span class="reserved">this</span>.equals(tempDate, <span class="reserved">this</span>.initialDate)) {
+			DOMUtil.addClass(cell, <span class="literal">"originalDate"</span>);
+		} <span class="reserved">else</span> <span class="reserved">if</span>(<span class="reserved">this</span>.equals(tempDate, new Date())) {
+			DOMUtil.addClass(cell, <span class="literal">"today"</span>);
+		}
+		
+		row.appendChild(cell);
+	}
+	
+	<span class="comment">// pad out the last row if necessary</span>
+	<span class="reserved">if</span>(n != 0) {
+		<span class="reserved">for</span>(; n &lt; 7; n++) {
+			var cell = document.createElement(<span class="literal">"td"</span>);
+			cell.appendChild(document.createTextNode(<span class="literal">" "</span>));
+			row.appendChild(cell);
+		}
+	
+		dateTableBody.appendChild(row);
+	}
+	
+	<span class="reserved">this</span>.rootNode.appendChild(dateTable);
+}
+
+behaviour.gui.PickableCalendar.<span class="reserved">prototype</span>.equals = <span class="reserved">function</span>(date1, date2) {
+	<span class="reserved">return</span> (date1.getFullYear() == date2.getFullYear() &amp;&amp; date1.getMonth() == date2.getMonth() &amp;&amp; date1.getDate() == date2.getDate());
+}
+
+behaviour.gui.PickableCalendar.<span class="reserved">prototype</span>.previousMonth = <span class="reserved">function</span>(event) {
+	var element = Event.element(event);
+	element.blur();
+	
+	<span class="reserved">this</span>.date.setMonth(<span class="reserved">this</span>.date.getMonth() - 1);
+
+	<span class="reserved">this</span>.render();	
+
+	<span class="reserved">return</span> false;
+}
+
+behaviour.gui.PickableCalendar.<span class="reserved">prototype</span>.nextMonth = <span class="reserved">function</span>(event) {
+	var element = Event.element(event);
+	element.blur();
+	
+	<span class="reserved">this</span>.date.setMonth(<span class="reserved">this</span>.date.getMonth() + 1);
+	<span class="reserved">this</span>.render();
+	
+	<span class="reserved">return</span> false;
+}
+
+behaviour.gui.PickableCalendar.<span class="reserved">prototype</span>.datePicked = <span class="reserved">function</span>(event) {
+	var element = Event.element(event);
+	
+	<span class="reserved">this</span>.date.setDate(element.innerHTML);
+	Log.info(<span class="literal">"Date = "</span> + <span class="reserved">this</span>.date);
+	<span class="reserved">this</span>.dateControllerCallback(<span class="reserved">this</span>.date);
+	
+	<span class="reserved">return</span> false;
+}</pre>
+	<hr>
+
+
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> <font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top"><em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<font size="-1">
+
+</font>
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoc.sourceforge.net/" target="_parent">JSDoc</a> on Tue Jul 17 12:45:55 2007</div>
+</body>
+</html>
