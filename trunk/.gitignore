@@ -1,6 +1,11 @@
-.DS_Store
-.classpath
-.project
-.settings
 target
 bin
+.DS_Store
+.classpath
+.settings
+.project
+.metadata
+.idea
+*.ipr
+*.iml
+*.iws

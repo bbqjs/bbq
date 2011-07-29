@@ -138,16 +138,12 @@ bbq.ajax.AJAXRequest = Class.create({
 	 */
 	onSuccess: function(serverResponse) {
 		try {
-			if(serverResponse.getResponseHeader("X-responseType") == -100) {
-				var errorMessage = new bbq.gui.error.ServerError({
-					url: this.options.url,
-					args: this.options.args,
-					serverResponse: BBQUtil.urlDecode(serverResponse.getResponseHeader("X-responseMessage"))
-				});
-				errorMessage.appear();
-			} else if(serverResponse.getResponseHeader("X-responseType") == -99) {
-				var errorMessage = new bbq.gui.error.NotLoggedIn();
-				errorMessage.appear();
+			var responseType = serverResponse.getResponseHeader("X-bbq-responseType");
+			var code = "error" + responseType;
+			var handler = bbq.ajax.AJAXRequest.errorHandlers[code];
+			
+			if(handler && handler instanceof Function) {
+				handler.call(this, this, serverResponse);
 			} else {
 				this._callHandler("onSuccess", $A(arguments));
 			}
@@ -212,3 +208,24 @@ bbq.ajax.AJAXRequest = Class.create({
 	}
 });
 
+/**
+ * Add custom error handlers to this map.  Error handlers should
+ * be a function with the following signature:
+ * 
+ * <code>
+ * function(bbq.ajax.AJAXRequest, serverResponse);
+ * </code>
+ */
+bbq.ajax.AJAXRequest.errorHandlers = [];
+bbq.ajax.AJAXRequest.errorHandlers["error-100"] = function(request, response) {
+	var errorMessage = new bbq.gui.error.ServerError({
+		url: request.options.url,
+		args: request.options.args,
+		serverResponse: BBQUtil.urlDecode(serverResponse.getResponseHeader("X-bbq-responseMessage"))
+	});
+	errorMessage.appear();
+};
+bbq.ajax.AJAXRequest.errorHandlers["error-99"] = function(request, response) {
+	var errorMessage = new bbq.gui.error.NotLoggedIn();
+	errorMessage.appear();
+};
