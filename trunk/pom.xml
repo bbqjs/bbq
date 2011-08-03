@@ -4,7 +4,7 @@
 	<groupId>org.bbqjs</groupId>
 	<artifactId>bbq</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<name>bbqJS</name>
 	<url>http://www.bbqjs.org</url>
 	<licenses>
@@ -17,7 +17,15 @@
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.plugin.bbq.version>1.0.5</maven.plugin.bbq.version>
 	</properties>
+
+	<pluginRepositories>
+		<pluginRepository>
+				<id>bbq-repo</id>
+				<url>https://github.com/bbqjs/bbq-maven-repo/raw/master/releases</url>
+		</pluginRepository>
+	</pluginRepositories>
 	
 	<build>
 		<resources>
@@ -31,5 +39,37 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
+
+		<testResources>
+			<testResource>
+				<directory>src/test/javascript</directory>
+			</testResource>
+			<testResource>
+				<directory>src/test/resources</directory>
+			</testResource>
+		</testResources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.bbqjs</groupId>
+				<artifactId>bbq-maven-plugin</artifactId>
+				<version>${maven.plugin.bbq.version}</version>
+				<executions>
+					<execution>
+						<id>Test JavaScript</id>
+						<goals>
+							<goal>unitTestJavaScript</goal>
+						</goals>
+						<configuration>
+							<testDirectory>${project.basedir}/src/test/javascript</testDirectory>
+							<includes>
+								<include>${project.basedir}/src/test/resources/javascript/libs/prototype-1.7.0.0.js</include>
+								<include>${project.basedir}/src/test/resources/javascript/libs/unittest-1.8.0.js</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 </project>

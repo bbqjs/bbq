@@ -9,6 +9,7 @@ Browser = {
 	Mozilla: false,
 	Ajax: false,
 	DOM: false,
+	Flash: false,
 	version: 0,
 	
 	/** find out which broswer we are running */
@@ -60,7 +61,7 @@ Browser = {
 			}
 		}
 		
-		// does it support AJAX
+		// does it support AJAX?
 		if(window.XMLHttpRequest) {
 			Browser.Ajax = true;
 		} else if(window.ActiveXObject) {
@@ -75,9 +76,20 @@ Browser = {
 			}
 		}
 		
-		// how about the DOM
+		// how about the DOM?
 		if(document.getElementById && $$("body")[0].appendChild) {
 			Browser.DOM = true;
+		}
+		
+		// and Flash?
+		try {
+			if(navigator.mimeTypes && navigator.mimeTypes['application/x-shockwave-flash'] && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+				Browser.Flash = true;
+			}
+		} catch(e) {
+			if(navigator.mimeTypes ['application/x-shockwave-flash'] != undefined) {
+				Browser.Flash = true;
+			}
 		}
 		
 		DOMUtil.addClass(document.body, Browser.getBrowserName());

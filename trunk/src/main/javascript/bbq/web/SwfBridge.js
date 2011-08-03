@@ -1,10 +1,11 @@
 include(bbq.util.BBQUtil);
+include(bbq.web.SwfEmbed);
 
 /**
  * Provides a safe way to call Javascript functions that may not exist from within a Flash movie.
- * @class FlashBridge 
+ * @class SwfBridge 
  */
-FlashBridge = {
+SwfBridge = {
 	_registeredFunctions: {},
 	
 	/**
@@ -14,14 +15,14 @@ FlashBridge = {
 	 * 
 	 * // in JavaScript
 	 * var myFunc = function(foo) {alert foo};
-	 * var funcKey = FlashBridge.registerFunction(myFunc);
+	 * var funcKey = SwfBridge.registerFunction(myFunc);
 	 * 
 	 * myFlashObject.callFlashFunction("callMe", funcKey);
 	 * 
 	 * // in ActionScript
 	 * ExternalInterface.addCallback("callMe", this, callMe);
 	 * function callMe(String key):Void {
-	 * 		ExternalInterface.addCallback("FlashBridge.callRegisteredFunction", key, "Hello world");
+	 * 		ExternalInterface.addCallback("SwfBridge.callRegisteredFunction", key, "Hello world");
 	 * }
 	 * 
 	 * // Alerts "Hello world"
@@ -34,30 +35,30 @@ FlashBridge = {
 	registerFunction: function(func) {
 		var guid = BBQUtil.generateGUID();
 		
-		FlashBridge._registeredFunctions[guid] = func;
+		SwfBridge._registeredFunctions[guid] = func;
 		
 		return guid;
 	},
 	
 	/**
-	 * See FlashBridge#registerFunction
+	 * See SwfBridge#registerFunction
 	 * 
 	 * @param {String} key The key
 	 */
 	callRegisteredFunction: function(key) {
-		if(typeof(FlashBridge._registeredFunctions[key]) == "function") {
+		if(typeof(SwfBridge._registeredFunctions[key]) == "function") {
 			// passed a list of arguments
 			if(arguments.length > 1) {
 				args = $A(arguments);
 				args.shift();
 				
-				return FlashBridge._registeredFunctions[key].apply(this, args);
+				return SwfBridge._registeredFunctions[key].apply(this, args);
 			}
 			
-			return FlashBridge._registeredFunctions[key].call(this);
+			return SwfBridge._registeredFunctions[key].call(this);
 		}
 		
-		Log.warn("FlashBridge: Key \"" + key + "\" passed to callRegisteredFunction did not resolve to a valid function");
+		Log.warn("SwfBridge: Key \"" + key + "\" passed to callRegisteredFunction did not resolve to a valid function");
 	},
 	
 	/**
@@ -83,21 +84,21 @@ FlashBridge = {
 	},
 	
 	callFunctionOnEmbed: function(withName, functionName, functionArgs) {
-		if(!bbq.web.FlashEmbed.instances[withName]) {
+		if(!bbq.web.SwfEmbed.instances[withName]) {
 			Log.warn("Attempt by flash to call function on instance that does not exist");
 			return;
 		}
 		
-		if(!(bbq.web.FlashEmbed.instances[withName][functionName] instanceof Function)) {
+		if(!(bbq.web.SwfEmbed.instances[withName][functionName] instanceof Function)) {
 			Log.warn("Attempt by flash to call function on instance that is not a function");
 			return;
 		}
 		
 		if(functionArgs) {
-			return bbq.web.FlashEmbed.instances[withName][functionName].apply(bbq.web.FlashEmbed.instances[withName], functionArgs);
+			return bbq.web.SwfEmbed.instances[withName][functionName].apply(bbq.web.SwfEmbed.instances[withName], functionArgs);
 		}
 		
-		return bbq.web.FlashEmbed.instances[withName][functionName].call(bbq.web.FlashEmbed.instances[withName]);
+		return bbq.web.SwfEmbed.instances[withName][functionName].call(bbq.web.SwfEmbed.instances[withName]);
 	},
 	
 	/**

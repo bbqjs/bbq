@@ -7,7 +7,7 @@ include(bbq.web.DOMUtil);
 include(bbq.web.EditWatcher);
 include(bbq.web.Theme);
 include(bbq.web.FocusWatcher);
-include(bbq.web.FlashBridge);
+include(bbq.web.SwfBridge);
 include(bbq.language.Language);
 include(bbq.date.DateFormatter);
 
@@ -25,6 +25,7 @@ bbq.page.Page = new Class.create({
 	modalLayer: null,
 	modalLayerContents: null,
 	_fatalError: null,
+	_options: null,
 	
 	/**
 	 * Todo an example
@@ -34,6 +35,7 @@ bbq.page.Page = new Class.create({
 	initialize: function(args) {
 		//Log.info("Page constructor");
 		currentPage = this;
+		this._options = args ? args : {};
 		Browser.detect();
 		DOMUtil.checkDOM();
 		
