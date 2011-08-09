@@ -97,7 +97,7 @@ bbq.gui.updateables.CompoundUpdateableField = new Class.create(bbq.gui.updateabl
 		this._deleted = true;
 		this.empty();
 		
-		this.rootNode.parentNode.parentNode.style.display = "none";
+		this.getRootNode().parentNode.parentNode.style.display = "none";
 		return false;
 	},
 	

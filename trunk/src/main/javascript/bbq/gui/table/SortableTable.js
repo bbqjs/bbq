@@ -349,7 +349,7 @@ bbq.gui.table.SortableTable = new Class.create(bbq.gui.SortableGUIWidget, {
 	 */
 	clearDown: function() {
 		this._selectedElementID = null;
-		DOMUtil.removeClass(this.rootNode, "down", true);
+		DOMUtil.removeClass(this.getRootNode(), "down", true);
 		
 		this._selectedEntity = {
 			row: false,
@@ -543,7 +543,7 @@ bbq.gui.table.SortableTable = new Class.create(bbq.gui.SortableGUIWidget, {
 		
 		// process keypress
 		if(event.keyCode == Event.KEY_DOWN) { // if we can go one further down the list, do it but skip the contents of closed folders
-			$A(this.rootNode.getElementsByTagName("tr")).each(function(row){
+			$A(this.getRootNode().getElementsByTagName("tr")).each(function(row){
 				if(foundEntity && !nextEntity) {
 					nextEntity = row.owningEntity;
 				}
@@ -553,7 +553,7 @@ bbq.gui.table.SortableTable = new Class.create(bbq.gui.SortableGUIWidget, {
 				}
 			}.bind(this));
 		} else if(event.keyCode == Event.KEY_UP) {  // if we can go one further up the list, do it but skip the contents of closed folders
-			$A(this.rootNode.getElementsByTagName("tr")).each(function(row){
+			$A(this.getRootNode().getElementsByTagName("tr")).each(function(row){
 				if(this.isSelectedEntity(row.owningEntity)) {
 					foundEntity = true;
 					throw $break;

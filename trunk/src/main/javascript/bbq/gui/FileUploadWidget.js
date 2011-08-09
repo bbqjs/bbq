@@ -53,7 +53,7 @@ bbq.gui.FileUploadWidget = new Class.create(bbq.gui.GUIWidget, {
 	appendBefore: function(parentNode, beforeNode) {
 		parentNode.insertBefore(this.getRootNode(), beforeNode);
 	},
-	
+
 	beginUpload: function() {
 		if(!this._uploadInterval) {
 			var form = DOMUtil.getIFrameDocument(this._iFrame).forms[0];

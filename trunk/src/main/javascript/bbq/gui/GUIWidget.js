@@ -9,9 +9,8 @@ include(bbq.lang.Delegator);
  * @extends bbq.lang.Watchable
  */
 bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
-	rootNode: null,
-	parentNode: null,
-	childWidgets: null,
+	_rootNode: null,
+	_childWidgets: [],
 	
 	/**
 	 * This method should always be called explicitly by child classes.
@@ -29,7 +28,6 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 		$super(options);
 		
 		this.setRootNode("div");
-		this.childWidgets = [];
 	},
 	
 	/**
@@ -37,7 +35,7 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 	 * childWidgets array, which they should, haha.
 	 * 
 	 * The idea of the method is to create a DOM node tree representation of the widget.  The root node of the tree should be 
-	 * this.rootNode.  The presence of any other nodes in the DOM tree should not be relied upon.
+	 * this._rootNode.  The presence of any other nodes in the DOM tree should not be relied upon.
 	 * 
 	 * This method will be called before the node tree is added to the main document tree (in a similar way to off-screen buffering
 	 * in graphics programming) and may be called at seeming arbitrary times.  Consequently it should always create a 
@@ -45,11 +43,11 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 	 * existing.
 	 */
 	render: function() {
-		this.childWidgets.each(function(widget) {
+		/*this._childWidgets.each(function(widget) {
 			if(widget.render) {
 				widget.render();
 			}
-		});
+		});*/
 	},
 	
 	/**
@@ -87,14 +85,14 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 	 * 
 	 */
 	setRootNode: function(rootNode) {
-		if(this.rootNode) {
-			var oldNode = this.rootNode;
+		if(this._rootNode) {
+			var oldNode = this._rootNode;
 		}
 		
 		if(Object.isString(rootNode)) {
-			this.rootNode = document.createElement(rootNode);
+			this._rootNode = document.createElement(rootNode);
 		} else {
-			this.rootNode = rootNode;
+			this._rootNode = rootNode;
 		}
 		
 		if(oldNode && oldNode.className) {
@@ -108,12 +106,12 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 			}
 		}
 		
-		this.rootNode = $(this.rootNode);
+		this._rootNode = $(this._rootNode);
 		this.registerObject();
 	},
 	
 	getRootNode: function() {
-		return this.rootNode;
+		return this._rootNode;
 	},
 	
 	/**
@@ -123,8 +121,8 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 	 * See setRootNode() for more information
 	 */
 	registerObject: function() {
-		if(this.rootNode) {
-			this.rootNode.owner = function() {
+		if(this._rootNode) {
+			this._rootNode.owner = function() {
 				return this;
 			}.bind(this);
 		}
@@ -134,8 +132,8 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 	 * Removes all nodes attached to this GUIWidgets rootNode
 	 */
 	empty: function() {
-		if(this.rootNode) {
-			DOMUtil.emptyNode(this.rootNode);
+		if(this._rootNode) {
+			DOMUtil.emptyNode(this._rootNode);
 		}
 	},
 	
@@ -145,7 +143,7 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 	  * @param	{String}	className	The name of the class to add
 	 */
 	addClass: function(className) {
-		DOMUtil.addClass(this.rootNode, className);
+		DOMUtil.addClass(this._rootNode, className);
 	},
 	
 	/**
@@ -154,7 +152,7 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 	 * @param	{String}	className	The name of the class to remove
 	 */
 	removeClass: function(className, recursively) {
-		DOMUtil.removeClass(this.rootNode, className, recursively);
+		DOMUtil.removeClass(this._rootNode, className, recursively);
 	},
 	
 	/**
@@ -167,9 +165,40 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 			if(pageNode) {
 				pageNode = this._getNode(pageNode);
 				pageNode.appendChild(this.getRootNode());
-				this.parentNode = pageNode;
 			}
 			
+			this.render();
+		} catch(e) {
+			Log.dumpException(e);
+		}
+	},
+
+	appendBefore: function(node) {
+		try {
+			node = this._getNode(node);
+			var parentNode = node.parentNode;
+			parentNode.insertBefore(this.getRootNode(), node);
+
+			this.render();
+		} catch(e) {
+			Log.dumpException(e);
+		}
+	},
+
+	appendAfter: function(node) {
+		try {
+			node = this._getNode(node);
+
+			// find the parent node
+			var parentNode = node.parentNode;
+
+			// find the index of the node
+			var nodeArray = $A(parentNode.childNodes);
+			var index = nodeArray.indexOf(node);
+			var nextNode = nodeArray[index + 1];
+
+			parentNode.insertBefore(this.getRootNode(), nextNode);
+
 			this.render();
 		} catch(e) {
 			Log.dumpException(e);
@@ -191,14 +220,14 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 				this.appendChild(node);
 			}.bind(this));
 		} else {
-			if(childNode && this.rootNode) {
+			if(childNode && this._rootNode) {
 				if(childNode.appendTo instanceof Function) {
-					childNode.appendTo(this.rootNode);
-					this.childWidgets.push(childNode);
+					childNode.appendTo(this._rootNode);
+					this._childWidgets.push(childNode);
 				} else if(childNode.toUpperCase instanceof Function) {
-					this.rootNode.appendChild(document.createTextNode(childNode));
+					this._rootNode.appendChild(document.createTextNode(childNode));
 				} else {
-					this.rootNode.appendChild(childNode);
+					this._rootNode.appendChild(childNode);
 				}
 			}
 		}
@@ -207,7 +236,7 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 	},
 	
 	/**
-	 * Attempts to remove the passed node if it is a child of this.rootNode
+	 * Attempts to remove the passed node if it is a child of this._rootNode
 	 * 
 	 * The passed argument can be either a DOM Node object, or a GUIWidget object.
 	 * 
@@ -218,7 +247,7 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 			try {
 				if(childNode.getRootNode instanceof Function) {
 					this.getRootNode().removeChild(childNode.getRootNode());
-					this.childWidgets.without(childNode);
+					this._childWidgets.without(childNode);
 				} else {
 					this.getRootNode().removeChild(childNode);
 				}
@@ -239,12 +268,12 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 			try {
 				if((oldNode.getRootNode instanceof Function) && (newNode.getRootNode instanceof Function)) { // GUIWidgets
 					// find old widget
-					var oldNodeIndex = this.childWidgets.indexOf(oldNode);
+					var oldNodeIndex = this._childWidgets.indexOf(oldNode);
 					if(oldNodeIndex != -1) {
-						this.childWidgets[oldNodeIndex] = newNode;
+						this._childWidgets[oldNodeIndex] = newNode;
 					} else { // trying to replace a widget that does not exist
 						Log.warn("Old node not found in childWidgets array during replace operation");
-						this.childWidgets.push(newNode);
+						this._childWidgets.push(newNode);
 					}
 				}
 				
@@ -292,10 +321,10 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 	 * @param	{string}	styleValue	e.g. "1px solid #CCC"
 	 */
 	setStyle: function(styleName, styleValue) {
-		if(this.rootNode && styleName && styleValue && this.rootNode.style) {
+		if(this._rootNode && styleName && styleValue && this._rootNode.style) {
 			try {
-				if(this.rootNode.style[styleName] != styleValue) {
-					this.rootNode.style[styleName] = styleValue;
+				if(this._rootNode.style[styleName] != styleValue) {
+					this._rootNode.style[styleName] = styleValue;
 				}
 			} catch(e) {
 				Log.dumpException(e);
@@ -310,8 +339,8 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 	 * @return	{string}
 	 */
 	getStyle: function(styleName) {
-		if(this.rootNode) {
-			return this.rootNode.getStyle(styleName);
+		if(this._rootNode) {
+			return this._rootNode.getStyle(styleName);
 		}
 	},
 	
@@ -322,14 +351,14 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 	 * @param	{String}	attributeValue	e.g. "anElement"
 	 */
 	setAttribute: function(attributeName, attributeValue) {
-		if(this.rootNode) {
+		if(this._rootNode) {
 			try {
 				if(attributeName == "style" && attributeValue instanceof Object) {
 					for(var key in attributeValue) {
 						this.setStyle(key, attributeValue[key]);
 					}
-				} else if(this.rootNode[attributeName] != attributeValue) {
-					this.rootNode[attributeName] = attributeValue;
+				} else if(this._rootNode[attributeName] != attributeValue) {
+					this._rootNode[attributeName] = attributeValue;
 				}
 			} catch(e) {
 				Log.error("exeption thrown setting " + attributeName + " to " + attributeValue);
@@ -345,8 +374,8 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 	 * @return	{String}
 	 */
 	getAttribute: function(attributeName) {
-		if(this.rootNode) {
-			return this.rootNode[attributeName];
+		if(this._rootNode) {
+			return this._rootNode[attributeName];
 		}
 	},
 	

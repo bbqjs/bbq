@@ -248,13 +248,13 @@ bbq.gui.FloatingWindow = new Class.create(bbq.gui.GUIWidget, {
 	 * Makes the window invisible
 	 */
 	disappear: function() {
-		Effect.Fade(this.rootNode, { duration: 0.25 });
+		Effect.Fade(this.getRootNode(), { duration: 0.25 });
 		setTimeout(function() {
 			if(!this.options.modal) {
-				var parentNode = this.rootNode.parentNode;
+				var parentNode = this.getRootNode().parentNode;
 		
 				if(parentNode) {
-					parentNode.removeChild(this.rootNode);
+					parentNode.removeChild(this.getRootNode());
 				}
 			}
 			

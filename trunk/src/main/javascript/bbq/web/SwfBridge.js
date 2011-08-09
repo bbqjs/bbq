@@ -1,5 +1,4 @@
 include(bbq.util.BBQUtil);
-include(bbq.web.SwfEmbed);
 
 /**
  * Provides a safe way to call Javascript functions that may not exist from within a Flash movie.
@@ -93,7 +92,9 @@ SwfBridge = {
 			Log.warn("Attempt by flash to call function on instance that is not a function");
 			return;
 		}
-		
+
+		//Log.info("Calling " + functionName + " on " + withName + " with args " + functionArgs);
+
 		if(functionArgs) {
 			return bbq.web.SwfEmbed.instances[withName][functionName].apply(bbq.web.SwfEmbed.instances[withName], functionArgs);
 		}

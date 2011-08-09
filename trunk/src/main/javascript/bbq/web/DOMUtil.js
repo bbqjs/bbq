@@ -68,15 +68,15 @@ DOMUtil = {
 	createTextElement: function(tagName, text, attributes) {
 		var element = this.createElement(tagName, attributes);
 		
-		if(text instanceof Array) {
+		/*if(Object.isArray(text)) {
 			text.each(function(text){
 				if(text) {
 					this.append(text, element);
 				}
 			}.bind(this));
-		} else {
+		} else {*/
 			this.append(text ? text : "", element);
-		}
+		//}
 		
 		return element;
 	},
@@ -88,7 +88,20 @@ DOMUtil = {
 	 * @param	{Object}		attributes
 	 * @return	{Node}
 	 */
-	createElement: function(tagName, attributes) {
+	createElement: function(arg1, arg2, arg3) {
+		var tagName = arg1;
+		var attributes;
+		var content;
+
+		if(arg2 && (Object.isString(arg2) || arg2.appendChild || Object.isArray(arg2))) {
+			content = arg2;
+			attributes = arg3;
+
+			return DOMUtil.createTextElement(tagName, content, attributes);
+		} else {
+			attributes = arg2;
+		}
+
 		var element = $(document.createElement(tagName));
 		this.applyAttributesToElement(element, attributes);
 		

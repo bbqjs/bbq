@@ -6,7 +6,7 @@ include(bbq.gui.updateables.UpdateableField);
  */
 bbq.gui.updateables.UpdateableInvisibleField = new Class.create(bbq.gui.updateables.UpdateableField, {
 	createEditField: function() {
-		this.rootNode = document.createDocumentFragment();
+		this.setRootNode(document.createDocumentFragment());
 	},
 	
 	addClass: function() {

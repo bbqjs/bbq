@@ -51,7 +51,7 @@ bbq.gui.PickableCalendar = new Class.create(bbq.gui.GUIWidget, {
 			this.monthDays[1] = 28;
 		}
 		
-		DOMUtil.emptyNode(this.rootNode);
+		DOMUtil.emptyNode(this.getRootNode());
 		
 		var dateTable = document.createElement("table");
 		var dateTableBody = document.createElement("tbody");
@@ -159,7 +159,7 @@ bbq.gui.PickableCalendar = new Class.create(bbq.gui.GUIWidget, {
 			dateTableBody.appendChild(row);
 		}
 		
-		this.rootNode.appendChild(dateTable);
+		this.getRootNode().appendChild(dateTable);
 	},
 	
 	equals: function(date1, date2) {

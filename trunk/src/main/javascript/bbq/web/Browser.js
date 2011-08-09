@@ -77,7 +77,7 @@ Browser = {
 		}
 		
 		// how about the DOM?
-		if(document.getElementById && $$("body")[0].appendChild) {
+		if(document.getElementById && document.body.appendChild) {
 			Browser.DOM = true;
 		}
 		
@@ -92,7 +92,7 @@ Browser = {
 			}
 		}
 		
-		DOMUtil.addClass(document.body, Browser.getBrowserName());
+		DOMUtil.addClass($$("html")[0], Browser.getBrowserName());
 	},
 	/** get the browser name */
 	getBrowserName: function() {

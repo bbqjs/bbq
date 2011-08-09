@@ -77,7 +77,7 @@ bbq.gui.updateables.UpdateableFormView = new Class.create(bbq.gui.updateables.Up
 		
 		if(this._icon) {
 			this._icon.setStyle("cssFloat", "right");
-			this._icon.appendTo(this.rootNode);
+			this._icon.appendTo(this.getRootNode());
 		}
 		
 		for(var i = 0, iCount=this._fields.length; i < iCount; i++) {
@@ -88,7 +88,7 @@ bbq.gui.updateables.UpdateableFormView = new Class.create(bbq.gui.updateables.Up
 			this.appendChild(DOMUtil.createTextElement("label", this._fieldOptions[i].label));
 			
 			if(this._fields[i]) {
-				this._fields[i].appendTo(this.rootNode);
+				this._fields[i].appendTo(this.getRootNode());
 			}
 		}
 	},

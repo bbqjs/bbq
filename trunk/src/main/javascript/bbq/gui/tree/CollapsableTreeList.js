@@ -390,7 +390,7 @@ bbq.gui.tree.CollapsableTreeList = new Class.create(bbq.gui.tree.TreeList, {
 	_getNodes: function(id) {
 		var childNodes = [];
 		
-		$A(this.rootNode.getElementsByTagName("li")).each(function(node){
+		$A(this.getRootNode().getElementsByTagName("li")).each(function(node){
 			if(node.entity) {
 				childNodes.push(node);
 			}

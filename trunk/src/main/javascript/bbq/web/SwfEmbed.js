@@ -1,6 +1,7 @@
 include(bbq.gui.GUIWidget);
 include(bbq.gui.error.NoFlash);
 include(bbq.util.BBQUtil);
+include(bbq.web.SwfBridge);
 
 /**
  * Uses the SWFObject library to wrapper an embedded flash movie.
@@ -78,6 +79,7 @@ bbq.web.SwfEmbed = new Class.create(bbq.gui.GUIWidget, {
 		var params = {};
 		params["allowScriptAccess"] = "always";
 		params["swliveconnect"] = "true";
+		params["allowFullScreen"] = this.options.allowFullScreen ? "true" : "false";
 		
 		if(this.options.wmode) {
 			params["wmode"] = this.options.wmode;
@@ -132,14 +134,16 @@ bbq.web.SwfEmbed = new Class.create(bbq.gui.GUIWidget, {
 	 */
 	callFlashFunction: function(methodName, args) {
 		//Log.info("Calling flash function " + methodName + " with args " + Object.toJSON(args));
-		
-		if(this.rootNode[methodName]) {
+
+		var rootNode = this.getRootNode();
+
+		if(rootNode[methodName]) {
 			//Log.info("Found method " + methodName + " on Flash object - " + typeof(this._flashObject[methodName]));
 			if(args) {
-				return this.rootNode[methodName](args);
+				return rootNode[methodName](args);
 			}
 			
-			return this.rootNode[methodName]();
+			return rootNode[methodName]();
 		}
 		
 		Log.warn("Could not find method " + methodName + " on Flash object");
