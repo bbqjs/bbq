@@ -371,7 +371,7 @@ bbq.gui.panel.Panel = new Class.create(bbq.gui.GUIWidget, {
 				owner.triggerEvent("onResize");
 			}
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error resizing node", e);
 		}
 	},
 	

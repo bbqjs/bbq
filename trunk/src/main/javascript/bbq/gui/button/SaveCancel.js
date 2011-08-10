@@ -85,7 +85,7 @@ bbq.gui.button.SaveCancel = Class.create(behaviour.gui.button.ButtonHolder, {
 			this._callCallback("editCallback");
 			this.notifyListeners("startedEdit");
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error starting edit", e);
 		}
 	},
 	
@@ -100,7 +100,7 @@ bbq.gui.button.SaveCancel = Class.create(behaviour.gui.button.ButtonHolder, {
 			this.notifyListeners("savedEdit");
 			this.notifyListeners("stoppedEdit");
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error saving edit", e);
 		}
 	},
 	
@@ -114,7 +114,7 @@ bbq.gui.button.SaveCancel = Class.create(behaviour.gui.button.ButtonHolder, {
 			this.notifyListeners("cancelledEdit");
 			this.notifyListeners("stoppedEdit");
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error canceling edit", e);
 		}
 	},
 	

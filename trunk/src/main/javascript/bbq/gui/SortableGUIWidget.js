@@ -47,12 +47,12 @@ bbq.gui.SortableGUIWidget = new Class.create(bbq.gui.GUIWidget, {
 					return a[key[0]][key[1]] - b[key[0]][key[1]];
 				}
 			} catch(e) {
-				Log.warn("Error thrown while using " + key + " as a sort field");
+				Log.warn("Error thrown while using " + key + " as a sort field", e);
 				Log.warn("a :");
-				Log.dumpObject(a);
+				Log.dir(a);
 				Log.warn("b :");
-				Log.dumpObject(b);
-				Log.dumpException(e);
+				Log.dir(b);
+				Log.dir(e);
 				throw e;
 			}
 		}
@@ -94,12 +94,11 @@ bbq.gui.SortableGUIWidget = new Class.create(bbq.gui.GUIWidget, {
 					return b[key[0]][key[1]] - a[key[0]][key[1]];
 				}
 			} catch(e) {
-				Log.warn("Error thrown while using " + key + " as a sort field");
+				Log.warn("Error thrown while using " + key + " as a sort field", e);
 				Log.warn("a :");
-				Log.dumpObject(a);
+				Log.dir(a);
 				Log.warn("b :");
-				Log.dumpObject(b);
-				Log.dumpException(e);
+				Log.dir(b);
 				throw e;
 			}
 		}

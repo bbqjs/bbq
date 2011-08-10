@@ -152,7 +152,7 @@ bbq.gui.table.SortableTable = new Class.create(bbq.gui.SortableGUIWidget, {
 			
 			this.scrollToSelectedEntity();
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error while rendering", e);
 		}
 	},
 	

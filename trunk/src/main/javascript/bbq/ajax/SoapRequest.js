@@ -89,7 +89,7 @@ bbq.ajax.SoapRequest = Class.create(bbq.ajax.AJAXRequest, {
 			response = this._parse(responseElement);
 			
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Could not call handler " + handlerName, e);
 			
 			var errorMessage = new bbq.gui.error.ServerError({
 				url: this.options.url,

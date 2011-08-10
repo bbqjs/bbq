@@ -40,23 +40,44 @@ bbq.web.SwfEmbed = new Class.create(bbq.gui.GUIWidget, {
 
 		bbq.web.SwfEmbed.instances[this._id] = this;
 		
-		if(options.nocache) {
-			options.swf += "?nocache=" + BBQUtil.generateGUID();
-		}
-		
-		this.setRootNode(DOMUtil.createElement("object", this.options.attributes));
-		this.getRootNode().id = this._id;
-
-		if(Browser.InternetExplorer) {
-			this.getRootNode().classid = "clsid:D27CDB6E-AE6D-11cf-96B8-444553540000";
-			this.getRootNode().appendChild(DOMUtil.createElement("param", {name: "movie", value: this.options.swf}));
-		} else {
-			this.getRootNode().type = "application/x-shockwave-flash";
-			this.getRootNode().data = this.options.swf;
+		if(this.options.nocache) {
+			this.options.swf += "?nocache=" + BBQUtil.generateGUID();
 		}
 
-		this._addParams(this.getRootNode());
-		this._addVars(this.getRootNode());
+		var params = {};
+		params["allowScriptAccess"] = "always";
+		params["swliveconnect"] = "true";
+		params["allowFullScreen"] = this.options.allowFullScreen ? "true" : "false";
+
+		if(this.options.wmode) {
+			params["wmode"] = this.options.wmode;
+		}
+
+		var flashVars = {};
+
+		if(this.options.variables instanceof Object) {
+			//Log.info("Setting flashVars on SWFObject");
+			for (var key in this.options.variables) {
+				flashVars[key] = this.options.variables[key];
+			}
+		}
+
+		flashVars["pageObject"] = this._id;
+
+		// swfobject demands that the element to be replaced is in the DOM :(
+		var node = DOMUtil.createElement("div");
+		node.id = this._id;
+		document.body.appendChild(node);
+
+		swfobject.embedSWF(this.options.swf, this._id, "100%", "100%", "10", null, flashVars, params, this.options.attributes, function(e) {
+			if(e.success) {
+				this.setRootNode(e.ref);
+				this.getRootNode().id = this._id;
+			} else {
+				Log.error("Failed to embed SWF " + this.options.swf);
+				Log.dir(e);
+			}
+		}.bind(this));
 	},
 
 	loaded: function() {
@@ -73,41 +94,6 @@ bbq.web.SwfEmbed = new Class.create(bbq.gui.GUIWidget, {
 			
 			return;
 		}
-	},
-	
-	_addParams: function(toNode) {
-		var params = {};
-		params["allowScriptAccess"] = "always";
-		params["swliveconnect"] = "true";
-		params["allowFullScreen"] = this.options.allowFullScreen ? "true" : "false";
-		
-		if(this.options.wmode) {
-			params["wmode"] = this.options.wmode;
-		}
-		
-		for(var key in params) {
-			toNode.appendChild(DOMUtil.createElement("param", {name: key, value: params[key]}));
-		}
-	},
-	
-	_addVars: function(toNode) {
-		var flashVars = {};
-		
-		if(this.options.variables instanceof Object) {
-			//Log.info("Setting flashVars on SWFObject");
-			for(var key in this.options.variables) {
-				flashVars[key] = this.options.variables[key];
-			}
-		}
-		
-		// pass pageObject id to Flash movie so it can call methods on us
-		var tag = DOMUtil.createElement("param", {name: "FlashVars", value: "pageObject=" + this._id});
-		
-		for(var key in flashVars) {
-			tag.value += "&" + key + "=" + encodeURIComponent(flashVars[key]);
-		}
-		
-		toNode.appendChild(tag);
 	},
 	
 	/**

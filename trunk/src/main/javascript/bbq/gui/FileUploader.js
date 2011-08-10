@@ -348,7 +348,7 @@ bbq.gui.FileUploader = new Class.create(bbq.gui.GUIWidget, {
 					this._fileUploaded(fileData, iframeWindow.getData());
 				}
 			} else {
-				Log.dumpObject(fileData.iframe);
+				Log.dir(fileData.iframe);
 			}
 		}
 	},
@@ -379,7 +379,7 @@ bbq.gui.FileUploader = new Class.create(bbq.gui.GUIWidget, {
 		// remove old file name so that we can upload the same file twice
 		var iFrameIndex = 0;
 		
-		Log.dumpObject(passedData);
+		Log.dir(passedData);
 		
 		DOMUtil.emptyNode(fileData.div);
 		

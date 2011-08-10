@@ -89,7 +89,7 @@ bbq.gui.ImageBrowser = new Class.create(bbq.gui.ScrollLoadGUIWidget, {
 				
 				this._lastNumEntities = this._entities.length;
 			} catch(e) {
-				Log.dumpException(e);
+				Log.error("Error while rendering", e);
 			}
 		}
 		

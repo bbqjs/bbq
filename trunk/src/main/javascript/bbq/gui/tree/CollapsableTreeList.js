@@ -176,7 +176,7 @@ bbq.gui.tree.CollapsableTreeList = new Class.create(bbq.gui.tree.TreeList, {
 				
 				listHolder.appendChild(list);
 			} catch(e) {
-				Log.dumpException(e);
+				Log.error("Error building level", e);
 			}
 		}.bind(this));
 	},
@@ -244,7 +244,7 @@ bbq.gui.tree.CollapsableTreeList = new Class.create(bbq.gui.tree.TreeList, {
 			// store collapsed state
 			new bbq.ajax.JSONRequest({url: "/backend/setFolderCollapsedStatus", args: {entity: element.entity.id, closed: element.collapsed}});		
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error toggling folder", e);
 		}
 	},
 	
@@ -264,7 +264,7 @@ bbq.gui.tree.CollapsableTreeList = new Class.create(bbq.gui.tree.TreeList, {
 				}
 			}
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error processing click event", e);
 		}
 		
 		return false;

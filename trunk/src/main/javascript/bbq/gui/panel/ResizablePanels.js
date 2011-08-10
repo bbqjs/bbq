@@ -86,7 +86,7 @@ bbq.gui.panel.ResizablePanels  = new Class.create(bbq.gui.panel.DualPanel, {
 			this.appendChild(this._resizer);
 			this.appendChild(panel2);
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error rendering", e);
 		}
 	},
 	
@@ -192,7 +192,7 @@ bbq.gui.panel.ResizablePanels  = new Class.create(bbq.gui.panel.DualPanel, {
 			
 			this.notifyListeners("onResize");
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error resizing", e);
 		}
 	},
 	

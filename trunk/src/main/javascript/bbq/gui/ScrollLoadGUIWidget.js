@@ -123,7 +123,7 @@ bbq.gui.ScrollLoadGUIWidget = new Class.create(bbq.gui.GUIWidget, {
 				return result;
 			}
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error invoking callback " + action, e);
 		}
 	},
 	
@@ -229,7 +229,7 @@ bbq.gui.ScrollLoadGUIWidget = new Class.create(bbq.gui.GUIWidget, {
 				this.notifyListeners("onAllEntitiesLoadedAlready");
 			}
 		} catch(e) {
-			Log.dumpException(e);	
+			Log.error("Error loading details", e);
 		}
 	},
 	
@@ -272,8 +272,7 @@ bbq.gui.ScrollLoadGUIWidget = new Class.create(bbq.gui.GUIWidget, {
 				this.notifyListeners("onEmptyList");
 			}
 		} catch(e) {
-			Log.warn("thrown _loadedDetails");
-			Log.dumpException(e);
+			Log.error("thrown _loadedDetails", e);
 		}
 	},
 	

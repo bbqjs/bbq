@@ -65,7 +65,7 @@ bbq.gui.updateables.UpdateablePasswordField = new Class.create(bbq.gui.updateabl
 				}
 			}
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error checking for caps lock", e);
 		}
 	},
 	

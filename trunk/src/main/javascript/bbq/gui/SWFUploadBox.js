@@ -184,7 +184,7 @@ bbq.gui.SWFUploadBox = new Class.create(bbq.gui.GUIWidget, {
 	
 	getFileTransferID: function() {
 		var data = this.getUploadData();
-		Log.dumpObject(data);
+		Log.dir(data);
 		return data["filetransferid"];
 	}	
 });

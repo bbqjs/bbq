@@ -299,7 +299,7 @@ bbq.gui.FileUploaderFlash = new Class.create(bbq.gui.GUIWidget, {
 		if(fileData.fileUploading) {
 			this._fileUploaded(fileData, fileData.fileUploader.getUploadData());
 		} else {
-			Log.dumpObject(fileData);
+			Log.dir(fileData);
 		}
 	},
 	
@@ -329,7 +329,7 @@ bbq.gui.FileUploaderFlash = new Class.create(bbq.gui.GUIWidget, {
 		// remove old file name so that we can upload the same file twice
 		var iFrameIndex = 0;
 		
-		Log.dumpObject(passedData);
+		Log.dir(passedData);
 		
 		DOMUtil.emptyNode(fileData.div);
 		

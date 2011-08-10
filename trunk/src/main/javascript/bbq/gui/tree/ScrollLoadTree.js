@@ -83,7 +83,7 @@ bbq.gui.tree.ScrollLoadTree = new Class.create(bbq.gui.ScrollLoadGUIWidget, {
 				
 				this.appendChild(this._list);
 			} catch(e) {
-				Log.dumpException(e);
+				Log.error("Error while rendering", e);
 			}
 		}
 	},
@@ -98,7 +98,7 @@ bbq.gui.tree.ScrollLoadTree = new Class.create(bbq.gui.ScrollLoadGUIWidget, {
 			
 			if(!treeData) {
 				Log.warn("Could not determing tree data for entity");
-				Log.dumpObject(entity);
+				Log.dir(entity);
 				return;
 			}
 			
@@ -133,7 +133,7 @@ bbq.gui.tree.ScrollLoadTree = new Class.create(bbq.gui.ScrollLoadGUIWidget, {
 								BBQUtil.clearFocus(event);
 								this._folderClicked(entity);
 							} catch(e) {
-								Log.dumpException(e);
+								Log.error("Error clearing focus", e);
 							}
 							
 							return false;
@@ -199,7 +199,7 @@ bbq.gui.tree.ScrollLoadTree = new Class.create(bbq.gui.ScrollLoadGUIWidget, {
 			
 			return output;
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error handling valid item", e);
 		}
 		
 		return output;
@@ -353,7 +353,7 @@ bbq.gui.tree.ScrollLoadTree = new Class.create(bbq.gui.ScrollLoadGUIWidget, {
 				
 				if(this._entities.getElement([i])) {
 					if(!this._entities.getElement(i).getId) {
-						Log.dumpObject(this._entities.getElement(i));
+						Log.dir(this._entities.getElement(i));
 					} else{
 						keyToEntity[this._entities.getElement(i).getId()] = this._entities.getElement(i);
 					}
@@ -380,7 +380,7 @@ bbq.gui.tree.ScrollLoadTree = new Class.create(bbq.gui.ScrollLoadGUIWidget, {
 			
 			this.render();
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error processing new entities", e);
 		}
 	},
 	

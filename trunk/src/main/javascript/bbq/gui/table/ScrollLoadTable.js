@@ -119,7 +119,7 @@ bbq.gui.table.ScrollLoadTable = new Class.create(bbq.gui.ScrollLoadGUIWidget, {
 				
 				this.appendChild(this._table);
 			} catch(e) {
-				Log.dumpException(e);
+				Log.error("Error while rendering", e);
 			}
 		}
 		

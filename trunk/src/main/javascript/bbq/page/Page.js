@@ -231,7 +231,7 @@ bbq.page.Page = new Class.create({
 			
 			return guiWidget;
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error adding modal layer", e);
 		}
 	},
 	

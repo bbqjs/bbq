@@ -141,8 +141,7 @@ bbq.entities.BBQEntity = new Class.create(bbq.lang.Watchable, {
 		this._loadingData = true;
 		
 		if(!this._retrieveURL) {
-			Log.error("Objects must specify where to load data from");
-			Log.dumpObject(this);
+			Log.error("Objects must specify where to load data from", this);
 			
 			return;
 		}
@@ -171,7 +170,7 @@ bbq.entities.BBQEntity = new Class.create(bbq.lang.Watchable, {
 				this.notifyListeners("onDataLoaded");
 			}
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error encountered while processing data", e);
 		}
 	},
 	
@@ -249,10 +248,9 @@ bbq.entities.BBQEntity = new Class.create(bbq.lang.Watchable, {
 				return this["get" + BBQUtil.capitalize(property)]();
 			}
 		} catch(e) {
-			Log.error("getProperty threw a wobbly on " + property + " " + this._createURL);
+			Log.error("getProperty threw a wobbly on " + property + " " + this._createURL, e);
 			Log.error("this.get" + BBQUtil.capitalize(property) + " = " + this["get" + BBQUtil.capitalize(property)]);
-			Log.dumpException(e);
-			Log.dumpObject(this);
+			Log.dir(this);
 		}
 	},
 	
@@ -354,9 +352,8 @@ bbq.entities.BBQEntity = new Class.create(bbq.lang.Watchable, {
 			// return the node for addition to the DOM
 			return propertyDisplay.node;
 		} catch(e) {
-			Log.error("Exception thrown while trying to retrieve property display " + this._createURL);
-			Log.dumpObject(options);
-			Log.dumpException(e);
+			Log.error("Exception thrown while trying to retrieve property display " + this._createURL, e);
+			Log.dir(options);
 		}
 	},
 	

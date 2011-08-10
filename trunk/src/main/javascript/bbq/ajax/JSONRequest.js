@@ -28,7 +28,7 @@ bbq.ajax.JSONRequest = Class.create(bbq.ajax.AJAXRequest, {
 				this._descapeResponse(json);
 			}
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Could not call handler " + handlerName, e);
 			
 			var errorMessage = new bbq.gui.error.ServerError({
 				url: this.options.url,

@@ -87,7 +87,7 @@ bbq.gui.SearchBox = new Class.create(bbq.gui.GUIWidget, {
 			
 			this.notifyListeners("onClearSearch");
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error clearing search", e);
 		}
 	},
 	
@@ -129,7 +129,7 @@ bbq.gui.SearchBox = new Class.create(bbq.gui.GUIWidget, {
 				
 				this.notifyListeners("onDoneSearch");
 			} catch(e) {
-				Log.dumpException(e);
+				Log.error("Error while searching", e);
 			}
 		}.bind(this), 250);
 	},

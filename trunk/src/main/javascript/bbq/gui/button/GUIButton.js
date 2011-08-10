@@ -169,7 +169,7 @@ bbq.gui.button.GUIButton = Class.create(bbq.gui.GUIWidget, {
 				return output;
 			}
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error processing callback " + callback, e);
 		}
 		
 		return false;

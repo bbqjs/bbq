@@ -6,6 +6,7 @@ Browser = {
 	InternetExplorer: false,
 	Opera: false,
 	Safari: false,
+	Chrome: false,
 	Mozilla: false,
 	Ajax: false,
 	DOM: false,
@@ -24,12 +25,16 @@ Browser = {
 				Browser.version = 7;
 			}
 		} else if((document.childNodes) && (!document.all) && (!navigator.taintEnabled) && (!navigator.accentColorName)) {
-			Browser.Safari = true;
-			
-			if(window.devicePixelRatio) {
-				Browser.version = 3;
+			if(window.chrome) {
+				Browser.Chrome = true;
 			} else {
-				Browser.version = 2; // probably
+				Browser.Safari = true;
+
+				if(window.devicePixelRatio) {
+					Browser.version = 3;
+				} else {
+					Browser.version = 2; // probably
+				}
 			}
 		} else if(document.getElementById && !document.all) {
 			Browser.Mozilla = true;
@@ -82,28 +87,38 @@ Browser = {
 		}
 		
 		// and Flash?
-		try {
-			if(navigator.mimeTypes && navigator.mimeTypes['application/x-shockwave-flash'] && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+		if(Browser.InternetExplorer) {
+			var obj = new ActiveXObject("ShockwaveFlash.ShockwaveFlash");
+			
+			if(!obj.activeXError) {
 				Browser.Flash = true;
 			}
-		} catch(e) {
-			if(navigator.mimeTypes ['application/x-shockwave-flash'] != undefined) {
-				Browser.Flash = true;
+		} else {
+			try {
+				if (navigator.mimeTypes && navigator.mimeTypes['application/x-shockwave-flash'] && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+					Browser.Flash = true;
+				}
+			} catch(e) {
+				if (navigator.mimeTypes ['application/x-shockwave-flash'] != undefined) {
+					Browser.Flash = true;
+				}
 			}
 		}
-		
+
 		DOMUtil.addClass($$("html")[0], Browser.getBrowserName());
 	},
 	/** get the browser name */
 	getBrowserName: function() {
 		if(Browser.InternetExplorer) {
-			return "Internet Explorer";
+			return "InternetExplorer";
 		} else if(Browser.Opera) {
 			return "Opera";
 		} else if(Browser.Safari) {
 			return "Safari";
 		} else if(Browser.Mozilla) {
 			return "Mozilla";
+		} else if(Browser.Chrome) {
+			return "Chrome";
 		}
 		
 		return "No idea";

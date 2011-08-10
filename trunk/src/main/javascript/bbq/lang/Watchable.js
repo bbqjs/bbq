@@ -130,7 +130,7 @@ bbq.lang.Watchable = new Class.create({
 		try {
 			callback.apply(this, args);
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error invoking callback " + type + " key " + key, e);
 		}
 		
 		if(callback.__oneTime) {
@@ -190,7 +190,7 @@ bbq.lang.Watchable.notifyGlobalListeners = function() {
 		try {
 			callbacks[i].apply(this, args);
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error invoking callback on global listeners", e);
 		}
 	}
 };

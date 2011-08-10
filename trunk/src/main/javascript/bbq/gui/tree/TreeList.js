@@ -64,7 +64,7 @@ bbq.gui.tree.TreeList = new Class.create(bbq.gui.GUIWidget, {
 				entity.callback();
 			}
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error processing click callback", e);
 		}
 		
 		this.setDown(entity);

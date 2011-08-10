@@ -97,7 +97,7 @@ bbq.gui.updateables.ExpandableFieldGroup = new Class.create(bbq.gui.updateables.
 			
 			newItem.setEditMode(this._editMode);
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error adding item", e);
 		}
 		
 		return false;

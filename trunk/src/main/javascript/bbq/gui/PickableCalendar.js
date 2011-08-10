@@ -180,7 +180,7 @@ bbq.gui.PickableCalendar = new Class.create(bbq.gui.GUIWidget, {
 			
 			this.notifyListeners("onMonthChanged");
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error going to previous month", e);
 		}
 		return false;
 	},
@@ -199,7 +199,7 @@ bbq.gui.PickableCalendar = new Class.create(bbq.gui.GUIWidget, {
 			
 			this.notifyListeners("onMonthChanged");
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error going to next month", e);
 		}
 		
 		return false;
@@ -208,7 +208,7 @@ bbq.gui.PickableCalendar = new Class.create(bbq.gui.GUIWidget, {
 	_datePicked: function(event) {
 		this.notifyListeners("onDatePicked");
 		Log.info('_datePicked in PickableCalendar');
-		//Log.dumpObject(event);
+		//Log.dir(event);
 		var element = BBQUtil.clearFocus(event);
 		
 		this._date.setDate(element.innerHTML);

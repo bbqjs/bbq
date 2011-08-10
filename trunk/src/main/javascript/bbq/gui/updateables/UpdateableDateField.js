@@ -109,7 +109,7 @@ bbq.gui.updateables.UpdateableDateField = new Class.create(bbq.gui.updateables.U
 				this._datePicker.appear();
 			}
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error opening date picker", e);
 		}
 		return false;
 	},

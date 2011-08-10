@@ -100,7 +100,7 @@ bbq.ajax.AJAXRequest = Class.create({
 				NotificationArea.startLoad();
 			}
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Could not send request", e);
 		}
 	},
 	
@@ -129,7 +129,7 @@ bbq.ajax.AJAXRequest = Class.create({
 				this.options["onAnything"].apply(this, args);
 			}
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error encountered while invoking handler " + handlerName, e);
 		}
 	},
 	
@@ -148,7 +148,7 @@ bbq.ajax.AJAXRequest = Class.create({
 				this._callHandler("onSuccess", $A(arguments));
 			}
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Could not invoke onSuccess handler", e);
 		}
 	},
 	
@@ -157,7 +157,7 @@ bbq.ajax.AJAXRequest = Class.create({
 			Log.error('Request to ' + this.options.method.toUpperCase() + ' ' + this.options.url + " failed");
 			this._callHandler("onFaliure", $A(arguments));
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Could not invoke onFaliure handler", e);
 		}
 	},
 	
@@ -166,7 +166,7 @@ bbq.ajax.AJAXRequest = Class.create({
 			Log.error('Request to ' + this.options.method.toUpperCase() + ' ' + this.options.url + " threw exception");
 			this._callHandler("onException", $A(arguments));
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Could not invoke onException handler", e);
 		}
 	},
 	

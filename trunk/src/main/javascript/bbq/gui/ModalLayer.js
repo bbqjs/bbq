@@ -44,7 +44,7 @@ bbq.gui.ModalLayer = new Class.create(bbq.gui.GUIWidget, {
 				document.body.removeChild(this.layerContents.getRootNode());
 				this.layerContents = null;			
 			} catch(e) {
-				Log.dumpException(e);
+				Log.error("Error clearing modal layer", e);
 			}
 		}.bind(this), 600);
 	}

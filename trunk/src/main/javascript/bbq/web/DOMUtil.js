@@ -316,7 +316,7 @@ DOMUtil = {
 				}
 			}
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error setting style " + styleToSet + " to value " + value + " on element " + element, e);
 		}
 	},
 	
@@ -335,7 +335,7 @@ DOMUtil = {
 				return element.style[styleToGet];
 			}
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error getting style " + styleToGet + " from element " + element, e);
 		}
 	},
 	

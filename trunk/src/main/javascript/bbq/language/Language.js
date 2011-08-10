@@ -97,7 +97,7 @@ Language = {
 				string = string.replace(new RegExp("\{" + key + "\}", "gi"), keys[key]);
 			}
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error formatting language string", e);
 		}
 		
 		return string;

@@ -169,7 +169,7 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 			
 			this.render();
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error while appending to node " + pageNode, e);
 		}
 	},
 
@@ -181,7 +181,7 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 
 			this.render();
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error while appending before " + node, e);
 		}
 	},
 
@@ -201,7 +201,7 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 
 			this.render();
 		} catch(e) {
-			Log.dumpException(e);
+			Log.error("Error while appending after " + node, e);
 		}
 	},
 	
@@ -252,7 +252,7 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 					this.getRootNode().removeChild(childNode);
 				}
 			} catch(e) {
-				Log.dumpException(e);
+				Log.error("Error removing child " + childNode, e);
 			}
 		}
 	},
@@ -291,7 +291,7 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 				}
 				
 			} catch(e) {
-				Log.dumpException(e);
+				Log.error("Error replacing child " + oldNode + " for " + newNode, e);
 			}
 		}
 	},
@@ -327,7 +327,7 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 					this._rootNode.style[styleName] = styleValue;
 				}
 			} catch(e) {
-				Log.dumpException(e);
+				Log.error("Error setting style " + styleName + " to " + styleValue, e);
 			}
 		}
 	},
@@ -361,8 +361,7 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 					this._rootNode[attributeName] = attributeValue;
 				}
 			} catch(e) {
-				Log.error("exeption thrown setting " + attributeName + " to " + attributeValue);
-				Log.dumpException(e);
+				Log.error("exeption thrown setting " + attributeName + " to " + attributeValue, e);
 			}
 		}
 	},
