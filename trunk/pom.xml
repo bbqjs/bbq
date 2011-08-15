@@ -17,7 +17,7 @@
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.plugin.bbq.version>1.0.5</maven.plugin.bbq.version>
+		<maven.plugin.bbq.version>1.0.10</maven.plugin.bbq.version>
 	</properties>
 
 	<pluginRepositories>
@@ -63,8 +63,8 @@
 						<configuration>
 							<testDirectory>${project.basedir}/src/test/javascript</testDirectory>
 							<includes>
-								<include>${project.basedir}/src/test/resources/javascript/libs/prototype-1.7.0.0.js</include>
-								<include>${project.basedir}/src/test/resources/javascript/libs/unittest-1.8.0.js</include>
+								<include>javascript/libs/prototype-1.7.0.0.js</include>
+								<include>javascript/libs/unittest-1.8.0.js</include>
 							</includes>
 						</configuration>
 					</execution>
