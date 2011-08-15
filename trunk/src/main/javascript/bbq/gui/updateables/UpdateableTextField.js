@@ -30,10 +30,14 @@ bbq.gui.updateables.UpdateableTextField = new Class.create(bbq.gui.updateables.U
 		this.inputField = this._createEditField();
 		
 		if(this.options.inlineInstruction) {
-			if(this.inputField.value == this.options.inlineInstruction || this.inputField.value == "") {
-				this._showInstruction();
-				Event.observe(this.inputField, "blur", this.blurInstructionField.bindAsEventListener(this));
-				Event.observe(this.inputField, "focus", this.focusInstructionField.bindAsEventListener(this));
+			if(Browser.forms.placeholderText) {
+				this.inputField.placeholder = this.options.inlineInstruction;
+			} else {
+				if (this.inputField.value == this.options.inlineInstruction || this.inputField.value == "") {
+					this._showInstruction();
+					Event.observe(this.inputField, "blur", this.blurInstructionField.bindAsEventListener(this));
+					Event.observe(this.inputField, "focus", this.focusInstructionField.bindAsEventListener(this));
+				}
 			}
 		}
 		
@@ -78,7 +82,7 @@ bbq.gui.updateables.UpdateableTextField = new Class.create(bbq.gui.updateables.U
 	 */
 	_createEditField: function() {
 		return DOMUtil.createElement("input", {
-			type: (this.options.searchBox && Browser.Safari ? "search" : "text"),
+			type: (this.options.searchBox && Browser.forms.types.search ? "search" : "text"),
 			value: this._getDisplayValue(),
 			onchange: this.updateLocalValue.bindAsEventListener(this),
 			onkeydown: this.preUpdateLocalValue.bindAsEventListener(this),

@@ -1,14 +1,15 @@
-include(bbq.gui.panel.Panel);
+include(bbq.gui.GUIWidget);
 
 /**
  * Holds bbq.gui.button.GUIButtons
  * @class bbq.gui.button.ButtonHolder
  * @extends bbq.gui.panel.Panel
  */
-bbq.gui.button.ButtonHolder = Class.create(bbq.gui.panel.Panel, {
+bbq.gui.button.ButtonHolder = Class.create(bbq.gui.GUIWidget, {
 	_disabled: false,
 	_selectedIndex: 0,
-	_buttonNames: null,
+	_buttons: [],
+	_buttonNames: new Hash(),
 	
 	/**
 	 * Supports the following options:
@@ -24,16 +25,25 @@ bbq.gui.button.ButtonHolder = Class.create(bbq.gui.panel.Panel, {
 		
 		this.setRootNode("ul");
 		this.addClass("ButtonHolder");
-		
-		this._buttonNames = new Hash();
-		this.options.fixedHeight = true;
+	},
+
+	render: function($super) {
+		$super();
+
+		this.empty();
+
+		this._buttons.each(function(button) {
+			this.appendChild(button);
+		}.bind(this));
 	},
 	
 	/**
 	 * @param	{bbq.gui.button.GUIButton}	button
 	 */
 	addButton: function(button, buttonName) {
-		button.setIndex(this.childWidgets.length);
+		var index = this._buttons.length;
+
+		button.setIndex(index);
 		button.buttonHolder = this;
 		
 		if(button.getRootNode().tagName.toLowerCase() != "li") {
@@ -45,6 +55,8 @@ bbq.gui.button.ButtonHolder = Class.create(bbq.gui.panel.Panel, {
 		if(buttonName) {
 			this._buttonNames.set(buttonName, button);
 		}
+
+		this._buttons.push(button);
 		
 		return button;
 	},
@@ -53,7 +65,7 @@ bbq.gui.button.ButtonHolder = Class.create(bbq.gui.panel.Panel, {
 	 * Removes the down state on all child buttons
 	 */
 	clearDown: function() {
-		this.childWidgets.invoke("clearDown");
+		this._buttons.invoke("clearDown");
 	},
 	
 	/**
@@ -61,7 +73,7 @@ bbq.gui.button.ButtonHolder = Class.create(bbq.gui.panel.Panel, {
 	 */
 	setDisabled: function(disabled) {
 		this._disabled = disabled;
-		this.childWidgets.invoke("setDisabled", disabled);
+		this._buttons.invoke("setDisabled", disabled);
 		this._buttonNames.each(function(button) {
 			button[1].setDisabled(disabled);
 		})
@@ -83,7 +95,7 @@ bbq.gui.button.ButtonHolder = Class.create(bbq.gui.panel.Panel, {
 			return this._buttonNames.get(index);
 		}
 		
-		return this.childWidgets[index];
+		return this._buttons[index];
 	},
 	
 	/**

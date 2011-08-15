@@ -12,6 +12,7 @@ Browser = {
 	DOM: false,
 	Flash: false,
 	version: 0,
+	forms: {},
 	
 	/** find out which broswer we are running */
 	detect: function() {
@@ -106,6 +107,19 @@ Browser = {
 		}
 
 		DOMUtil.addClass($$("html")[0], Browser.getBrowserName());
+
+		// form support
+		var input = document.createElement("input");
+		Browser.forms.placeholderText = ("placeholder" in input);
+
+		// check HTML5 input type support
+		Browser.forms.types = {};
+
+		["search", "tel", "url", "email", "datetime", "date", "month", "week", "time", "datetime-local", "number", "color", "range"].each(function(type) {
+			input.setAttribute("type", type);
+
+			Browser.forms.types[type] = (input.type == type);
+		});
 	},
 	/** get the browser name */
 	getBrowserName: function() {

@@ -8,24 +8,38 @@ bbq.gui.updateables.UpdateableFieldWithInstruction = new Class.create(bbq.gui.up
 	inputField: null,
 	
 	_showInstruction: function() {
-		this.inputField.value = this.options.inlineInstruction;
 		this.addClass("UpdateableFieldWithInstruction_DisplayingInstruction");
 		this.addClass("UpdateableFieldWithInstruction_Blur");
+
+		if(Browser.forms.placeholderText) {
+			return;
+		}
+
+		this.inputField.value = this.options.inlineInstruction;
 	},
 	
 	focusInstructionField: function(event) {
 		this.removeClass("UpdateableFieldWithInstruction_Blur");
 		this.addClass("UpdateableFieldWithInstruction_Focus");
-		
+
 		if(this.inputField.value == this.options.inlineInstruction) {
-			this.inputField.value = "";
 			this.removeClass("UpdateableFieldWithInstruction_DisplayingInstruction");
+
+			if(Browser.forms.placeholderText) {
+				return;
+			}
+
+			this.inputField.value = "";
 		}
 	},
 	
 	blurInstructionField: function(event) {
 		this.removeClass("UpdateableFieldWithInstruction_Focus");
-		
+
+		if(Browser.forms.placeholderText) {
+			return;
+		}
+
 		if(this.inputField.value == "") {
 			this._showInstruction();
 		} else if(this.inputField.value != this.options.inlineInstruction) {
@@ -38,7 +52,9 @@ bbq.gui.updateables.UpdateableFieldWithInstruction = new Class.create(bbq.gui.up
 	 */
 	updateLocalValue: function() {
 		if(this.options.inlineInstruction && this.inputField.value == this.options.inlineInstruction) {
-			this._setCurrentValue("");
+			if(!Browser.forms.placeholderText) {
+				this._setCurrentValue("");
+			}
 		} else {
 			this._setCurrentValue(this.inputField.value.strip());
 		}

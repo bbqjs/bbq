@@ -45,8 +45,7 @@ bbq.gui.button.SaveCancel = Class.create(behaviour.gui.button.ButtonHolder, {
 	 */
 	setEditMode: function(mode) {
 		this._editMode = mode;
-		this.childWidgets = [];
-		
+
 		if(mode) {
 			this.addButton(new behaviour.gui.button[(this.options.nativeButtons ? "Native" : "GUI") + "Button"]({buttonText: this.options.saveText, onclick: this.saveEdit.bind(this), attributes: {className: "saveButton"}}));
 			this.addButton(new behaviour.gui.button[(this.options.nativeButtons ? "Native" : "GUI") + "Button"]({buttonText: this.options.cancelText, onclick: this.cancelEdit.bind(this), attributes: {className: "cancelButton"}}));
@@ -126,16 +125,5 @@ bbq.gui.button.SaveCancel = Class.create(behaviour.gui.button.ButtonHolder, {
 		if(this.options[callbackName] instanceof Function) {
 			this.options[callbackName]();
 		}
-	},
-	
-	/**
-	 * Render
-	 */
-	render: function() {
-		this.empty();
-		
-		this.childWidgets.each(function(button) {
-			button.appendTo(this);
-		}.bind(this));
 	}
 });

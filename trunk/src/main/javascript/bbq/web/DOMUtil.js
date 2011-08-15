@@ -310,7 +310,7 @@ DOMUtil = {
 		try {
 			if(element) {
 				if(element.appendChild) {
-					element.style[styleToSet] = value;
+						element.style[styleToSet] = value;
 				} else if(element.appendTo) {
 					element.setStyle(styleToSet, value);
 				}

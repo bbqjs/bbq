@@ -4,7 +4,7 @@
 	<groupId>org.bbqjs</groupId>
 	<artifactId>bbq</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.4</version>
+	<version>1.0.5</version>
 	<name>bbqJS</name>
 	<url>http://www.bbqjs.org</url>
 	<licenses>

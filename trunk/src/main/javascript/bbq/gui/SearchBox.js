@@ -27,6 +27,9 @@ bbq.gui.SearchBox = new Class.create(bbq.gui.GUIWidget, {
 	 */
 	initialize: function($super, options) {
 		$super(options);
+
+		var input = DOMUtil.createElement("input");
+		Log.info("placeholder " + ("placeholder" in input));
 		
 		this.setRootNode("div");
 		this.addClass("SearchBox");
@@ -39,15 +42,15 @@ bbq.gui.SearchBox = new Class.create(bbq.gui.GUIWidget, {
 		this._searchBox = new bbq.gui.updateables.UpdateableTextField({inlineInstruction: Language.get("bbq.gui.SearchBox.search"), searchBox: true});
 		this._searchBox.setEditMode(true);
 		this._searchBox.registerListener("onkeyup", this._doSearch.bind(this));
-		this._searchButton = DOMUtil.createElement("input", {type: "submit", value: Language.get("bbq.gui.SearchBox.clear"), className: "searchSubmit", onclick: this._clearSearch.bind(this, false), disabled: true})
+		this._searchButton = DOMUtil.createElement("input", {type: "submit", value: Language.get("bbq.gui.SearchBox.clear"), className: "searchSubmit", onclick: this.clearSearch.bind(this, false), disabled: true})
 		this.appendChild(this._searchBox);
 		
-		if(!Browser.Safari) {
+		if(!Browser.forms.types.search) {
 			this.appendChild(this._searchButton);
 		} else {
 			this._searchBox.registerListener("onclick", function() {
 				if(this._oldSearchText && this._searchBox.getValue() == "") {
-					this._clearSearch(true);
+					this.clearSearch(true);
 				}
 			}.bind(this));
 		}
@@ -67,7 +70,7 @@ bbq.gui.SearchBox = new Class.create(bbq.gui.GUIWidget, {
 	/**
 	 * @private
 	 */
-	_clearSearch: function(noBlur) {
+	clearSearch: function(noBlur) {
 		try {
 			if(!noBlur) {
 				this._searchBox.setValue("");
@@ -90,7 +93,7 @@ bbq.gui.SearchBox = new Class.create(bbq.gui.GUIWidget, {
 			Log.error("Error clearing search", e);
 		}
 	},
-	
+
 	/**
 	 * @private
 	 */
@@ -104,7 +107,7 @@ bbq.gui.SearchBox = new Class.create(bbq.gui.GUIWidget, {
 				var searchText = this._searchBox.getValue().strip();
 				
 				if(searchText == "") {
-					this._clearSearch(true);
+					this.clearSearch(true);
 					
 					return;
 				}
