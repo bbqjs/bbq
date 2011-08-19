@@ -10,15 +10,10 @@ include(bbq.util.BBQUtil);
  * 
  */
 bbq.ajax.AJAXRequest = Class.create({
-	onSuccess: null,
-	onFailure: null,
-	onException: null,
-	onComplete: null,
-	timeOut: null,
-	interval: null,
-	url: null,
 	options: null,
-	
+	_timeOut: null,
+	_interval: null,
+
 	/**
 	 * Constructor
 	 * 
@@ -30,9 +25,10 @@ bbq.ajax.AJAXRequest = Class.create({
 	 * 		url:	String						// where to send the request to
 	 * 		method: String						// post or get
 	 * 		args: Object						// key->value pairs to convert to query string
-	 * 		onsuccess: Function
-	 * 		onfaliure: Function
-	 * 		onexception: Function
+	 * 		onSuccess: Function
+	 * 		onFaliure: Function
+	 * 		onException: Function
+	 * 		onAnything: Function			// invoked when there's no other callback to invoke
 	 * }
 	 */
 	initialize: function(options) {
@@ -50,10 +46,10 @@ bbq.ajax.AJAXRequest = Class.create({
 			this.options.headers = {};
 		}
 		
-		this.sendRequest();
+		this._sendRequest();
 	},
 	
-	getPostBody: function() {
+	_getPostBody: function() {
 		return this.options.postBody;
 	},
 	
@@ -62,7 +58,7 @@ bbq.ajax.AJAXRequest = Class.create({
 	 * 
 	 * @return	void
 	 */
-	sendRequest: function() {
+	_sendRequest: function() {
 		try {
 			var requestHeaders = this._createRequestHeaders();
 			
@@ -72,10 +68,10 @@ bbq.ajax.AJAXRequest = Class.create({
 			
 			var request = new Ajax.Request(this.options.url, {
 				method: this.options.method, 
-				postBody: this.getPostBody(),
-				onSuccess: this.onSuccess.bind(this), 
-				onFailure: this.onFailure.bind(this), 
-				onExcepton: this.onException.bind(this),
+				postBody: this._getPostBody(),
+				onSuccess: this._onSuccess.bind(this),
+				onFailure: this._onFailure.bind(this),
+				onExcepton: this._onException.bind(this),
 				requestHeaders: this.options.headers,
 				contentType: this.options.contentType
 			});
@@ -88,13 +84,13 @@ bbq.ajax.AJAXRequest = Class.create({
 			
 			// get time out data from server configuration
 			if(typeof(ServerConfig) != "undefined" && ServerConfig["timeout"]) {
-				this.timeOut = ServerConfig["timeout"];
+				this._timeOut = ServerConfig["timeout"];
 			} else {
-				this.timeOut = 30;
+				this._timeOut = 30;
 			}
 			
 			// check timeout every second
-			this.interval = setInterval(this.checkTimeOut.bind(this), 1000);
+			this._interval = setInterval(this._checkTimeOut.bind(this), 1000);
 			
 			if(typeof(NotificationArea) != "undefined") {
 				NotificationArea.startLoad();
@@ -121,7 +117,7 @@ bbq.ajax.AJAXRequest = Class.create({
 				NotificationArea.stopLoad();
 			}
 			
-			clearInterval(this.interval);
+			clearInterval(this._interval);
 			
 			if(this.options[handlerName] && this.options[handlerName] instanceof Function) {
 				this.options[handlerName].apply(this, args);
@@ -136,32 +132,46 @@ bbq.ajax.AJAXRequest = Class.create({
 	/**
 	 * @param {Object} serverResponse
 	 */
-	onSuccess: function(serverResponse) {
+	_onSuccess: function(serverResponse) {
 		try {
 			var responseType = serverResponse.getResponseHeader("X-bbq-responseType");
-			var code = "error" + responseType;
-			var handler = bbq.ajax.AJAXRequest.errorHandlers[code];
-			
-			if(handler && handler instanceof Function) {
-				handler.call(this, this, serverResponse);
-			} else {
-				this._callHandler("onSuccess", $A(arguments));
+
+			if(responseType < 0) {
+				if(this.options.onFailure) {
+					// have been passed a failure callback
+					this._onFailure(serverResponse);
+				} else {
+					// fall back to default behaviour
+					var code = "error" + responseType;
+					var handler = bbq.ajax.AJAXRequest.errorHandlers[code];
+
+					if (handler && handler instanceof Function) {
+						handler.call(this, this, serverResponse);
+					} else {
+						Log.error("Received error code " + responseType + " but have no handler to handle it.");
+						Log.error("Either pass an onFaliure callback to this bbq.ajax.AJAXRequest or define bbq.ajax.AJAXRequest.errorHandlers['" + code + "'] = function(serverResponse) { ... };");
+					}
+				}
+
+				return;
 			}
+
+			this._callHandler("onSuccess", $A(arguments));
 		} catch(e) {
 			Log.error("Could not invoke onSuccess handler", e);
 		}
 	},
 	
-	onFailure: function() {
+	_onFailure: function() {
 		try {
 			Log.error('Request to ' + this.options.method.toUpperCase() + ' ' + this.options.url + " failed");
-			this._callHandler("onFaliure", $A(arguments));
+			this._callHandler("onFailure", $A(arguments));
 		} catch(e) {
 			Log.error("Could not invoke onFaliure handler", e);
 		}
 	},
 	
-	onException: function() {
+	_onException: function() {
 		try {
 			Log.error('Request to ' + this.options.method.toUpperCase() + ' ' + this.options.url + " threw exception");
 			this._callHandler("onException", $A(arguments));
@@ -175,12 +185,12 @@ bbq.ajax.AJAXRequest = Class.create({
 	 * 
 	 * @return	void
 	 */
-	checkTimeOut: function() {
-		if(this.timeOut == 0) {
-			this.timedOut();
-			clearInterval(this.interval);
+	_checkTimeOut: function() {
+		if(this._timeOut == 0) {
+			this._timedOut();
+			clearInterval(this._interval);
 		} else {
-			this.timeOut--;
+			this._timeOut--;
 		}
 	},
 	
@@ -189,7 +199,7 @@ bbq.ajax.AJAXRequest = Class.create({
 	 * 
 	 * @return	void
 	 */
-	timedOut: function() {
+	_timedOut: function() {
 		Log.warn("Ajax call to " + this.options.url + " timed out");
 		
 		if(typeof(NotificationArea) != "undefined" && typeof(Language) != "undefined" && Language.get instanceof Function) {
@@ -216,12 +226,12 @@ bbq.ajax.AJAXRequest = Class.create({
  * function(bbq.ajax.AJAXRequest, serverResponse);
  * </code>
  */
-bbq.ajax.AJAXRequest.errorHandlers = [];
+bbq.ajax.AJAXRequest.errorHandlers = {};
 bbq.ajax.AJAXRequest.errorHandlers["error-100"] = function(request, response) {
 	var errorMessage = new bbq.gui.error.ServerError({
 		url: request.options.url,
 		args: request.options.args,
-		serverResponse: BBQUtil.urlDecode(serverResponse.getResponseHeader("X-bbq-responseMessage"))
+		serverResponse: BBQUtil.urlDecode(response.getResponseHeader("X-bbq-responseMessage"))
 	});
 	errorMessage.appear();
 };

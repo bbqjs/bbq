@@ -20,7 +20,7 @@ bbq.ajax.SoapRequest = Class.create(bbq.ajax.AJAXRequest, {
 		};
 	},
 	
-	getPostBody: function() {
+	_getPostBody: function() {
 		var header = "";
 		
 		if(this.options.authentication) {

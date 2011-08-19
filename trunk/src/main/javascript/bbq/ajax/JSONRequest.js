@@ -28,14 +28,7 @@ bbq.ajax.JSONRequest = Class.create(bbq.ajax.AJAXRequest, {
 				this._descapeResponse(json);
 			}
 		} catch(e) {
-			Log.error("Could not call handler " + handlerName, e);
-			
-			var errorMessage = new bbq.gui.error.ServerError({
-				url: this.options.url,
-				args: this.options.args,
-				serverResponse: serverResponse.responseText
-			});
-			errorMessage.appear();
+			Log.error("Error de-escaping JSON", e);
 		}
 		
 		$super(handlerName, [serverResponse, json]);
@@ -112,7 +105,7 @@ bbq.ajax.JSONRequest = Class.create(bbq.ajax.AJAXRequest, {
 		}
 	},
 	
-	getPostBody: function() {
+	_getPostBody: function() {
 		this._escapeArguments(this.options.args);
 		
 		return Object.toJSON(this.options.args);

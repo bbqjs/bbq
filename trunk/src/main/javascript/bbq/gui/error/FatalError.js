@@ -56,7 +56,9 @@ bbq.gui.error.FatalError = new Class.create(bbq.gui.ModalWindow, {
 		this.setContent(content);
 		
 		// stop edit watchers from throwing up a dialogue if the user refreshes the page.
-		EditWatcher.deRegisterAllEditors();
+		if(typeof(EditWatcher) != "undefined") {
+			EditWatcher.deRegisterAllEditors();
+		}
 	},
 	
 	getHeader: function() {
