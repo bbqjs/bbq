@@ -1,31 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.bbqjs</groupId>
-	<artifactId>bbq</artifactId>
-	<packaging>jar</packaging>
-	<version>1.0.5</version>
-	<name>bbqJS</name>
-	<url>http://www.bbqjs.org</url>
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
 	
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.plugin.bbq.version>1.0.10</maven.plugin.bbq.version>
-	</properties>
-
-	<pluginRepositories>
-		<pluginRepository>
-				<id>bbq-repo</id>
-				<url>https://github.com/bbqjs/bbq-maven-repo/raw/master/releases</url>
-		</pluginRepository>
-	</pluginRepositories>
+	<parent>
+		<groupId>org.bbqjs</groupId>
+		<artifactId>bbq</artifactId>
+		<version>1.1.0</version>
+	</parent>
+	
+	<groupId>org.bbqjs</groupId>
+	<artifactId>bbq-js</artifactId>
+	<packaging>jar</packaging>
+	<version>1.1.0</version>
+	<name>bbq-js</name>
+	<url>http://www.bbqjs.org</url>
 	
 	<build>
 		<resources>
@@ -53,7 +41,7 @@
 			<plugin>
 				<groupId>org.bbqjs</groupId>
 				<artifactId>bbq-maven-plugin</artifactId>
-				<version>${maven.plugin.bbq.version}</version>
+				<version>${project.version}</version>
 				<executions>
 					<execution>
 						<id>Test JavaScript</id>
@@ -72,4 +60,5 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 </project>
