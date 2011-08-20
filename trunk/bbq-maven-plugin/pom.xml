@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>org.bbqjs</groupId>
 		<artifactId>bbq</artifactId>
 		<version>1.1.0</version>
 	</parent>
-	
+
 	<groupId>org.bbqjs</groupId>
 	<artifactId>bbq-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 	<version>1.1.0</version>
 	<name>bbq-maven-plugin</name>
 	<url>http://www.bbqjs.org</url>
-	
+
 	<repositories>
 		<repository>
 			<id>bbq-repo</id>
 			<url>https://github.com/bbqjs/bbq-maven-repo/raw/master/releases</url>
 		</repository>
 	</repositories>
-	
+
 	<build>
 		<resources>
 			<resource>
@@ -57,8 +57,9 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<dependencies>
+
 		<!-- BBQ -->
 		<dependency>
 			<groupId>org.bbqjs</groupId>
@@ -70,13 +71,13 @@
 			<artifactId>bbq-test</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>${commons.io.version}</version>
 		</dependency>
-		
+
 		<!-- Because we are a plugin -->
 		<dependency>
 			<groupId>org.apache.maven</groupId>
@@ -88,11 +89,6 @@
 			<artifactId>maven-plugin-api</artifactId>
 			<version>${maven.version}</version>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-project</artifactId>
-			<version>${maven.version}</version>
-		</dependency>-->
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-model</artifactId>
@@ -103,7 +99,7 @@
 			<artifactId>maven-core</artifactId>
 			<version>${maven.version}</version>
 		</dependency>
-		
+
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -118,5 +114,5 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 </project>

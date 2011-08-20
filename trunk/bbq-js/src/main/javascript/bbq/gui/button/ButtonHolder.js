@@ -3,13 +3,13 @@ include(bbq.gui.GUIWidget);
 /**
  * Holds bbq.gui.button.GUIButtons
  * @class bbq.gui.button.ButtonHolder
- * @extends bbq.gui.panel.Panel
+ * @extends bbq.gui.GUIWidget
  */
 bbq.gui.button.ButtonHolder = Class.create(bbq.gui.GUIWidget, {
 	_disabled: false,
 	_selectedIndex: 0,
-	_buttons: [],
-	_buttonNames: new Hash(),
+	_buttons: null,
+	_buttonNames: null,
 	
 	/**
 	 * Supports the following options:
@@ -25,6 +25,9 @@ bbq.gui.button.ButtonHolder = Class.create(bbq.gui.GUIWidget, {
 		
 		this.setRootNode("ul");
 		this.addClass("ButtonHolder");
+
+		this._buttonNames = new Hash();
+		this._buttons = [];
 	},
 
 	render: function($super) {

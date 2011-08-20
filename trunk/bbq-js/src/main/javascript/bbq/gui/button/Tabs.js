@@ -14,6 +14,5 @@ bbq.gui.button.Tabs = Class.create(bbq.gui.button.ButtonHolder, {
 		$super(options);
 		
 		this.addClass("Tabs");
-			this.options.fixedHeight = true;
-		}
+	}
 });

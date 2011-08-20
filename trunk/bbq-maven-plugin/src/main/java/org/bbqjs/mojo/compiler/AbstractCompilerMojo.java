@@ -164,14 +164,14 @@ public abstract class AbstractCompilerMojo extends RuntimeClasspathAwareMojo imp
 	}
 	
 	@Override
-	public void doneExecuting(CompilerThread t) {
+	public synchronized void doneExecuting(CompilerThread t) {
 		numExecutions--;
 		
 		getLog().debug("Compiler thread finished - now " + numExecutions);
 	}
 	
 	@Override
-	public void failedExecuting(CompilerThread t, Exception e) {
+	public synchronized void failedExecuting(CompilerThread t, Exception e) {
 		compilationException = e;
 		
 		doneExecuting(t);
