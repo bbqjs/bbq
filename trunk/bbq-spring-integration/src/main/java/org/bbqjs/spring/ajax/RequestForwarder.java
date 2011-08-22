@@ -119,6 +119,12 @@ public class RequestForwarder implements InitializingBean {
 	
 	protected HttpURLConnection sendRequest(URL url, HttpServletRequest request, InputStream inputStream) throws IOException {
 		HttpURLConnection.setFollowRedirects(true);
+
+		String contentType = request.getContentType();
+
+		if(contentType == null) {
+			contentType = "text/xml; charset=UTF-8";
+		}
 		
 		HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
 		urlConnection.setConnectTimeout(600000); // one minute
@@ -127,7 +133,7 @@ public class RequestForwarder implements InitializingBean {
 		urlConnection.setDoInput(true);
 		urlConnection.setUseCaches(false);
 		urlConnection.setAllowUserInteraction(false);
-		urlConnection.setRequestProperty("Content-type", "text/xml; charset=UTF-8");
+		urlConnection.setRequestProperty("Content-type", contentType);
 		urlConnection.setInstanceFollowRedirects(true);
 		
 		// forward all request headers

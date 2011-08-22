@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>org.bbqjs</groupId>
 		<artifactId>bbq</artifactId>
-		<version>1.1.0</version>
+		<version>1.1.1</version>
 	</parent>
 	
 	<groupId>org.bbqjs</groupId>
 	<artifactId>bbq-spring-integration</artifactId>
 	<packaging>jar</packaging>
-	<version>1.1.0</version>
+	<version>1.1.1</version>
 	<name>bbq-spring-integration</name>
 	<url>http://www.bbqjs.org</url>
 	
@@ -50,8 +50,18 @@
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>${maven.plugin.jetty.version}</version>
 			</plugin>
-			<plugin>				<groupId>org.apache.maven.plugins</groupId>				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven.plugin.compiler.version}</version>				<configuration>					<source>1.6</source>					<target>1.6</target>					<excludes>						<exclude>**/*Point*.java</exclude>					</excludes>				</configuration>			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.plugin.compiler.version}</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<excludes>
+						<exclude>**/*Point*.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
 			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
