@@ -1,3 +1,5 @@
+include(bbq.web.DOMUtil);
+
 /**
  * @class Browser
  * @constructor
@@ -49,7 +51,7 @@ Browser = {
 			} else if(window.getComputedStyle) {
 				Browser.version = 1;
 			}
-		} else if(document.getElementById && document.all) {
+		} else if(document.getElementById && document.all && window.ActiveXObject) {
 			Browser.InternetExplorer = true;
 			
 			if(document.querySelectorAll) {
@@ -83,7 +85,7 @@ Browser = {
 		}
 		
 		// how about the DOM?
-		if(document.getElementById && document.body.appendChild) {
+		if(document.getElementById) {
 			Browser.DOM = true;
 		}
 		
@@ -138,3 +140,5 @@ Browser = {
 		return "No idea";
 	}
 }
+
+Browser.detect();

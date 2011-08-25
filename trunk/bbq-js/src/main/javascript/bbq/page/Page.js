@@ -29,7 +29,7 @@ bbq.page.Page = new Class.create({
 		//Log.info("Page constructor");
 		currentPage = this;
 		this._options = args ? args : {};
-		Browser.detect();
+		
 		DOMUtil.checkDOM();
 		
 		Event.observe(window, "resize", this.resizePanels.bindAsEventListener(this));

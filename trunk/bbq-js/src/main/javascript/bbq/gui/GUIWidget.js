@@ -1,4 +1,5 @@
 include(bbq.lang.Delegator);
+include(bbq.web.DOMUtil);
 
 /**
  * This class is used as a base for all objects that have GUI representations.

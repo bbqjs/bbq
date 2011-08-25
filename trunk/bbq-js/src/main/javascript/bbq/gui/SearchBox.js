@@ -29,7 +29,6 @@ bbq.gui.SearchBox = new Class.create(bbq.gui.GUIWidget, {
 		$super(options);
 
 		var input = DOMUtil.createElement("input");
-		Log.info("placeholder " + ("placeholder" in input));
 		
 		this.setRootNode("div");
 		this.addClass("SearchBox");

@@ -356,6 +356,10 @@ BBQUtil = {
 	},
 	
 	isValidEmail: function(email) {
+		if(!email) {
+			return false;
+		}
+
 		email = email.strip();
 		
 		return email != "" && email.match(/@/);
