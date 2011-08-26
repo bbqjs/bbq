@@ -7,7 +7,7 @@ bbq.gui.form.validator.EmailValidator = new Class.create({
 	},
 
 	validate: function(value) {
-		if(!BBQUtil.isValidEmail(value)) {
+		if(value && !BBQUtil.isValidEmail(value)) {
 			return "email.invalid";
 		}
 	}

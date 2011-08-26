@@ -5,7 +5,6 @@ include(bbq.util.Log);
  * Supports the following options:
  *
  * options: {
- *      validateOnBlur: boolean
  * }
  *
  * Dispatches the following notifications:
@@ -40,15 +39,19 @@ bbq.gui.form.FormField = new Class.create(bbq.gui.GUIWidget, {
 		this.removeClass("FormField_error");
 
 		var value = this.getRootNode().value;
+		var error = null;
 
 		// run pre-transform validators
 		this._preTransformValidators.each(function(validator) {
 			var result = validator.validate(value);
 
 			if(result) {
-				this.addClass("FormField_error");
+				error = {error: result, field: this};
 
-				throw {error: result, field: this};
+				this.addClass("FormField_error");
+				this.notifyListeners("onError", error);
+
+				throw error;
 			}
 		}.bind(this));
 
@@ -62,9 +65,12 @@ bbq.gui.form.FormField = new Class.create(bbq.gui.GUIWidget, {
 			var result = validator.validate(value);
 
 			if (result) {
-				this.addClass("FormField_error");
+				error = {error: result, field: this};
 
-				throw {error: result, field: this};
+				this.addClass("FormField_error");
+				this.notifyListeners("onError", error);
+
+				throw error;
 			}
 		}.bind(this));
 

@@ -6,6 +6,7 @@ bbq.gui.form.CheckBoxField = new Class.create(bbq.gui.form.FormField, {
 		try {
 			$super(args);
 
+			this.addClass("CheckBoxField");
 			this.setAttribute("type", "checkbox");
 			this.setValueTransformer(new bbq.gui.form.transformer.BooleanValueTransformer());
 		} catch(e) {
