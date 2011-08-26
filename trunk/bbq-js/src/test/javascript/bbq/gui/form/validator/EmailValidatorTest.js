@@ -8,11 +8,6 @@ test = new Test.Unit.Runner({
 
 			this.assertNull(validator.validate("foo@bar.com"));
 			this.assertNull(validator.validate(" foo@bar.com "));
-			this.assertNotNull(validator.validate());
-			this.assertNotNull(validator.validate(null));
-			this.assertNotNull(validator.validate(""));
-			this.assertNotNull(validator.validate(" "));
-			this.assertNotNull(validator.validate(" "));
 			this.assertNotNull(validator.validate("foo"));
 		}
 	}
