@@ -7,10 +7,10 @@ include(bbq.gui.GUIWidget);
  */
 bbq.gui.button.ButtonHolder = Class.create(bbq.gui.GUIWidget, {
 	_disabled: false,
-	_selectedIndex: 0,
+	_selectedIndex: -1,
 	_buttons: null,
 	_buttonNames: null,
-	
+
 	/**
 	 * Supports the following options:
 	 * 
@@ -18,11 +18,10 @@ bbq.gui.button.ButtonHolder = Class.create(bbq.gui.GUIWidget, {
 	 * 		vertical: boolean				// Pass true if these buttons are orientated vertically, otherwise will be horiztonal
 	 * 		ignoreKeyPresses: boolean		// Pass true to ignore key presses
 	 * }
-	 * 
 	 */
 	initialize: function($super, options) {
 		$super(options);
-		
+
 		this.setRootNode("ul");
 		this.addClass("ButtonHolder");
 
@@ -36,41 +35,32 @@ bbq.gui.button.ButtonHolder = Class.create(bbq.gui.GUIWidget, {
 		this.empty();
 
 		this._buttons.each(function(button) {
-			this.appendChild(button);
+			this.appendChild(DOMUtil.createElement("li", button));
 		}.bind(this));
 	},
-	
+
 	/**
 	 * @param	{bbq.gui.button.GUIButton}	button
 	 */
 	addButton: function(button, buttonName) {
-		var index = this._buttons.length;
-
-		button.setIndex(index);
-		button.buttonHolder = this;
-		
-		if(button.getRootNode().tagName.toLowerCase() != "li") {
-			this.appendChild(DOMUtil.createTextElement("li", button));
-		} else {
-			this.appendChild(button);
-		}
-		
 		if(buttonName) {
 			this._buttonNames.set(buttonName, button);
 		}
 
 		this._buttons.push(button);
-		
+
+		button.registerListener("onClick", this._buttonClicked.bind(this, button));
+
 		return button;
 	},
-	
+
 	/**
 	 * Removes the down state on all child buttons
 	 */
 	clearDown: function() {
 		this._buttons.invoke("clearDown");
 	},
-	
+
 	/**
 	 * Disables every child button
 	 */
@@ -80,13 +70,13 @@ bbq.gui.button.ButtonHolder = Class.create(bbq.gui.GUIWidget, {
 		this._buttonNames.each(function(button) {
 			button[1].setDisabled(disabled);
 		})
-		
+
 		if(this._disabled) {
 			this.clearDown();
 			this.loseFocus();
 		}
 	},
-	
+
 	/**
 	 * Returns a button.  Either pass in a button name as a string
 	 * or a position index as an integer.
@@ -97,10 +87,10 @@ bbq.gui.button.ButtonHolder = Class.create(bbq.gui.GUIWidget, {
 		if(Object.isString(index)) {
 			return this._buttonNames.get(index);
 		}
-		
+
 		return this._buttons[index];
 	},
-	
+
 	/**
 	 * @return	Returns the index of the currently selected button
 	 * @type {integer}
@@ -108,7 +98,7 @@ bbq.gui.button.ButtonHolder = Class.create(bbq.gui.GUIWidget, {
 	getSelectedIndex: function() {
 		return this._selectedIndex;
 	},
-	
+
 	/**
 	 * Sets the currently selected button index
 	 * @param {integer} index
@@ -116,19 +106,16 @@ bbq.gui.button.ButtonHolder = Class.create(bbq.gui.GUIWidget, {
 	setSelectedIndex: function(index) {
 		this._selectedIndex = index;
 	},
-	
+
 	/**
 	 * @private
 	 */
-	_buttonClicked: function(button, event) {
-		this.setSelectedIndex(button.getIndex());
-		
-		// only register for keypresses if an event was passed.  This may not always be the case - ie. if the button's buttonClicked method was invoked manually
-		if(event) {
-			FocusWatcher.setKeypressCallbackObject(this);
-		}
+	_buttonClicked: function(button) {
+		this.setSelectedIndex(this._buttons.indexOf(button));
+
+		FocusWatcher.setKeypressCallbackObject(this);
 	},
-	
+
 	/**
 	 * Accepts focus if not disabled
 	 */
@@ -137,14 +124,14 @@ bbq.gui.button.ButtonHolder = Class.create(bbq.gui.GUIWidget, {
 			this.addClass("hasFocus");
 		}
 	},
-	
+
 	/**
 	 * Loose focus
 	 */
 	loseFocus: function() {
 		this.removeClass("hasFocus");
 	},
-	
+
 	/**
 	 * Processes key presses on the button holder
 	 * @param {Event} event
@@ -153,7 +140,7 @@ bbq.gui.button.ButtonHolder = Class.create(bbq.gui.GUIWidget, {
 		if(!this.options.ignoreKeyPresses && !this._disabled) {
 			var nextEntity = false;
 			var index = this.getSelectedIndex();
-			
+
 			if(index != -1) {
 				// process keypress
 				if(this.options.vertical) {
@@ -170,11 +157,11 @@ bbq.gui.button.ButtonHolder = Class.create(bbq.gui.GUIWidget, {
 					}
 				}
 			}
-			
+
 			if(nextEntity) {
 				nextEntity.buttonClicked();
 			}
-			
+
 			return true;
 		}
 	}

@@ -12,7 +12,7 @@ bbq.gui.button.DatePickerButton = Class.create(bbq.gui.button.IconButton, {
 	 */
 	initialize: function($super, options) {
 		$super(options);
-		
+
 		this.addClass("DatePickerButton");
 	}
 });

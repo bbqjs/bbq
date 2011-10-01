@@ -12,7 +12,7 @@ bbq.gui.button.Tabs = Class.create(bbq.gui.button.ButtonHolder, {
 	 */
 	initialize: function($super, options) {
 		$super(options);
-		
+
 		this.addClass("Tabs");
 	}
 });

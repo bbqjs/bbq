@@ -9,7 +9,7 @@ include(behaviour.gui.button.GUIButton);
  */
 bbq.gui.button.SaveCancel = Class.create(behaviour.gui.button.ButtonHolder, {
 	_editMode: null,
-	
+
 	/**
 	 * Constructor
 	 * @param {Object} options
@@ -29,16 +29,16 @@ bbq.gui.button.SaveCancel = Class.create(behaviour.gui.button.ButtonHolder, {
 	 */
 	initialize: function($super, options) {
 		$super(options);
-		
+
 		this.addClass("SaveCancel");
-		
+
 		this.options.editText = this.options.editText ? this.options.editText : Language.get("bbq.gui.button.SaveCancel.edit");
 		this.options.saveText = this.options.saveText ? this.options.saveText : Language.get("bbq.gui.button.SaveCancel.save");
 		this.options.cancelText = this.options.cancelText ? this.options.cancelText : Language.get("bbq.gui.button.SaveCancel.cancel");
-		
+
 		this.setEditMode(false);
 	},
-	
+
 	/**
 	 * Sets edit mode
 	 * @param {boolean} mode
@@ -49,28 +49,28 @@ bbq.gui.button.SaveCancel = Class.create(behaviour.gui.button.ButtonHolder, {
 		if(mode) {
 			this.addButton(new behaviour.gui.button[(this.options.nativeButtons ? "Native" : "GUI") + "Button"]({buttonText: this.options.saveText, onclick: this.saveEdit.bind(this), attributes: {className: "saveButton"}}));
 			this.addButton(new behaviour.gui.button[(this.options.nativeButtons ? "Native" : "GUI") + "Button"]({buttonText: this.options.cancelText, onclick: this.cancelEdit.bind(this), attributes: {className: "cancelButton"}}));
-			
+
 			if(this.options.changedCallback) {
 				EditWatcher.registerEditor(this, this.options.changedCallback, this.options.changeWarning ? this.options.changeWarning : false);
 			}
 		} else {
 			this.addButton(new behaviour.gui.button[(this.options.nativeButtons ? "Native" : "GUI") + "Button"]({buttonText: this.options.editText, onclick: this.startEdit.bind(this), attributes: {className: "editButton"}}));
-			
+
 			if(this.options.changedCallback) {
 				EditWatcher.deRegisterAllEditors();
 			}
 		}
-		
+
 		this.render();
 	},
-	
+
 	/**
 	 * @return {boolean} 
 	 */
 	getEditMode: function() {
 		return this._editMode;
 	},
-	
+
 	/**
 	 * Starts edit process
 	 */
@@ -79,7 +79,7 @@ bbq.gui.button.SaveCancel = Class.create(behaviour.gui.button.ButtonHolder, {
 			if(this.options.changedCallback && EditWatcher.changesOutstanding(this)) {
 				return;
 			}
-			
+
 			this.setEditMode(true);
 			this._callCallback("editCallback");
 			this.notifyListeners("startedEdit");
@@ -87,14 +87,14 @@ bbq.gui.button.SaveCancel = Class.create(behaviour.gui.button.ButtonHolder, {
 			Log.error("Error starting edit", e);
 		}
 	},
-	
+
 	/**
 	 * Saves edit fields
 	 */
 	saveEdit: function() {
 		try {
 			this.setEditMode(false);
-			
+
 			this._callCallback("saveCallback");
 			this.notifyListeners("savedEdit");
 			this.notifyListeners("stoppedEdit");
@@ -102,7 +102,7 @@ bbq.gui.button.SaveCancel = Class.create(behaviour.gui.button.ButtonHolder, {
 			Log.error("Error saving edit", e);
 		}
 	},
-	
+
 	/**
 	 * Cancels edit process
 	 */
@@ -116,7 +116,7 @@ bbq.gui.button.SaveCancel = Class.create(behaviour.gui.button.ButtonHolder, {
 			Log.error("Error canceling edit", e);
 		}
 	},
-	
+
 	/**
 	 * @private
 	 * @param {Function} callbackName

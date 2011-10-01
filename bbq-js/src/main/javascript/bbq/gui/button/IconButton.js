@@ -12,8 +12,7 @@ bbq.gui.button.IconButton = Class.create(bbq.gui.button.GUIButton, {
 	 */
 	initialize: function($super, options) {
 		$super(options);
-		
-		this.setRootNode(this._anchor);
+
 		this.addClass("IconButton");
 	}
 });
