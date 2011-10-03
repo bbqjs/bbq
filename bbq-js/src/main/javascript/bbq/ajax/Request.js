@@ -36,7 +36,7 @@ bbq.ajax.Request = Class.create({
 	 * @param {Object} serverResponse 
 	 */
 	checkSignedIn: function(serverResponse) {
-		if(serverResponse.getResponseHeader('X-bbq-responseType') < 0) {
+		if(serverResponse.getResponseHeader('X-BBQ-ResponseType') < 0) {
 			this.handleError(serverResponse);
 		} else {
 			this.receiveResponse(serverResponse);

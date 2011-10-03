@@ -6,6 +6,8 @@ bbq.gui.form.EmailField = new Class.create(bbq.gui.form.TextField, {
 		try {
 			$super(args);
 
+			this.addClass("EmailField");
+
 			// Use HTML5 email type if supported
 			if(Browser.forms.types.email) {
 				this.setAttribute("type", "email");

@@ -1,4 +1,5 @@
 include(bbq.gui.GUIWidget);
+include(bbq.web.FocusWatcher);
 
 /**
  * Holds bbq.gui.button.GUIButtons

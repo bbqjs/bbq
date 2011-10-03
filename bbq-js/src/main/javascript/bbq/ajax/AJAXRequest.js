@@ -26,7 +26,7 @@ bbq.ajax.AJAXRequest = Class.create({
 	 * 		method: String						// post or get
 	 * 		args: Object						// key->value pairs to convert to query string
 	 * 		onSuccess: Function
-	 * 		onFaliure: Function
+	 * 		onFailure: Function
 	 * 		onException: Function
 	 * 		onAnything: Function			// invoked when there's no other callback to invoke
 	 * }
@@ -134,7 +134,7 @@ bbq.ajax.AJAXRequest = Class.create({
 	 */
 	_onSuccess: function(serverResponse) {
 		try {
-			var responseType = serverResponse.getResponseHeader("X-bbq-responseType");
+			var responseType = serverResponse.getResponseHeader("X-BBQ-ResponseType");
 
 			if(responseType < 0) {
 				if(this.options.onFailure) {

@@ -34,24 +34,30 @@ public class LanguageCompiler extends AbstractCompiler<CompilableLanguageFile> {
 	
 	@Override
 	public void compile(URL javaScriptInputFile, String packageName, OutputStream outputStream, String[] sourceRoots) throws IOException {
+		Properties properties = createProperties(javaScriptInputFile, sourceRoots);
+
+		properties.storeToXML(outputStream, locale + " lanaguge translation");
+	}
+
+	public Properties createProperties(URL javaScriptInputFile, String[] sourceRoots) throws IOException {
 		LOG.debug("Will compile " + javaScriptInputFile);
-		
+
 		String className = Utils.getJavaScriptClassName(javaScriptInputFile, jsDirectory);
-		
+
 		CompilableLanguageFile compilableFile = new CompilableLanguageFile(className, javaScriptInputFile, locale, defaultLocale, sourceRoots);
 		List<CompilableLanguageFile> includedFiles = new ArrayList<CompilableLanguageFile>();
-		
+
 		// ensure files included by the compilation target are included
 		parseInputFile(compilableFile, includedFiles);
-		
+
 		Properties properties = new Properties();
 
-		if(libraries != null) {
+		if (libraries != null) {
 			// if we've been given a shared language file(s), add it to the translation
-			for(String path : libraries) {
+			for (String path : libraries) {
 				URL url = Utils.findFile(path, jsDirectory, locale, "lang.xml");
 
-				if(url == null) {
+				if (url == null) {
 					continue;
 				}
 
@@ -63,18 +69,18 @@ public class LanguageCompiler extends AbstractCompiler<CompilableLanguageFile> {
 				}
 			}
 		}
-		
-		for(CompilableFile included : includedFiles) {
-			LanguageFile languageFile = (LanguageFile)included;
+
+		for (CompilableFile included : includedFiles) {
+			LanguageFile languageFile = (LanguageFile) included;
 			Properties translation = languageFile.getLanguageTranslations();
-			
-			for(Object key : translation.keySet()) {
+
+			for (Object key : translation.keySet()) {
 				properties.put(key, translation.get(key));
 			}
 		}
-		
+
 		LOG.debug("Language file has " + properties.keySet().size() + " translations");
-		
-		properties.storeToXML(outputStream, locale + " lanaguge translation");
+
+		return properties;
 	}
 }

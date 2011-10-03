@@ -5,6 +5,7 @@ include(bbq.util.Log);
  * Supports the following options:
  *
  * options: {
+ *      value:  Object      // an initial value
  * }
  *
  * Dispatches the following notifications:
@@ -27,18 +28,45 @@ bbq.gui.form.FormField = new Class.create(bbq.gui.GUIWidget, {
 
 			this.setRootNode("input");
 			this.addClass("FormField");
+
+			if(!Object.isUndefined(this.options.value)) {
+				this.setValue(this.options.value);
+			}
+
+			this.getRootNode().onchange = this._dispatchEvent.bind(this, "onChange");
+
+			if(this.options.onChange) {
+				this.registerListener("onChange", this.options.onChange);
+			}
 		} catch(e) {
 			Log.error("Error constructing FormField", e);
 		}
+	},
+
+	_getRawValue: function() {
+		return this.getRootNode().value;
+	},
+
+	_setRawValue: function(value) {
+		return this.getRootNode().value = value;
+	},
+
+	_dispatchEvent: function(event) {
+		this.notifyListeners(event);
 	},
 
 	/**
 	 * Returns the value contained within this field.
 	 */
 	getValue: function() {
+		var value = this._getRawValue();
+
+		return this._validateAndTransform(value);
+	},
+
+	_validateAndTransform: function(value) {
 		this.removeClass("FormField_error");
 
-		var value = this.getRootNode().value;
 		var error = null;
 
 		// run pre-transform validators
@@ -76,6 +104,12 @@ bbq.gui.form.FormField = new Class.create(bbq.gui.GUIWidget, {
 
 		// return our value
 		return value;
+	},
+
+	setValue: function(value) {
+		this._setRawValue(value);
+
+		this._validateAndTransform(value);
 	},
 
 	addValidator: function(validator) {

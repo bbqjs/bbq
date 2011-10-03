@@ -1,4 +1,4 @@
-package org.bbqjs.spring.responders;
+package org.bbqjs.spring.mvc;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -22,13 +22,15 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  * @author alex
  */
-public class ErrorResponder implements HandlerExceptionResolver, InitializingBean {
-	private final static Logger LOG = LoggerFactory.getLogger(ErrorResponder.class);
+public class ErrorController implements HandlerExceptionResolver, InitializingBean {
+	private final static Logger LOG = LoggerFactory.getLogger(ErrorController.class);
 	
 	/**
 	 * Default error code.
 	 */
-	private static final int EPIC_FAIL_CODE = -100;
+	public static final int EPIC_FAIL_CODE = -100;
+	public static final String X_BBQ_RESPONSE_TYPE ="X-BBQ-ResponseType";
+	public static final String X_BBQ_RESPONSE_MESSAGE = "X-BBQ-ResponseMessage";
 	
 	/**
 	 * If the error header (e.g. stack trace) is too long, web containers tend to get unhappy so
@@ -55,8 +57,8 @@ public class ErrorResponder implements HandlerExceptionResolver, InitializingBea
 			int code = getErrorCode(exception);
 
 			// -100 triggers epic fail message in front end
-			response.addIntHeader("X-bbq-responseType", code);
-			response.addHeader("X-bbq-responseMessage", message);
+			response.addIntHeader(X_BBQ_RESPONSE_TYPE, code);
+			response.addHeader(X_BBQ_RESPONSE_MESSAGE, message);
 
 			response.setStatus(HttpServletResponse.SC_OK);
 

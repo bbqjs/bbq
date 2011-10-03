@@ -32,87 +32,100 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RequestForwarder implements InitializingBean {
 	private static final Logger LOG = LoggerFactory.getLogger(RequestForwarder.class);
 	private static final String FORWARD_HEADER_NAME = "X-BBQ-Forward-To";
-	
+	private static final String X_BBQ_REMOTE_RESPONSE_CODE = "X-BBQ-Remote-ResponseCode";
+	private static final String X_BBQ_REMOTE_RESPONSE_MESSAGE = "X-BBQ-Remote-ResponseMessage";
+
 	private String headerName;
-	
+
 	private boolean forwardToSelfSignedCertificateServers;
-	
+
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		if(StringUtils.isEmpty(headerName)) {
 			headerName = FORWARD_HEADER_NAME;
 		}
-		
+
 		if(forwardToSelfSignedCertificateServers) {
 			// make sure we can forward to https enabled servers using self-signed SSL certificates
 			installNaiveTrustManager();
 		}
 	}
-	
+
 	protected URL getUrlToForwardTo(HttpServletRequest request) throws Exception {
 		String header = request.getHeader(headerName);
-		
+
 		if(StringUtils.isEmpty(header)) {
 			throw new IllegalArgumentException("Could not determine where to forward to.  Did you send the " + headerName + " header?  All I could find was " + header);
 		}
-		
+
 		return new URL(header);
 	}
-	
+
 	protected void copyHeaders(HttpURLConnection urlConnection, HttpServletResponse response) {
 		Map<String, List<String>> headers = urlConnection.getHeaderFields();
 		Iterator<String> keys = headers.keySet().iterator();
-		
+
 		while(keys.hasNext()) {
 			String key = keys.next();
-			
+
 			if(key == null) {
 				continue;
 			}
-			
+
 			Iterator<String> headerValues = headers.get(key).iterator();
-			
+
 			String header = "";
-			
+
 			while(headerValues.hasNext()) {
 				header += headerValues.next() + (headerValues.hasNext() ? "; " : "");
 			}
-			
+
 			response.addHeader(key, header);
 		}
 	}
 	
 	@RequestMapping(value="/forward")
 	public void forwardRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		HttpURLConnection urlConnection = null;
+
 		try {
 			URL url = getUrlToForwardTo(request);
-			
-			HttpURLConnection urlConnection = sendRequest(url, request, request.getInputStream());
-			
+
+			urlConnection = sendRequest(url, request, request.getInputStream());
+
 			// honour content type
 			response.setContentType(urlConnection.getContentType());
-			
+
 			// forward all response headers
 			copyHeaders(urlConnection, response);
-			
+
 			// write response into output stream if available
 			InputStream in = urlConnection.getInputStream();
-			
+
 			if(in != null) {
 				IOUtils.copy(in, response.getOutputStream());
-				
+
 				in.close();
 			}
-			
+
 			if(urlConnection != null) {
 				urlConnection.disconnect();
 			}
-			
+
 			// for small responses Tomcat seems to need this...
 			response.flushBuffer();
+		} catch(IOException e) {
+			LOG.error("IOException while sending request " + request, e);
+
+			if(urlConnection != null) {
+				response.addIntHeader(X_BBQ_REMOTE_RESPONSE_CODE, urlConnection.getResponseCode());
+				response.addHeader(X_BBQ_REMOTE_RESPONSE_MESSAGE, urlConnection.getResponseMessage());
+			}
+
+			throw e;
 		} catch(Exception e) {
 			LOG.error("Could not send request " + request, e);
-			
+
 			throw e;
 		}
 	}
@@ -125,7 +138,7 @@ public class RequestForwarder implements InitializingBean {
 		if(contentType == null) {
 			contentType = "text/xml; charset=UTF-8";
 		}
-		
+
 		HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
 		urlConnection.setConnectTimeout(600000); // one minute
 		urlConnection.setReadTimeout(600000); // one minute
@@ -135,50 +148,50 @@ public class RequestForwarder implements InitializingBean {
 		urlConnection.setAllowUserInteraction(false);
 		urlConnection.setRequestProperty("Content-type", contentType);
 		urlConnection.setInstanceFollowRedirects(true);
-		
+
 		// forward all request headers
 		Enumeration<?> headerEnumeration = request.getHeaderNames();
-		
+
 		while(headerEnumeration.hasMoreElements()) {
 			String key = (String)headerEnumeration.nextElement();
-			
+
 			if(!key.equals("Host")) {
 				urlConnection.setRequestProperty(key, request.getHeader(key));
 			}
 		}
-		
+
 		byte[] requestBytes = new byte[0];
-		
+
 		// forward post body
 		if(request.getMethod().equals("POST")) {
 			urlConnection.setRequestMethod("POST");
-			
+
 			// store request body in case we have to redirect
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			
+
 			// pipe passed request body into buffer
 			IOUtils.copy(inputStream, byteArrayOutputStream);
-			
+
 			requestBytes = byteArrayOutputStream.toByteArray();
-			
+
 			OutputStream out = urlConnection.getOutputStream();
-			
+
 			// pipe buffer into new request
 			IOUtils.copy(new ByteArrayInputStream(requestBytes), out);
-			
+
 			out.close();
 		}
-		
+
 		if(urlConnection.getHeaderField("location") != null) {
 			LOG.info("Request redirected to " + urlConnection.getHeaderField("location"));
-			
+
 			// going from http to https doesn't seem to trigger the follow redirects action
 			return sendRequest(new URL(urlConnection.getHeaderField("location")), request, new ByteArrayInputStream(requestBytes));
 		}
-		
+
 		return urlConnection;
 	}
-	
+
 	private static void installNaiveTrustManager() {
 		// Create a trust manager that does not validate certificate chains
 		TrustManager[] trustAllCerts = new TrustManager[]{
@@ -187,33 +200,33 @@ public class RequestForwarder implements InitializingBean {
 				public X509Certificate[] getAcceptedIssuers() {
 					return null;
 				}
-				
+
 				@Override
 				public void checkClientTrusted(X509Certificate[] certs, String authType) {
-					
+
 				}
-				
+
 				@Override
 				public void checkServerTrusted(X509Certificate[] certs, String authType) {
-					
+
 				}
 			}
 		};
-		
+
 		// Install the all-trusting trust manager
 		try {
 			SSLContext sc = SSLContext.getInstance("SSL");
 			sc.init(null, trustAllCerts, new java.security.SecureRandom());
 			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 		} catch (Exception e) {
-		
+
 		}
 	}
-	
+
 	public void setHeaderName(String headerName) {
 		this.headerName = headerName;
 	}
-	
+
 	public void setForwardToSelfSignedCertificateServers(boolean forwardToSelfSignedCertificateServers) {
 		this.forwardToSelfSignedCertificateServers = forwardToSelfSignedCertificateServers;
 	}

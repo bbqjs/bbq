@@ -142,7 +142,7 @@
 	<distributionManagement>
 		<repository>
 			<id>bbq-releases</id>
-			<url>file://../bbq-maven-repo/releases</url>
+			<url>file:///Users/alex/Sites/BBQjs/bbq-maven-repo/releases</url>
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>false</uniqueVersion>
