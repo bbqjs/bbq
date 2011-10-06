@@ -33,14 +33,18 @@ bbq.gui.form.FormField = new Class.create(bbq.gui.GUIWidget, {
 				this.setValue(this.options.value);
 			}
 
-			this.getRootNode().onchange = this._dispatchEvent.bind(this, "onChange");
-
 			if(this.options.onChange) {
 				this.registerListener("onChange", this.options.onChange);
 			}
 		} catch(e) {
 			Log.error("Error constructing FormField", e);
 		}
+	},
+
+	setRootNode: function($super, rootNode) {
+		$super(rootNode);
+
+		this.getRootNode().onchange = this._dispatchEvent.bind(this, "onChange");
 	},
 
 	_getRawValue: function() {

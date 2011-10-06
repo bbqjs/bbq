@@ -32,6 +32,8 @@ public class CSSCompilerServlet {
 
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.GET})
 	public void compileFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setContentType("text/css");
+		
 		String requestURI = request.getRequestURI();
 		requestURI = requestURI.replaceAll(path, "");
 		requestURI = requestURI.replace("." + extension, ".js");

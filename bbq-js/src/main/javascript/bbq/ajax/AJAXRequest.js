@@ -23,11 +23,11 @@ bbq.ajax.AJAXRequest = Class.create({
 	 * Supports the following options:
 	 * options {
 	 * 		url:	String						// where to send the request to
-	 * 		method: String						// post or get
+	 * 		method: String					// post or get
 	 * 		args: Object						// key->value pairs to convert to query string
-	 * 		onSuccess: Function
-	 * 		onFailure: Function
-	 * 		onException: Function
+	 * 		onSuccess: Function			// Everything went as expected - eg. received HTTP 200
+	 * 		onFailure: Function				// The call failed - eg. did not receive HTTP 200
+	 * 		onException: Function			// An exception was thrown while attemping to make the call
 	 * 		onAnything: Function			// invoked when there's no other callback to invoke
 	 * }
 	 */

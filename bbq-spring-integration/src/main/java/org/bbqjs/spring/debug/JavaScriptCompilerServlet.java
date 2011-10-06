@@ -26,6 +26,8 @@ public class JavaScriptCompilerServlet {
 
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.GET})
 	public void compileFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setContentType("application/javascript");
+
 		String requestURI = request.getRequestURI();
 		requestURI = requestURI.replaceAll(path, "");
 		String resource = pagePackage.replaceAll("\\.", File.separator) + requestURI;

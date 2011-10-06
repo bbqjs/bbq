@@ -2,6 +2,10 @@ include(bbq.ajax.AJAXRequest);
 include(bbq.gui.error.ServerError);
 
 /**
+ * Supports the following options {
+ *		doNotEscapeArgs: boolean		// if true, passed args will not be escaped
+ * }
+ *
  * @class bbq.ajax.JSONRequest is a subclass of bbq.ajax.AJAXRequest
  * @extends bbq.ajax.AJAXRequest
  */
@@ -106,7 +110,9 @@ bbq.ajax.JSONRequest = Class.create(bbq.ajax.AJAXRequest, {
 	},
 	
 	_getPostBody: function() {
-		this._escapeArguments(this.options.args);
+		if(!this.options.doNotEscapeArgs) {
+			this._escapeArguments(this.options.args);
+		}
 		
 		return Object.toJSON(this.options.args);
 	},

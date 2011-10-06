@@ -36,5 +36,21 @@ bbq.gui.form.DropDown = new Class.create(bbq.gui.form.FormField, {
 		var index = this.getRootNode().value;
 
 		return this.options.options[index].value;
+	},
+
+	_setRawValue: function(value) {
+		if(!Object.isArray(this.options.options)) {
+			return;
+		}
+
+		this.options.options.each(function(option, index) {
+			if(option.value == value) {
+				var optionElements = this.getRootNode().getElementsByTagName("option");
+
+				if(optionElements[index]) {
+					optionElements[index].selected = true;
+				}
+			}
+		}.bind(this));
 	}
 });
