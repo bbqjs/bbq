@@ -52,7 +52,7 @@ bbq.gui.form.FormField = new Class.create(bbq.gui.GUIWidget, {
 	},
 
 	_setRawValue: function(value) {
-		return this.getRootNode().value = value;
+		this.getRootNode().value = value;
 	},
 
 	_dispatchEvent: function(event) {

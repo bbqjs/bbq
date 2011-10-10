@@ -14,7 +14,11 @@ bbq.gui.form.CheckBox = new Class.create(bbq.gui.form.FormField, {
 		}
 	},
 
+	_getRawValue: function() {
+		return this.getRootNode().checked ? true : false;
+	},
+
 	_setRawValue: function(value) {
-		return this.getRootNode().checked = value ? true : false;
+		this.getRootNode().checked = (value ? true : false);
 	}
 });

@@ -1,3 +1,5 @@
+include(bbq.util.PersistenceUtil);
+
 /**
  * User preferences mechanism.
  * 
@@ -34,21 +36,28 @@ Preferences = {
 	 */
 	set: function(key, value) {
 		if(value) {
-			this.implementation.set(key, Object.toJSON(value));
+			this.implementation.set(key, PersistenceUtil.serialize(value));
 		} else {
 			this.implementation.del(key);
 		}
 	},
 	
 	/**
-	 * Pass in a key to retrieve the stored value
+	 * Pass in a key to retrieve the stored value with an option value to set as the default
+	 * in case the value stored is undefined.
 	 */
-	get: function(key) {
+	get: function(key, defaultValue) {
 		var value = this.implementation.get(key);
+
+		if(value == null && !Object.isUndefined(defaultValue)) {
+			Preferences.set(key, defaultValue);
+
+			return defaultValue;
+		}
 		
 		// if a string returned, decode it
 		if(Object.isString(value)) {
-			return value.evalJSON(true);
+			return PersistenceUtil.deserialize(value);
 		}
 		
 		return value;

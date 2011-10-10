@@ -260,27 +260,32 @@ bbq.gui.GUIWidget = new Class.create(bbq.lang.Delegator, {
 	 * 
 	 * @param	{Node || GUIWidget}		oldNode		The outgoing child
 	 * @param	{Node || GUIWidget}		newNode		The incoming child
+	 * @return {Node || GUIWidget}		The incoming child
 	 */
 	replaceChild: function(oldNode, newNode) {
+		var output = newNode;
+
 		if(oldNode && newNode && this.getRootNode()) {
 			try {
 				if(oldNode.getRootNode instanceof Function) {
 					oldNode = oldNode.getRootNode();
 				}
-				
+
 				if(newNode.getRootNode instanceof Function) {
+					newNode.render();
 					newNode = newNode.getRootNode();
 				}
-				
+
 				// check that we actually contain the old node before attempting to replace it
 				if(Element.descendantOf(oldNode, this.getRootNode())) {
 					this.getRootNode().replaceChild(newNode, oldNode);
 				}
-				
 			} catch(e) {
 				Log.error("Error replacing child " + oldNode + " for " + newNode, e);
 			}
 		}
+
+		return output;
 	},
 	
 	/**

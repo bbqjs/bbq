@@ -18,14 +18,14 @@ bbq.gui.form.DropDown = new Class.create(bbq.gui.form.FormField, {
 			this.setRootNode("select");
 			this.addClass("DropDown");
 
-			if (this.options.value) {
-				this.getRootNode().value = this.options.value;
-			}
-
 			if(Object.isArray(this.options.options)) {
 				this.options.options.each(function(option, index) {
 					this.appendChild(DOMUtil.createElement("option", option.key, {value: index}));
 				}.bind(this));
+			}
+
+			if (!Object.isUndefined(this.options.value)) {
+				this.setValue(this.options.value);
 			}
 		} catch(e) {
 			Log.error("Error constructing TextField", e);
@@ -45,7 +45,7 @@ bbq.gui.form.DropDown = new Class.create(bbq.gui.form.FormField, {
 
 		this.options.options.each(function(option, index) {
 			if(option.value == value) {
-				var optionElements = this.getRootNode().getElementsByTagName("option");
+				var optionElements = $A(this.getRootNode().getElementsByTagName("option"));
 
 				if(optionElements[index]) {
 					optionElements[index].selected = true;

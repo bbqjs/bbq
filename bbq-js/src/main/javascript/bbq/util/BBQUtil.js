@@ -384,5 +384,47 @@ BBQUtil = {
 		}else if(bytes >= Math.pow(2,40)) {
 			return  (Math.round(bytes/Math.pow(2,40))) + 'TB';
 		}
+	},
+
+	findClassName: function(parent, child, path) {
+		for (var key in parent) {
+			// ignore anything that will cause an infinite loop or security error
+			if (parent[key] == parent || key == "history" || key == "globalStorage" || key == "argumentNames") {
+				continue;
+			}
+
+			var firstCharacter = key.substring(0, 1);
+
+			// first character is upper case, we have a class
+			if (firstCharacter == firstCharacter.toUpperCase()) {
+				try {
+					if (child instanceof parent[key]) {
+						return path + "." + key;
+					}
+				} catch(e) {
+					// instanceof operator is a bit picky about it's operands
+				}
+			} else {
+				// key is not a class name so continue walking the tree
+				var matches = BBQUtil.findClassName(parent[key], child, path + "." + key);
+
+				if (matches) {
+					return matches;
+				}
+			}
+		}
+	},
+
+	findClass: function(string) {
+		var parts = string.split(".");
+		var parent = window;
+
+		for(var i = 0; i < parts.length; i++) {
+			if(i == (parts.length -1)) {
+				return parent[parts[i]];
+			} else {
+				parent = parent[parts[i]];
+			}
+		}
 	}
 }
