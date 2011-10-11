@@ -3,7 +3,7 @@ include(bbq.util.PersistenceUtil);
 /**
  * User preferences mechanism.
  * 
- * Uses HTML5 sessionStorage where available otherwise
+ * Uses HTML5 localStorage where available otherwise
  * falls back to cookies.
  * 
  * <code>
@@ -75,17 +75,17 @@ Preferences = {
 	 * 
 	 * Used when the browser supports it.
 	 */
-	_sessionStorage: {
+	_localStorage: {
 		set: function(key, value) {
-			sessionStorage.setItem(key, value);
-		}, 
+			localStorage.setItem(key, value);
+		},
 		
 		get: function(key) {
-			return sessionStorage.getItem(key);
-		}, 
+			return localStorage.getItem(key);
+		},
 		
 		del: function(key) {
-			sessionStorage.removeItem(key);
+			localStorage.removeItem(key);
 		}
 	},
 	
@@ -110,9 +110,9 @@ Preferences = {
 };
 
 // set preferences implementation according to browser support
-if(window.sessionStorage) {
+if(window.localStorage) {
 	// use HTML5 session storage
-	Preferences.implementation = Preferences._sessionStorage;
+	Preferences.implementation = Preferences._localStorage;
 } else {
 	// fallback to cookies
 	Preferences.implementation = Preferences._cookies;
