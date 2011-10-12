@@ -28,7 +28,7 @@ bbq.gui.form.DropDown = new Class.create(bbq.gui.form.FormField, {
 				this.setValue(this.options.value);
 			}
 		} catch(e) {
-			Log.error("Error constructing TextField", e);
+			Log.error("Error constructing DropDown", e);
 		}
 	},
 

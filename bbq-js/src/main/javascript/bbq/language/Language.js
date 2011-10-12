@@ -80,7 +80,7 @@ Language = {
 	 * 
 	 * Then in the javascript, call:
 	 * 
-	 * Language.getFormatted(["generic", "mystring"], {marker: "a nice little"});
+	 * Language.getFormatted("generic.mystring", {marker: "a nice little"});
 	 * 
 	 * And the following will be output:
 	 * 
@@ -91,7 +91,7 @@ Language = {
 	 */
 	getFormatted: function(language, keys) {
 		var string = Language.get(language);
-		
+
 		try {
 			for(var key in keys) {
 				string = string.replace(new RegExp("\{" + key + "\}", "gi"), keys[key]);
@@ -99,10 +99,10 @@ Language = {
 		} catch(e) {
 			Log.error("Error formatting language string", e);
 		}
-		
+
 		return string;
 	},
-	
+
 	isLoaded: function() {
 		return Language._languageLoaded ? true : false;
 	}

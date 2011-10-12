@@ -2311,12 +2311,12 @@ DateFormatter = {
 	 	return this._dateFormatter.getOrder(options);
 	},
 	
-	getDateSeperator: function() {
-	 	return this._dateFormatter.getDateSeperator();
+	getDateSeparator: function() {
+	 	return this._dateFormatter.getDateSeparator();
 	},
 	
-	getTimeSeperator: function() {
-	 	return this._dateFormatter.getTimeSeperator();
+	getTimeSeparator: function() {
+	 	return this._dateFormatter.getTimeSeparator();
 	},
 	
 	/**
@@ -6565,12 +6565,12 @@ behaviour.date.DateFormat = new Class.create({
 		return false;
 	},
 	
-	getDateSeperator: function() {
-		return this._dateSeperator;
+	getDateSeparator: function() {
+		return this._dateSeparator;
 	},
 	
-	getTimeSeperator: function() {
-		return this._timeSeperator;
+	getTimeSeparator: function() {
+		return this._timeSeparator;
 	},
 	
 	getLongDate: function(options) {
@@ -6586,7 +6586,7 @@ behaviour.date.DateFormat = new Class.create({
 	},
 	
 	_getTime: function(options) {
-		return options.date.getHours() + this._timeSeperator + (options.date.getMinutes() < 10 ? "0" : "") +  options.date.getMinutes();
+		return options.date.getHours() + this._timeSeparator + (options.date.getMinutes() < 10 ? "0" : "") +  options.date.getMinutes();
 	}
 });
 
@@ -6596,19 +6596,19 @@ behaviour.date.DateFormat = new Class.create({
  * 
  */
 behaviour.date.DateFormat0 = new Class.create(behaviour.date.DateFormat, {
-	_dateSeperator: "/",
-	_timeSeperator: ":",
+	_dateSeparator: "/",
+	_timeSeparator: ":",
 	
 	_getDate: function(options) {
-		return options.date.getDate() + this._dateSeperator + (options.date.getMonth() + 1) + this._dateSeperator + options.date.getFullYear();
+		return options.date.getDate() + this._dateSeparator + (options.date.getMonth() + 1) + this._dateSeparator + options.date.getFullYear();
 	},
 	
 	getOrder: function(options) {
 		if(options.shortDate) {
-			return ["Day", "DateSeperator", "Month", "DateSeperator", "Year"];
+			return ["Day", "DateSeparator", "Month", "DateSeparator", "Year"];
 		}
 		
-		return ["Day", "DateSeperator", "Month", "DateSeperator", "Year", "BreakableSpace", "Hour", "TimeSeperator", "Minute"];
+		return ["Day", "DateSeparator", "Month", "DateSeparator", "Year", "BreakableSpace", "Hour", "TimeSeparator", "Minute"];
 	}
 });
 
@@ -6618,19 +6618,19 @@ behaviour.date.DateFormat0 = new Class.create(behaviour.date.DateFormat, {
  * 
  */
 behaviour.date.DateFormat1 = new Class.create(behaviour.date.DateFormat, {
-	_dateSeperator: "/",
-	_timeSeperator: ":",
+	_dateSeparator: "/",
+	_timeSeparator: ":",
 	
 	_getDate: function(options) {
-		return (options.date.getMonth() + 1) + this._dateSeperator + options.date.getDate() + this._dateSeperator + options.date.getFullYear();
+		return (options.date.getMonth() + 1) + this._dateSeparator + options.date.getDate() + this._dateSeparator + options.date.getFullYear();
 	},
 	
 	getOrder: function(options) {
 		if(options.shortDate) {
-			return ["Month", "DateSeperator", "Day", "DateSeperator", "Year"];
+			return ["Month", "DateSeparator", "Day", "DateSeparator", "Year"];
 		}
 		
-		return ["Month", "DateSeperator", "Day", "DateSeperator", "Year", "BreakableSpace", "Hour", "TimeSeperator", "Minute"];
+		return ["Month", "DateSeparator", "Day", "DateSeparator", "Year", "BreakableSpace", "Hour", "TimeSeparator", "Minute"];
 	}
 });
 
@@ -6640,19 +6640,19 @@ behaviour.date.DateFormat1 = new Class.create(behaviour.date.DateFormat, {
  * 
  */
 behaviour.date.DateFormat2 = new Class.create(behaviour.date.DateFormat, {
-	_dateSeperator: ".",
-	_timeSeperator: ":",
+	_dateSeparator: ".",
+	_timeSeparator: ":",
 	
 	_getDate: function(options) {
-		return options.date.getDate() + this._dateSeperator + (options.date.getMonth() + 1) + this._dateSeperator + options.date.getFullYear();
+		return options.date.getDate() + this._dateSeparator + (options.date.getMonth() + 1) + this._dateSeparator + options.date.getFullYear();
 	},
 	
 	getOrder: function(options) {
 		if(options.shortDate) {
-			return ["Day", "DateSeperator", "Month", "DateSeperator", "Year"];
+			return ["Day", "DateSeparator", "Month", "DateSeparator", "Year"];
 		}
 		
-		return ["Day", "DateSeperator", "Month", "DateSeperator", "Year", "BreakableSpace", "Hour", "TimeSeperator", "Minute"];
+		return ["Day", "DateSeparator", "Month", "DateSeparator", "Year", "BreakableSpace", "Hour", "TimeSeparator", "Minute"];
 	}
 });
 
@@ -6662,19 +6662,19 @@ behaviour.date.DateFormat2 = new Class.create(behaviour.date.DateFormat, {
  * 
  */
 behaviour.date.DateFormat3 = new Class.create(behaviour.date.DateFormat, {
-	_dateSeperator: "-",
-	_timeSeperator: ":",
+	_dateSeparator: "-",
+	_timeSeparator: ":",
 	
 	_getDate: function(options) {
-		return options.date.getFullYear() + this._dateSeperator + (options.date.getMonth() + 1) + this._dateSeperator + options.date.getDate();
+		return options.date.getFullYear() + this._dateSeparator + (options.date.getMonth() + 1) + this._dateSeparator + options.date.getDate();
 	},
 	
 	getOrder: function(options) {
 		if(options.shortDate) {
-			return ["Year", "DateSeperator", "Month", "DateSeperator", "Day"];
+			return ["Year", "DateSeparator", "Month", "DateSeparator", "Day"];
 		}
 		
-		return ["Year", "DateSeperator", "Month", "DateSeperator", "Day", "BreakableSpace", "Hour", "TimeSeperator", "Minute"];
+		return ["Year", "DateSeparator", "Month", "DateSeparator", "Day", "BreakableSpace", "Hour", "TimeSeparator", "Minute"];
 	}
 });
 
@@ -6684,8 +6684,8 @@ behaviour.date.DateFormat3 = new Class.create(behaviour.date.DateFormat, {
  * 
  */
 behaviour.date.DateFormat4 = new Class.create(behaviour.date.DateFormat, {
-	_dateSeperator: " ",
-	_timeSeperator: ":",
+	_dateSeparator: " ",
+	_timeSeparator: ":",
 	
 	getLongDate: function(options) {
 		var offset = options.date.getTimezoneOffset()/60;
@@ -6716,15 +6716,15 @@ behaviour.date.DateFormat4 = new Class.create(behaviour.date.DateFormat, {
 	},
 	
 	_getDate: function(options) {
-		return options.date.getDate() + this._dateSeperator + Language.get("bbq.date.DateFormat4.months" + options.date.getMonth()).substr(0, 3) + this._dateSeperator + options.date.getFullYear();
+		return options.date.getDate() + this._dateSeparator + Language.get("bbq.date.DateFormat4.months" + options.date.getMonth()).substr(0, 3) + this._dateSeparator + options.date.getFullYear();
 	},
 	
 	getOrder: function(options) {
 		if(options.shortDate) {
-			return ["Year", "DateSeperator", "Month", "DateSeperator", "Day"];
+			return ["Year", "DateSeparator", "Month", "DateSeparator", "Day"];
 		}
 		
-		return ["Year", "DateSeperator", "Month", "DateSeperator", "Day", "BreakableSpace", "Hour", "TimeSeperator", "Minute"];
+		return ["Year", "DateSeparator", "Month", "DateSeparator", "Day", "BreakableSpace", "Hour", "TimeSeparator", "Minute"];
 	}
 });
 
@@ -16971,8 +16971,8 @@ behaviour.gui.updateables.UpdateableDateField = new Class.create(behaviour.gui.u
 		return this._dayDropDown;
 	},
 	
-	generateDateSeperator: function() {
-		return document.createTextNode(DateFormatter.getDateSeperator());
+	generateDateSeparator: function() {
+		return document.createTextNode(DateFormatter.getDateSeparator());
 	},
 	
 	generateEmptySpace: function() {
@@ -17051,11 +17051,11 @@ behaviour.gui.updateables.UpdateableDateField = new Class.create(behaviour.gui.u
 		return this._monthDropDown;
 	},
 	
-	generateTimeSeperator: function() {
+	generateTimeSeparator: function() {
 		if(this.options.hideMinutes) {
 			return this.generateEmptySpace();
 		} else {
-			return document.createTextNode(DateFormatter.getTimeSeperator());
+			return document.createTextNode(DateFormatter.getTimeSeparator());
 		}
 	},
 	

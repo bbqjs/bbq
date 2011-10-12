@@ -6,8 +6,8 @@ include(bbq.date.DateFormat);
  * 
  */
 bbq.date.DateFormat4 = new Class.create(bbq.date.DateFormat, {
-	_dateSeperator: " ",
-	_timeSeperator: ":",
+	_dateSeparator: " ",
+	_timeSeparator: ":",
 	
 	getLongDate: function(options) {
 		var offset = options.date.getTimezoneOffset()/60;
@@ -38,14 +38,14 @@ bbq.date.DateFormat4 = new Class.create(bbq.date.DateFormat, {
 	},
 	
 	_getDate: function(options) {
-		return options.date.getDate() + this._dateSeperator + Language.get("bbq.date.DateFormat4.months" + options.date.getMonth()).substr(0, 3) + this._dateSeperator + options.date.getFullYear();
+		return options.date.getDate() + this._dateSeparator + Language.get("bbq.date.DateFormat4.months" + options.date.getMonth()).substr(0, 3) + this._dateSeparator + options.date.getFullYear();
 	},
 	
 	getOrder: function(options) {
 		if(options.shortDate) {
-			return ["Year", "DateSeperator", "Month", "DateSeperator", "Day"];
+			return ["Year", "DateSeparator", "Month", "DateSeparator", "Day"];
 		}
 		
-		return ["Year", "DateSeperator", "Month", "DateSeperator", "Day", "BreakableSpace", "Hour", "TimeSeperator", "Minute"];
+		return ["Year", "DateSeparator", "Month", "DateSeparator", "Day", "BreakableSpace", "Hour", "TimeSeparator", "Minute"];
 	}
 });

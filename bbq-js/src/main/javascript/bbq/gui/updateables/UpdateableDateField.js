@@ -153,16 +153,11 @@ bbq.gui.updateables.UpdateableDateField = new Class.create(bbq.gui.updateables.U
 		return this._dayDropDown;
 	},
 	
-	generateDateSeperator: function() {
-		return document.createTextNode(DateFormatter.getDateSeperator());
+	generateDateSeparator: function() {
+		return document.createTextNode(DateFormatter.getDateSeparator());
 	},
 	
 	generateEmptySpace: function() {
-		//if(Browser.Mozilla) {
-		//	return document.createTextNode(" ");
-		//}
-		
-		//return DOMUtil.createElement("wbr");
 		return document.createTextNode(" ");
 	},
 	
@@ -233,11 +228,11 @@ bbq.gui.updateables.UpdateableDateField = new Class.create(bbq.gui.updateables.U
 		return this._monthDropDown;
 	},
 	
-	generateTimeSeperator: function() {
+	generateTimeSeparator: function() {
 		if(this.options.hideMinutes) {
 			return this.generateEmptySpace();
 		} else {
-			return document.createTextNode(DateFormatter.getTimeSeperator());
+			return document.createTextNode(DateFormatter.getTimeSeparator());
 		}
 	},
 	

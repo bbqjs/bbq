@@ -6,18 +6,18 @@ include(bbq.date.DateFormat);
  * 
  */
 bbq.date.DateFormat2 = new Class.create(bbq.date.DateFormat, {
-	_dateSeperator: ".",
-	_timeSeperator: ":",
+	_dateSeparator: ".",
+	_timeSeparator: ":",
 	
 	_getDate: function(options) {
-		return options.date.getDate() + this._dateSeperator + (options.date.getMonth() + 1) + this._dateSeperator + options.date.getFullYear();
+		return options.date.getDate() + this._dateSeparator + (options.date.getMonth() + 1) + this._dateSeparator + options.date.getFullYear();
 	},
 	
 	getOrder: function(options) {
 		if(options.shortDate) {
-			return ["Day", "DateSeperator", "Month", "DateSeperator", "Year"];
+			return ["Day", "DateSeparator", "Month", "DateSeparator", "Year"];
 		}
 		
-		return ["Day", "DateSeperator", "Month", "DateSeperator", "Year", "BreakableSpace", "Hour", "TimeSeperator", "Minute"];
+		return ["Day", "DateSeparator", "Month", "DateSeparator", "Year", "BreakableSpace", "Hour", "TimeSeparator", "Minute"];
 	}
 });
