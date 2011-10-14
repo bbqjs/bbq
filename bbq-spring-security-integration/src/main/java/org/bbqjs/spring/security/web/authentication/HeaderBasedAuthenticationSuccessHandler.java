@@ -1,4 +1,4 @@
-package org.bbqjs.spring.security.authentication.json;
+package org.bbqjs.spring.security.web.authentication;
 
 import java.io.IOException;
 import java.io.Writer;

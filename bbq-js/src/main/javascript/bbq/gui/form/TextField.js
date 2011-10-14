@@ -37,7 +37,7 @@ bbq.gui.form.TextField = new Class.create(bbq.gui.form.FormField, {
 			}
 
 			// Set a timeout so we only dispatch the event after editing has finished
-			this._onKeyPressTimeOut = setTimeout(this._dispatchEvent.bind(this, "onChange"), 500);
+			this._onKeyPressTimeOut = setTimeout(this.notifyListeners.bind(this, "onChange"), 500);
 		}
 	}
 });

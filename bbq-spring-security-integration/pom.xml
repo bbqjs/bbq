@@ -9,10 +9,10 @@
 	</parent>
 	
 	<groupId>org.bbqjs</groupId>
-	<artifactId>bbq-spring-integration</artifactId>
+	<artifactId>bbq-spring-security-integration</artifactId>
 	<packaging>jar</packaging>
 	<version>1.1.4-SNAPSHOT</version>
-	<name>bbq-spring-integration</name>
+	<name>bbq-spring-security-integration</name>
 	<url>http://www.bbqjs.org</url>
 	
 	<build>
@@ -75,18 +75,22 @@
 	</build>
 	
 	<dependencies>
-		<!-- BBQ -->
 		<dependency>
 			<groupId>org.bbqjs</groupId>
-			<artifactId>bbq-compiler</artifactId>
+			<artifactId>bbq-spring-integration</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		
 		<!-- Spring -->
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -95,24 +99,10 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.bouncycastle</groupId> 
-			<artifactId>bcprov-jdk16</artifactId> 
-			<version>${bouncycastle.version}</version> 
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>${commons.io.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>${commons.lang.version}</version>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>${json.lib.version}</version>
+			<classifier>jdk15</classifier>
 		</dependency>
 
 		<!-- Test dependencies -->
@@ -120,6 +110,12 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

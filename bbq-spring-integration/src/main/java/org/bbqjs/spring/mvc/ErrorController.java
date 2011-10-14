@@ -1,19 +1,16 @@
 package org.bbqjs.spring.mvc;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.ModelAndView;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * Maps exceptions to error codes.
@@ -22,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  * @author alex
  */
-public class ErrorController implements HandlerExceptionResolver, InitializingBean {
+public class ErrorController implements HandlerExceptionResolver {
 	private final static Logger LOG = LoggerFactory.getLogger(ErrorController.class);
 	
 	/**
@@ -38,20 +35,12 @@ public class ErrorController implements HandlerExceptionResolver, InitializingBe
 	 */
 	private static final int MAX_HEADER_LENGTH = 3072;
 
-	private Map<Class<?>, Integer>errorCodes;
-
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		if(errorCodes == null) {
-			errorCodes = new HashMap<Class<?>, Integer>();
-			errorCodes.put(AccessDeniedException.class, new Integer(-99));
-		}
-	}
+	private Map<Class<?>, Integer>errorCodes = Collections.EMPTY_MAP;
 
 	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) {
 		try {
 			ModelAndView modelAndView = getModelAndView();
-			
+
 			LOG.error("Exception encountered", exception);
 			String message = getErrorMessage(exception);
 			int code = getErrorCode(exception);
@@ -92,19 +81,23 @@ public class ErrorController implements HandlerExceptionResolver, InitializingBe
 
 	protected int getErrorCode(Exception exception) {
 		Integer code = errorCodes.get(exception.getClass());
-		
+
 		if(code != null) {
 			return code;
 		}
 
 		return EPIC_FAIL_CODE;
 	}
-	
+
 	protected ModelAndView getModelAndView() {
 		return new ModelAndView("error");
 	}
-	
+
 	public void setErrorCodes(Map<Class<?>, Integer> errorCodes) {
+		if(errorCodes == null) {
+			errorCodes = Collections.EMPTY_MAP;
+		}
+
 		this.errorCodes = errorCodes;
 	}
 }

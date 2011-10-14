@@ -1,4 +1,4 @@
-package org.bbqjs.spring.security.authentication;
+package org.bbqjs.spring.security.web.authentication;
 
 public class AuthenticationRequest {
 	private String principal;

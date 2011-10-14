@@ -13,6 +13,7 @@
 		<module>bbq-js</module>
 		<module>bbq-compiler</module>
 		<module>bbq-spring-integration</module>
+		<module>bbq-spring-security-integration</module>
 		<module>bbq-test</module>
 		<module>bbq-maven-plugin</module>
 	</modules>
@@ -54,6 +55,7 @@
 		<commons.lang.version>2.3</commons.lang.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<spring.security.version>3.0.5.RELEASE</spring.security.version>
+		<json.lib.version>2.4</json.lib.version>
 	</properties>
 
 	<build>

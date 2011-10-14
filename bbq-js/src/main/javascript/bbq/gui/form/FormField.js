@@ -44,7 +44,7 @@ bbq.gui.form.FormField = new Class.create(bbq.gui.GUIWidget, {
 	setRootNode: function($super, rootNode) {
 		$super(rootNode);
 
-		this.getRootNode().onchange = this._dispatchEvent.bind(this, "onChange");
+		this.getRootNode().onchange = this.notifyListeners.bind(this, "onChange");
 	},
 
 	_getRawValue: function() {
@@ -53,10 +53,6 @@ bbq.gui.form.FormField = new Class.create(bbq.gui.GUIWidget, {
 
 	_setRawValue: function(value) {
 		this.getRootNode().value = value;
-	},
-
-	_dispatchEvent: function(event) {
-		this.notifyListeners(event);
 	},
 
 	/**
@@ -68,36 +64,43 @@ bbq.gui.form.FormField = new Class.create(bbq.gui.GUIWidget, {
 		return this._validateAndTransform(value);
 	},
 
+	getUnvalidatedValue: function() {
+		var value = this._getRawValue();
+
+		return this._transform(value);
+	},
+
 	_validateAndTransform: function(value) {
 		this.removeClass("FormField_error");
 
-		var error = null;
-
 		// run pre-transform validators
-		this._preTransformValidators.each(function(validator) {
-			var result = validator.validate(value);
+		this._preValidate(value);
 
-			if(result) {
-				error = {error: result, field: this};
+		// transform the value if necessary
+		value = this._transform(value);
 
-				this.addClass("FormField_error");
-				this.notifyListeners("onError", error);
+		// run post transform validators
+		this._postValidate(value);
 
-				throw error;
-			}
-		}.bind(this));
+		// return our value
+		return value;
+	},
 
+	_transform: function(value) {
 		// if we have a value transformer, transform the value
 		if (this._transformer) {
 			value = this._transformer.transform(value);
 		}
 
-		// run post transform validators
-		this._postTransformValidators.each(function(validator) {
+		return value;
+	},
+
+	_preValidate: function(value) {
+		this._preTransformValidators.each(function(validator) {
 			var result = validator.validate(value);
 
 			if (result) {
-				error = {error: result, field: this};
+				var error = {error: result, field: this};
 
 				this.addClass("FormField_error");
 				this.notifyListeners("onError", error);
@@ -105,9 +108,21 @@ bbq.gui.form.FormField = new Class.create(bbq.gui.GUIWidget, {
 				throw error;
 			}
 		}.bind(this));
+	},
 
-		// return our value
-		return value;
+	_postValidate: function(value) {
+		this._postTransformValidators.each(function(validator) {
+			var result = validator.validate(value);
+
+			if (result) {
+				var error = {error: result, field: this};
+
+				this.addClass("FormField_error");
+				this.notifyListeners("onError", error);
+
+				throw error;
+			}
+		}.bind(this));
 	},
 
 	setValue: function(value) {

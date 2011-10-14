@@ -1,4 +1,4 @@
-package org.bbqjs.spring.security.authentication;
+package org.bbqjs.spring.security.web.authentication;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,10 +65,10 @@ public class AuthenticationProcessingFilter extends AbstractAuthenticationProces
 		messageConverters = new ArrayList<HttpMessageConverter<AuthenticationRequest>>();
 		messageConverters.add(messageConverter);
 	}
-	
+
 	/**
 	 * Use this if you only have message conversion strategies
-	 * @param messageConverter
+	 * @param messageConverters
 	 */
 	public void setMessageConverters(List<HttpMessageConverter<AuthenticationRequest>> messageConverters) {
 		this.messageConverters = messageConverters;
